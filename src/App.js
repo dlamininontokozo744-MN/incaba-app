@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import hlane from './images/hlane.jpg';
@@ -715,28 +714,18 @@ function AITab({t}) {
 
   const getReply = async (msg)=>{
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'x-api-key': process.env.REACT_APP_ANTHROPIC_KEY,
-          'anthropic-version':'2023-06-01',
-          'anthropic-dangerous-direct-browser-access':'true',
-        },
-        body:JSON.stringify({
-          model:'claude-haiku-4-5-20251001',
-          max_tokens:1024,
-          system:`You are Vaka — the AI travel guide for the Kingdom of Eswatini built into the Incaba Smart Tourism Platform. You know everything about Eswatini including all 4 regions (Hhohho, Manzini, Lubombo, Shiselweni), attractions like Hlane Royal Reserve, Mantenga Falls, Lobamba Royal Village, Swazi Candles Market, Malolotja Nature Reserve, Sibebe Rock and Shiselweni Region. Local food: Sishwala, Umncweba, Emasi, Tjwala. Culture: Incwala ceremony, Umhlanga Reed Dance, Marula Festival. Emergency numbers: Police 999, Ambulance 977, Fire 933. Currency Lilangeni SZL, 1 USD = E18.5. Hotels: Royal Swazi Spa, Mantengha Cultural Village, Foresters Arms, Lidwala Backpacker. Restaurants: Malandela's, Tum's George Hotel, Foresters Arms. Transport: Kombi taxis E8-25, car rental E350 per day. Always respond in a friendly helpful tone with emojis. Be proud of Eswatini and love sharing its beauty with tourists. Keep responses concise and well organized.`,
-          messages:[{role:'user',content:msg}]
-        })
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({message: msg})
       });
       const data = await response.json();
-      if(data.content&&data.content[0]) return data.content[0].text;
-      return "Please try again! 🙏";
+      return data.reply || "Please try again! 🙏";
     } catch(e) {
-      return "I could not connect right now. Please try again! 🙏";
+      return "Could not connect. Please try again! 🙏";
     }
   };
+
 
   const send = async ()=>{
     if(!input.trim()) return;
