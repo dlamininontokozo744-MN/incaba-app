@@ -201,7 +201,7 @@ function AuthScreen({onLogin,t}) {
           <button style={{flex:1,padding:'10px',borderRadius:10,border:'none',background:mode==='signup'?'rgba(201,162,39,0.2)':'transparent',color:mode==='signup'?'#c9a227':'#8fa3c4',cursor:'pointer',fontWeight:600,fontSize:14}} onClick={()=>setMode('signup')}>{t.signUp}</button>
         </div>
         <button style={{width:'100%',padding:'13px',borderRadius:12,border:'0.5px solid rgba(255,255,255,0.2)',background:'rgba(255,255,255,0.08)',color:'#f0f4ff',fontSize:14,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:16,fontWeight:500}} onClick={()=>onLogin({name:'Google User',email:'tourist@gmail.com'},false)}>
-          <span style={{fontSize:20}}>🌐</span> Continue with Google
+          <span style={{fontSize:20}}>🌐</span> 
         </button>
         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
           <div style={{flex:1,height:'0.5px',background:'rgba(255,255,255,0.1)'}}/>
