@@ -74,13 +74,13 @@ const restaurants = [
   { name:"Malandela's Restaurant", region:'Malkerns', desc:'Traditional Swazi cuisine in a beautiful garden setting', rating:'4.8', icon:'🍴', price:'E 80–200 per person', hours:'Mon–Sun 11am–9pm' },
   { name:"Tum's George Hotel", region:'Mbabane', desc:'Fine dining with panoramic views of the Ezulwini Valley', rating:'4.6', icon:'🍽️', price:'E 120–300 per person', hours:'Daily 7am–10pm' },
   { name:'Gables Food Court', region:'Ezulwini', desc:'Local and international food options for every budget', rating:'4.2', icon:'🛍️', price:'E 40–120 per person', hours:'Daily 9am–8pm' },
-  { name:'Foresters Arms Hotel', region:'Malkerns', desc:'Classic pub meals in a cozy countryside atmosphere', rating:'4.4', icon:'🏡', price:'E 60–150 per person', hours:'Daily 11am–10pm' },
+  { name:'Foresters Arms Hotel', region:'Sipiki', desc:'Classic pub meals in a cozy countryside atmosphere', rating:'4.4', icon:'🏡', price:'E 60–150 per person', hours:'Daily 11am–10pm' },
 ];
 
 const hotels = [
   { name:'Royal Swazi Spa & Hotel', region:'Ezulwini Valley', desc:'Luxury 5-star hotel with spa, casino and golf course', rating:'4.9', icon:'🏨', price:'E 1,800–4,500/night', stars:'★★★★★' },
-  { name:'Mantengha Cultural Village', region:'Ezulwini', desc:'Authentic cultural experience in traditional Swazi huts', rating:'4.7', icon:'🛖', price:'E 600–1,200/night', stars:'★★★★☆' },
-  { name:'Foresters Arms', region:'Malkerns', desc:'Charming country hotel surrounded by forest and gardens', rating:'4.5', icon:'🌲', price:'E 800–1,800/night', stars:'★★★★☆' },
+  { name:'Mantenga Cultural Village', region:'Ezulwini', desc:'Authentic cultural experience in traditional Swazi huts', rating:'4.7', icon:'🛖', price:'E 600–1,200/night', stars:'★★★★☆' },
+  { name:'Foresters Arms', region:'Sipiki', desc:'Charming country hotel surrounded by forest and gardens', rating:'4.5', icon:'🌲', price:'E 800–1,800/night', stars:'★★★★☆' },
   { name:'Lidwala Backpacker Lodge', region:'Mbabane', desc:'Budget-friendly lodge with stunning rock formations', rating:'4.3', icon:'⛺', price:'E 150–400/night', stars:'★★★☆☆' },
 ];
 
@@ -201,7 +201,7 @@ function AuthScreen({onLogin,t}) {
           <button style={{flex:1,padding:'10px',borderRadius:10,border:'none',background:mode==='signup'?'rgba(201,162,39,0.2)':'transparent',color:mode==='signup'?'#c9a227':'#8fa3c4',cursor:'pointer',fontWeight:600,fontSize:14}} onClick={()=>setMode('signup')}>{t.signUp}</button>
         </div>
         <button style={{width:'100%',padding:'13px',borderRadius:12,border:'0.5px solid rgba(255,255,255,0.2)',background:'rgba(255,255,255,0.08)',color:'#f0f4ff',fontSize:14,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:16,fontWeight:500}} onClick={()=>onLogin({name:'Google User',email:'tourist@gmail.com'},false)}>
-          <span style={{fontSize:20}}>🌐</span> 
+           
         </button>
         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
           <div style={{flex:1,height:'0.5px',background:'rgba(255,255,255,0.1)'}}/>
