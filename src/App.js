@@ -12,67 +12,58 @@ import shiselweni from './images/shiselweni.jpg';
 import shiselweni2 from './images/shiselweni2.jpg';
 import shiselweni3 from './images/shiselweni3.jpg';
 
-// ── TRANSLATIONS ──────────────────────────────────────────
 const T = {
   en: { explore:'Explore Eswatini ✦', tagline:"Unlocking Eswatini's Hidden Treasures", sub:'The Smart Digital Tourism Ecosystem 🇸🇿', offline:'9 Languages · Offline Ready', welcome:"Welcome to Africa's Hidden Fortress 💎", welcomeSub:'Discover breathtaking landscapes, vibrant culture, and unforgettable experiences.', attractions:'Attractions', restaurants:'Restaurants', hotels:'Hotels', topAttractions:'Top Attractions', hiddenGem:'Hidden Gem 💎', aiTitle:'Incaba AI Guide', aiSub:'Ask anything about Eswatini', navigate:'Navigate', home:'Home', ai:'AI Guide', business:'Business', explore2:'Explore', translate:'Translate', compare:'Compare', sos:'SOS Emergency Mode', sosSub:'Tap to share location with emergency services', weather:'Weather Today', currency:'Currency Converter', reviews:'Tourist Reviews', writeReview:'Write a Review', submit:'Submit', cancel:'Cancel', getDir:'Get Directions', savePlace:'❤️ Save Place', about:'About', location:'📍 Location', hours:'🕐 Opening Hours', price:'💰 Entry Fee', tips:'💡 Travel Tips', signIn:'Sign In', signUp:'Sign Up', logout:'Logout', welcome2:'Welcome back', createAccount:'Create Account', virtualTour:'🥽 Virtual Tour', orderFood:'🛒 Order Food', comparePrice:'⚖️ Compare Prices' },
   ss: { explore:'Hlola Eswatini ✦', tagline:'Sivula Tigugu Letifihlekile Tase-Eswatini', sub:'Inhlelo Lehlakaniphile Yekuvakasha 🇸🇿', offline:'Tilimi Letingu-9 · Isebenta Ungaxhunyiwe', welcome:'Siyakemukela e-Africa Incaba Lefihlekile 💎', welcomeSub:'Tola tindzawo letimangalisako, inhlalo-mphilo, netilwimi letingakhohlwakali.', attractions:'Tindzawo', restaurants:'Emadlelo', hotels:'Emahhotela', topAttractions:'Tindzawo Letiphambili', hiddenGem:'Sigugu Lesikhulu 💎', aiTitle:'Umcondzi we-Incaba AI', aiSub:'Butseka noma yini nge-Eswatini', navigate:'Hamba', home:'Ekhaya', ai:'Umcondzi', business:'Ibhizinisi', explore2:'Hlola', translate:'Humusha', compare:'Qhatanisa', sos:'Isimo Sehhatsi', sosSub:'Cindzetela wabelane ndzawo yakho nebaphephisi', weather:'Isimo Selizulu Lamuhla', currency:'Shintsha Imali', reviews:'Tibuka Tetivakashi', writeReview:'Bhala Tibuka', submit:'Thumela', cancel:'Yekela', getDir:'Tsatsa Indlela', savePlace:'❤️ Gcina Indawo', about:'Mayelana', location:'📍 Ndzawo', hours:'🕐 Sikhati Sekuvulwa', price:'💰 Inkokhelo', tips:'💡 Imilayeto Yekuvakasha', signIn:'Ngena', signUp:'Bhalisa', logout:'Phuma', welcome2:'Siyakemukela', createAccount:'Yenta Akhawunti', virtualTour:'🥽 Vaka Nge-Virtual', orderFood:'🛒 Odela Kudla', comparePrice:'⚖️ Qhatanisa Tintengo' },
-  zu: { explore:'Hlola i-Eswatini ✦', tagline:'Sivula Amagugu Asefihliwe Ase-Eswatini', sub:'Uhlelo Lokuhlakanipha Lokuvakasha 🇸🇿', offline:'Izilimi Eziyi-9 · Isebenza Ngaphandle Kwe-Intanethi', welcome:'Siyakwamukela e-Afrika Insaba Efihliwe 💎', welcomeSub:'Thola izindawo ezimangalisayo, amasiko ashisayo, nezilwimi ezingakhohlakali.', attractions:'Izindawo', restaurants:'Ama-Restorenti', hotels:'Amahhotela', topAttractions:'Izindawo Eziphezulu', hiddenGem:'Igugu Elisifihlekile 💎', aiTitle:'Isiqondisi se-Incaba AI', aiSub:'Buza noma yini nge-Eswatini', navigate:'Hamba', home:'Ekhaya', ai:'Isiqondisi', business:'Ibhizinisi', explore2:'Hlola', translate:'Humusha', compare:'Qhatanisa', sos:'Isimo Sezimo', sosSub:'Thepha ukwabelana nendawo yakho namasevisi okuphuthuma', weather:'Isimo Sezulu Namuhla', currency:'Isiguquli Semali', reviews:'Izibuyekezo Zezivakashi', writeReview:'Bhala Ukubuyekeza', submit:'Thumela', cancel:'Khansela', getDir:'Thola Izikhombo', savePlace:'❤️ Gcina Indawo', about:'Mayelana', location:'📍 Indawo', hours:'🕐 Amahora Okuvula', price:'💰 Imali Yokungena', tips:'💡 Amacebo Okuvakasha', signIn:'Ngena', signUp:'Bhalisa', logout:'Phuma', welcome2:'Siyakwamukela futhi', createAccount:'Dala I-Akhawunti', virtualTour:'🥽 Ithiyetha Elikhulu', orderFood:'🛒 Odela Ukudla', comparePrice:'⚖️ Qhatanisa Amanani' },
-  af: { explore:'Verken Eswatini ✦', tagline:"Ontsluit Eswatini se Verborge Skatte", sub:'Die Slim Digitale Toerisme-Ekosisteem 🇸🇿', offline:'9 Tale · Vanlyn Gereed', welcome:"Welkom by Afrika se Verborge Vesting 💎", welcomeSub:'Ontdek asemrowende landseigte, lewendige kultuur en onvergeetlike ervarings.', attractions:'Besienswaardighede', restaurants:'Restaurante', hotels:'Hotelle', topAttractions:'Top Besienswaardighede', hiddenGem:'Verborge Juweel 💎', aiTitle:'Incaba KI-Gids', aiSub:'Vra enigiets oor Eswatini', navigate:'Navigeer', home:'Tuis', ai:'KI-Gids', business:'Besigheid', explore2:'Verken', translate:'Vertaal', compare:'Vergelyk', sos:'SOS Noodmodus', sosSub:'Tik om ligging met nooddienste te deel', weather:'Weer Vandag', currency:'Geldomskakelaar', reviews:'Toeriste-resensies', writeReview:'Skryf Resensie', submit:'Indien', cancel:'Kanselleer', getDir:'Kry Aanwysings', savePlace:'❤️ Stoor Plek', about:'Oor', location:'📍 Ligging', hours:'🕐 Openingsure', price:'💰 Toegangsgeld', tips:'💡 Reistips', signIn:'Meld Aan', signUp:'Registreer', logout:'Meld Af', welcome2:'Welkom terug', createAccount:'Skep Rekening', virtualTour:'🥽 Virtuele Toer', orderFood:'🛒 Bestel Kos', comparePrice:'⚖️ Vergelyk Pryse' },
-  pt: { explore:'Explorar Eswatini ✦', tagline:'Desbloqueando os Tesouros Escondidos de Eswatini', sub:'O Ecossistema de Turismo Digital Inteligente 🇸🇿', offline:'9 Idiomas · Pronto para Uso Offline', welcome:'Bem-vindo à Fortaleza Oculta de África 💎', welcomeSub:'Descubra paisagens deslumbrantes, cultura vibrante e experiências inesquecíveis.', attractions:'Atrações', restaurants:'Restaurantes', hotels:'Hotéis', topAttractions:'Principais Atrações', hiddenGem:'Joia Escondida 💎', aiTitle:'Guia IA Incaba', aiSub:'Pergunte qualquer coisa sobre Eswatini', navigate:'Navegar', home:'Início', ai:'Guia IA', business:'Negócios', explore2:'Explorar', translate:'Traduzir', compare:'Comparar', sos:'Modo de Emergência SOS', sosSub:'Toque para partilhar localização com serviços de emergência', weather:'Tempo Hoje', currency:'Conversor de Moeda', reviews:'Avaliações de Turistas', writeReview:'Escrever Avaliação', submit:'Enviar', cancel:'Cancelar', getDir:'Obter Direções', savePlace:'❤️ Guardar Local', about:'Sobre', location:'📍 Localização', hours:'🕐 Horário de Abertura', price:'💰 Taxa de Entrada', tips:'💡 Dicas de Viagem', signIn:'Entrar', signUp:'Registar', logout:'Sair', welcome2:'Bem-vindo de volta', createAccount:'Criar Conta', virtualTour:'🥽 Visita Virtual', orderFood:'🛒 Encomendar Comida', comparePrice:'⚖️ Comparar Preços' },
-  fr: { explore:'Explorer Eswatini ✦', tagline:"Déverrouiller les Trésors Cachés d'Eswatini", sub:"L'Écosystème Touristique Numérique Intelligent 🇸🇿", offline:'9 Langues · Prêt Hors Ligne', welcome:"Bienvenue dans la Forteresse Cachée d'Afrique 💎", welcomeSub:'Découvrez des paysages à couper le souffle, une culture vibrante et des expériences inoubliables.', attractions:'Attractions', restaurants:'Restaurants', hotels:'Hôtels', topAttractions:'Meilleures Attractions', hiddenGem:'Joyau Caché 💎', aiTitle:'Guide IA Incaba', aiSub:"Demandez n'importe quoi sur Eswatini", navigate:'Naviguer', home:'Accueil', ai:'Guide IA', business:'Entreprise', explore2:'Explorer', translate:'Traduire', compare:'Comparer', sos:"Mode d'Urgence SOS", sosSub:"Appuyez pour partager l'emplacement avec les services d'urgence", weather:"Météo Aujourd'hui", currency:'Convertisseur de Devises', reviews:'Avis des Touristes', writeReview:'Écrire un Avis', submit:'Soumettre', cancel:'Annuler', getDir:'Obtenir des Directions', savePlace:'❤️ Sauvegarder', about:'À Propos', location:'📍 Emplacement', hours:"🕐 Heures d'Ouverture", price:"💰 Frais d'Entrée", tips:'💡 Conseils de Voyage', signIn:'Se Connecter', signUp:"S'inscrire", logout:'Se Déconnecter', welcome2:'Bon Retour', createAccount:'Créer un Compte', virtualTour:'🥽 Visite Virtuelle', orderFood:'🛒 Commander', comparePrice:'⚖️ Comparer les Prix' },
-  de: { explore:'Eswatini Erkunden ✦', tagline:'Die Verborgenen Schätze Eswatinis Erschließen', sub:'Das Intelligente Digitale Tourismus-Ökosystem 🇸🇿', offline:'9 Sprachen · Offline Bereit', welcome:"Willkommen in Afrikas Verborgener Festung 💎", welcomeSub:'Entdecken Sie atemberaubende Landschaften, lebendige Kultur und unvergessliche Erlebnisse.', attractions:'Sehenswürdigkeiten', restaurants:'Restaurants', hotels:'Hotels', topAttractions:'Top Sehenswürdigkeiten', hiddenGem:'Verborgenes Juwel 💎', aiTitle:'Incaba KI-Führer', aiSub:'Fragen Sie alles über Eswatini', navigate:'Navigieren', home:'Startseite', ai:'KI-Führer', business:'Geschäft', explore2:'Erkunden', translate:'Übersetzen', compare:'Vergleichen', sos:'SOS-Notfallmodus', sosSub:'Tippen Sie, um den Standort mit Notfalldiensten zu teilen', weather:'Wetter Heute', currency:'Währungsrechner', reviews:'Touristenbewertungen', writeReview:'Bewertung Schreiben', submit:'Einreichen', cancel:'Abbrechen', getDir:'Wegbeschreibung', savePlace:'❤️ Ort Speichern', about:'Über', location:'📍 Standort', hours:'🕐 Öffnungszeiten', price:'💰 Eintrittsgebühr', tips:'💡 Reisetipps', signIn:'Anmelden', signUp:'Registrieren', logout:'Abmelden', welcome2:'Willkommen Zurück', createAccount:'Konto Erstellen', virtualTour:'🥽 Virtuelle Tour', orderFood:'🛒 Essen Bestellen', comparePrice:'⚖️ Preise Vergleichen' },
-  zh: { explore:'探索斯威士兰 ✦', tagline:'解锁斯威士兰的隐藏宝藏', sub:'智能数字旅游生态系统 🇸🇿', offline:'9种语言 · 离线可用', welcome:'欢迎来到非洲的隐藏堡垒 💎', welcomeSub:'探索令人叹为观止的风景、充满活力的文化和难忘的体验。', attractions:'景点', restaurants:'餐厅', hotels:'酒店', topAttractions:'热门景点', hiddenGem:'隐藏宝石 💎', aiTitle:'Incaba 人工智能向导', aiSub:'询问任何关于斯威士兰的问题', navigate:'导航', home:'主页', ai:'AI向导', business:'商业', explore2:'探索', translate:'翻译', compare:'比较', sos:'SOS紧急模式', sosSub:'点击与紧急服务共享位置', weather:'今日天气', currency:'货币换算器', reviews:'游客评论', writeReview:'写评论', submit:'提交', cancel:'取消', getDir:'获取路线', savePlace:'❤️ 收藏地点', about:'关于', location:'📍 位置', hours:'🕐 营业时间', price:'💰 门票费用', tips:'💡 旅行提示', signIn:'登录', signUp:'注册', logout:'退出', welcome2:'欢迎回来', createAccount:'创建账户', virtualTour:'🥽 虚拟游览', orderFood:'🛒 点餐', comparePrice:'⚖️ 比较价格' },
-  ar: { explore:'استكشف إسواتيني ✦', tagline:'اكتشف الكنوز الخفية لإسواتيني', sub:'نظام السياحة الرقمية الذكية 🇸🇿', offline:'٩ لغات · متاح بدون إنترنت', welcome:'مرحباً بك في القلعة الخفية لأفريقيا 💎', welcomeSub:'اكتشف مناظر طبيعية خلابة وثقافة نابضة بالحياة وتجارب لا تُنسى.', attractions:'المعالم السياحية', restaurants:'المطاعم', hotels:'الفنادق', topAttractions:'أفضل المعالم', hiddenGem:'الجوهرة المخفية 💎', aiTitle:'دليل Incaba الذكي', aiSub:'اسأل أي شيء عن إسواتيني', navigate:'التنقل', home:'الرئيسية', ai:'الدليل الذكي', business:'الأعمال', explore2:'استكشف', translate:'ترجم', compare:'قارن', sos:'وضع الطوارئ SOS', sosSub:'انقر لمشاركة موقعك مع خدمات الطوارئ', weather:'الطقس اليوم', currency:'محوّل العملات', reviews:'تقييمات السياح', writeReview:'اكتب تقييماً', submit:'إرسال', cancel:'إلغاء', getDir:'احصل على الاتجاهات', savePlace:'❤️ احفظ المكان', about:'حول', location:'📍 الموقع', hours:'🕐 ساعات العمل', price:'💰 رسوم الدخول', tips:'💡 نصائح السفر', signIn:'تسجيل الدخول', signUp:'إنشاء حساب', logout:'تسجيل الخروج', welcome2:'مرحباً بعودتك', createAccount:'إنشاء حساب', virtualTour:'🥽 جولة افتراضية', orderFood:'🛒 طلب الطعام', comparePrice:'⚖️ مقارنة الأسعار' },
 };
 
-const RATES_TO_SZL = {
-  USD: 18.5, ZAR: 1.0, EUR: 20.1, GBP: 23.4, BWP: 1.37,
-  CNY: 2.55, AED: 5.04, INR: 0.222, AUD: 12.1, CAD: 13.6,
-  JPY: 0.122, CHF: 20.8, BRL: 3.55, MXN: 0.95, NGN: 0.012,
-  KES: 0.143, GHS: 1.21, ETB: 0.33, TZS: 0.0071, UGX: 0.0049,
+const RATES_TO_SZL = { USD:18.5, ZAR:1.0, EUR:20.1, GBP:23.4, BWP:1.37, CNY:2.55, AED:5.04, INR:0.222, AUD:12.1, CAD:13.6, JPY:0.122, CHF:20.8, BRL:3.55, MXN:0.95, NGN:0.012, KES:0.143, GHS:1.21, ETB:0.33, TZS:0.0071, UGX:0.0049 };
+
+const LANG_NAMES = { en:'🇬🇧 EN', ss:'🇸🇿 SS', zu:'🇿🇦 ZU', af:'🇿🇦 AF', pt:'🇲🇿 PT', fr:'🇫🇷 FR', de:'🇩🇪 DE', zh:'🇨🇳 ZH', ar:'🇸🇦 AR' };
+
+const TRANSLATIONS = {
+  'Hello': { ss:'Sawubona', zu:'Sawubona', af:'Hallo', pt:'Olá', fr:'Bonjour', de:'Hallo', zh:'你好', ar:'مرحبا' },
+  'Thank you': { ss:'Ngiyabonga', zu:'Ngiyabonga', af:'Dankie', pt:'Obrigado', fr:'Merci', de:'Danke', zh:'谢谢', ar:'شكراً' },
+  'Where is the toilet?': { ss:'Indlu yokuhlambela ikuphi?', zu:'Indlu yangasese ikuphi?', af:'Waar is die toilet?', pt:'Onde é o banheiro?', fr:'Où sont les toilettes?', de:'Wo ist die Toilette?', zh:'厕所在哪里?', ar:'أين الحمام؟' },
+  'How much does this cost?': { ss:'Ubiza malini loku?', zu:'Kuyimalini loku?', af:'Hoeveel kos dit?', pt:'Quanto custa isso?', fr:'Combien ça coûte?', de:'Wie viel kostet das?', zh:'这个多少钱?', ar:'كم يكلف هذا؟' },
+  'I need help': { ss:'Ngidinga lusito', zu:'Ngidinga usizo', af:'Ek het hulp nodig', pt:'Preciso de ajuda', fr:"J'ai besoin d'aide", de:'Ich brauche Hilfe', zh:'我需要帮助', ar:'أحتاج مساعدة' },
+  'Good morning': { ss:'Sawubona ekuseni', zu:'Sawubona ekuseni', af:'Goeie môre', pt:'Bom dia', fr:'Bonjour', de:'Guten Morgen', zh:'早上好', ar:'صباح الخير' },
+  'Goodbye': { ss:'Sala kahle', zu:'Sala kahle', af:'Totsiens', pt:'Adeus', fr:'Au revoir', de:'Auf Wiedersehen', zh:'再见', ar:'وداعاً' },
+  'Water': { ss:'Emanti', zu:'Amanzi', af:'Water', pt:'Água', fr:'Eau', de:'Wasser', zh:'水', ar:'ماء' },
+  'Food': { ss:'Kudla', zu:'Ukudla', af:'Kos', pt:'Comida', fr:'Nourriture', de:'Essen', zh:'食物', ar:'طعام' },
+  'Police': { ss:'Amaphoyisa', zu:'Amaphoyisa', af:'Polisie', pt:'Polícia', fr:'Police', de:'Polizei', zh:'警察', ar:'شرطة' },
+  'Hospital': { ss:'Sibitela', zu:'Isibhedlela', af:'Hospitaal', pt:'Hospital', fr:'Hôpital', de:'Krankenhaus', zh:'医院', ar:'مستشفى' },
 };
 
 const places = [
-  { name:'Hlane Royal Reserve', region:'Lubombo Region', desc:"Lions, elephants & white rhinos in Eswatini's largest park", fullDesc:"Hlane Royal National Park is Eswatini's largest protected area covering 22,000 hectares. Named by King Sobhuza II — Hlane means wilderness in siSwati. Home to lions, elephants, white rhinos, giraffes, zebras and over 300 bird species.", rating:'4.9', category:'Wildlife', img:hlane, gallery:[hlane,hlane,hlane], location:'Lubombo Region, 67km from Manzini', hours:'Open daily 6am – 6pm', price:'E 150 per person', tips:['Book guided game drives in advance','Best time is early morning','Bring binoculars for bird watching'], videoId:'KWr0KUZLPi4', videoTitle:'Self-Drive Safari at Hlane Royal National Park' },
-  { name:'Mantenga Falls', region:'Hhohho Region', desc:'Breathtaking 95m waterfall in the Ezulwini Valley', fullDesc:"Mantenga Falls drops 95 metres into a pristine pool surrounded by lush indigenous forest. One of Eswatini's most spectacular natural wonders. Perfect for swimming, hiking and photography.", rating:'4.8', category:'Nature', img:mantenga, gallery:[mantenga,mantenga,mantenga], location:'Ezulwini Valley, Hhohho Region', hours:'Open daily 7am – 5pm', price:'E 80 per person', tips:['Wear waterproof shoes','Best after rainy season','Swimming allowed below the falls'], videoId:'X9CLKGqqkjU', videoTitle:'Ezulwini Valley 4K HDR Drone Tour' },
-  { name:'Lobamba Royal Village', region:'Manzini Region', desc:'Heart of Swazi culture — home of the King', fullDesc:"Lobamba is the royal and legislative capital of Eswatini. Home of the Queen Mother and where the Incwala and Umhlanga ceremonies take place. Contains the National Museum and Parliament buildings.", rating:'4.7', category:'Culture', img:lobamba, gallery:[lobamba,lobamba,lobamba], location:'Ezulwini Valley, Manzini Region', hours:'Open daily 8am – 4pm', price:'E 50 per person', tips:['Dress respectfully','Visit during Umhlanga in August','Photography may require permission'], videoId:'604KjnoBw8o', videoTitle:'Eswatini Lifestyle — Mantenga Cultural Village' },
-  { name:'Swazi Candles Market', region:'Malkerns Valley', desc:'World-famous handmade candles and craft market', fullDesc:"Artisans hand-craft beautiful animal-shaped candles using traditional techniques. The market features local crafts, textiles, jewelry and fresh produce. Perfect for authentic Swazi souvenirs.", rating:'4.6', category:'Culture', img:swazi, gallery:[swazi,swazi,swazi], location:'Malkerns Valley, Manzini Region', hours:'Open daily 8am – 5pm', price:'Free entry', tips:['Bargaining is acceptable','Buy candles as unique gifts','Try the local food stalls'], videoId:'gZY5KT6bhGY', videoTitle:'Mantenga Waterfalls in Eswatini' },
-  { name:'Malolotja Nature Reserve', region:'Hhohho Region', desc:'Ancient mountains, rare orchids and cable car rides', fullDesc:"Malolotja Nature Reserve contains some of the oldest geological formations on earth. Rare indigenous flora, rare bird species and a famous canopy zipline tour. Less than 2% of tourists ever visit this hidden gem.", rating:'4.8', category:'Nature', img:malolotja, gallery:[malolotja,malolotja2,malolotja3], location:'Northwestern Eswatini, Hhohho Region', hours:'Open daily 6am – 6pm', price:'E 120 per person', tips:['Canopy zipline tour is a must','Bring warm clothing','Great for serious hikers'], videoId:'0ny1QSno2Go', videoTitle:'Siyakwemukela — Kingdom of Eswatini Cultural Experience' },
-  { name:'Sibebe Rock', region:'Hhohho Region', desc:"World's second largest rock near Mbabane", fullDesc:"The world's second largest exposed granite rock. Just 10km from capital Mbabane, offering challenging hiking trails and panoramic views across the entire country.", rating:'4.5', category:'Adventure', img:sibebe, gallery:[sibebe,sibebe,sibebe], location:'10km from Mbabane, Hhohho Region', hours:'Open daily 6am – 6pm', price:'E 60 per person', tips:['Wear proper hiking shoes','Go early to avoid heat','Bring plenty of water'], videoId:'sDN7HXh5rdc', videoTitle:'Bhubesi Camp — Hlane Royal National Park' },
-  { name:'Shiselweni Region', region:'Shiselweni Region', desc:"Eswatini's southern paradise — untouched and spectacular", fullDesc:"Shiselweni is Eswatini's southernmost region and one of its most beautiful. Home to Nhlangano town, vast forests, rivers and traditional Swazi villages. A true off-the-beaten-path destination.", rating:'4.7', category:'Nature', img:shiselweni, gallery:[shiselweni,shiselweni2,shiselweni3], location:'Southern Eswatini, Shiselweni Region', hours:'Open all year round', price:'Free to explore', tips:['Visit Nhlangano town for local culture','Great for eco-tourism','Best during dry season May–September'], videoId:'clEnwhClD1o', videoTitle:'A Day Trip to Eswatini — Mantenga' },
+  { name:'Hlane Royal Reserve', region:'Lubombo Region', desc:"Lions, elephants & white rhinos in Eswatini's largest park", fullDesc:"Hlane Royal National Park is Eswatini's largest protected area covering 22,000 hectares. Home to lions, elephants, white rhinos, giraffes, zebras and over 300 bird species.", rating:'4.9', category:'Wildlife', img:hlane, gallery:[hlane,hlane,hlane], location:'Lubombo Region, 67km from Manzini', hours:'Open daily 6am – 6pm', price:'E 150 per person', tips:['Book guided game drives in advance','Best time is early morning','Bring binoculars for bird watching'], videoId:'KWr0KUZLPi4', videoTitle:'Self-Drive Safari at Hlane Royal National Park' },
+  { name:'Mantenga Falls', region:'Hhohho Region', desc:'Breathtaking 95m waterfall in the Ezulwini Valley', fullDesc:"Mantenga Falls drops 95 metres into a pristine pool surrounded by lush indigenous forest. Perfect for swimming, hiking and photography.", rating:'4.8', category:'Nature', img:mantenga, gallery:[mantenga,mantenga,mantenga], location:'Ezulwini Valley, Hhohho Region', hours:'Open daily 7am – 5pm', price:'E 80 per person', tips:['Wear waterproof shoes','Best after rainy season','Swimming allowed below the falls'], videoId:'X9CLKGqqkjU', videoTitle:'Ezulwini Valley 4K HDR Drone Tour' },
+  { name:'Lobamba Royal Village', region:'Manzini Region', desc:'Heart of Swazi culture — home of the King', fullDesc:"Lobamba is the royal and legislative capital of Eswatini. Home of the Queen Mother and where the Incwala and Umhlanga ceremonies take place.", rating:'4.7', category:'Culture', img:lobamba, gallery:[lobamba,lobamba,lobamba], location:'Ezulwini Valley, Manzini Region', hours:'Open daily 8am – 4pm', price:'E 50 per person', tips:['Dress respectfully','Visit during Umhlanga in August','Photography may require permission'], videoId:'604KjnoBw8o', videoTitle:'Eswatini Lifestyle' },
+  { name:'Swazi Candles Market', region:'Malkerns Valley', desc:'World-famous handmade candles and craft market', fullDesc:"Artisans hand-craft beautiful animal-shaped candles using traditional techniques. The market features local crafts, textiles, jewelry and fresh produce.", rating:'4.6', category:'Culture', img:swazi, gallery:[swazi,swazi,swazi], location:'Malkerns Valley, Manzini Region', hours:'Open daily 8am – 5pm', price:'Free entry', tips:['Bargaining is acceptable','Buy candles as unique gifts','Try the local food stalls'], videoId:'gZY5KT6bhGY', videoTitle:'Mantenga Waterfalls in Eswatini' },
+  { name:'Malolotja Nature Reserve', region:'Hhohho Region', desc:'Ancient mountains, rare orchids and zipline rides', fullDesc:"Malolotja Nature Reserve contains some of the oldest geological formations on earth. Rare indigenous flora, rare bird species and a famous canopy zipline tour.", rating:'4.8', category:'Nature', img:malolotja, gallery:[malolotja,malolotja2,malolotja3], location:'Northwestern Eswatini, Hhohho Region', hours:'Open daily 6am – 6pm', price:'E 120 per person', tips:['Canopy zipline is a must','Bring warm clothing','Great for serious hikers'], videoId:'0ny1QSno2Go', videoTitle:'Kingdom of Eswatini Cultural Experience' },
+  { name:'Sibebe Rock', region:'Hhohho Region', desc:"World's second largest rock near Mbabane", fullDesc:"The world's second largest exposed granite rock. Just 10km from capital Mbabane, offering challenging hiking trails and panoramic views.", rating:'4.5', category:'Adventure', img:sibebe, gallery:[sibebe,sibebe,sibebe], location:'10km from Mbabane, Hhohho Region', hours:'Open daily 6am – 6pm', price:'E 60 per person', tips:['Wear proper hiking shoes','Go early to avoid heat','Bring plenty of water'], videoId:'sDN7HXh5rdc', videoTitle:'Bhubesi Camp — Hlane Royal National Park' },
+  { name:'Shiselweni Region', region:'Shiselweni Region', desc:"Eswatini's southern paradise — untouched and spectacular", fullDesc:"Shiselweni is Eswatini's southernmost region and one of its most beautiful. Home to Nhlangano town, vast forests, rivers and traditional Swazi villages.", rating:'4.7', category:'Nature', img:shiselweni, gallery:[shiselweni,shiselweni2,shiselweni3], location:'Southern Eswatini, Shiselweni Region', hours:'Open all year round', price:'Free to explore', tips:['Visit Nhlangano town for local culture','Great for eco-tourism','Best during dry season May–September'], videoId:'clEnwhClD1o', videoTitle:'A Day Trip to Eswatini' },
 ];
 
 const restaurants = [
-  { name:"Malandela's Restaurant", region:'Malkerns', desc:'Traditional Swazi cuisine in a beautiful garden setting', rating:'4.8', icon:'🍴', price:'E 80–200', hours:'Mon–Sun 11am–9pm',
-    menu:[
-      { category:'Starters', items:[{name:'Sishwala Bites',price:45,desc:'Traditional maize bites with dipping sauce'},{name:'Swazi Soup',price:55,desc:'Rich traditional vegetable soup with bread'}]},
-      { category:'Main Course', items:[{name:'Grilled Tilapia',price:145,desc:'Fresh local fish with sishwala and vegetables'},{name:'Swazi Chicken',price:135,desc:'Free-range chicken in traditional sauce'},{name:'Braai Platter',price:185,desc:'Mixed grilled meats with pap and salad'}]},
-      { category:'Traditional', items:[{name:'Umncweba Plate',price:95,desc:'Dried Swazi meat with emasi and rice'},{name:'Sishwala Special',price:75,desc:'Thick maize porridge with relish and meat'}]},
-      { category:'Desserts', items:[{name:'Marula Ice Cream',price:45,desc:'Local marula fruit ice cream'},{name:'Swazi Fritters',price:35,desc:'Traditional fried dough with syrup'}]},
-      { category:'Drinks', items:[{name:'Tjwala',price:25,desc:'Traditional Swazi fermented beer'},{name:'Marula Juice',price:30,desc:'Fresh marula fruit juice'},{name:'Soft Drinks',price:20,desc:'Coke, Sprite, Fanta'}]},
-    ]
-  },
-  { name:"Tum's George Hotel", region:'Mbabane', desc:'Fine dining with panoramic views of the Ezulwini Valley', rating:'4.6', icon:'🍽️', price:'E 120–300', hours:'Daily 7am–10pm',
-    menu:[
-      { category:'Breakfast', items:[{name:'Full English',price:95,desc:'Eggs, bacon, sausage, toast and juice'},{name:'Continental',price:75,desc:'Pastries, fruit, yoghurt and coffee'}]},
-      { category:'Mains', items:[{name:'Beef Tenderloin',price:245,desc:'Premium cut with seasonal vegetables'},{name:'Seafood Pasta',price:195,desc:'Imported seafood in cream sauce'},{name:'Vegetarian Platter',price:145,desc:'Seasonal vegetables with quinoa'}]},
-      { category:'Drinks', items:[{name:'House Wine',price:85,desc:'Red or white per glass'},{name:'Cocktails',price:95,desc:'Selection of mixed drinks'},{name:'Fresh Juice',price:35,desc:'Orange, mango or mixed'}]},
-    ]
-  },
-  { name:'Foresters Arms Hotel', region:'Malkerns', desc:'Classic pub meals in a cozy countryside atmosphere', rating:'4.4', icon:'🏡', price:'E 60–150', hours:'Daily 11am–10pm',
-    menu:[
-      { category:'Pub Meals', items:[{name:'Beef Burger',price:95,desc:'100% beef patty with chips'},{name:'Fish & Chips',price:105,desc:'Battered fish with thick-cut chips'},{name:'Club Sandwich',price:85,desc:'Triple-decker with chips'}]},
-      { category:'Grills', items:[{name:'Ribeye Steak',price:185,desc:'300g ribeye with salad and chips'},{name:'Chicken Strips',price:95,desc:'Crispy chicken with dipping sauce'}]},
-      { category:'Drinks', items:[{name:'Draft Beer',price:35,desc:'Local Sibebe Lager on tap'},{name:'Ciders',price:40,desc:'Apple or mixed berry'},{name:'Soft Drinks',price:20,desc:'All popular brands'}]},
-    ]
-  },
-  { name:'Gables Food Court', region:'Ezulwini', desc:'Local and international food options for every budget', rating:'4.2', icon:'🛍️', price:'E 40–120', hours:'Daily 9am–8pm',
-    menu:[
-      { category:'Fast Food', items:[{name:'Chicken & Chips',price:65,desc:'Fried chicken with seasoned chips'},{name:'Pizza Slice',price:45,desc:'Various toppings available'},{name:'Hot Dog',price:35,desc:'Classic with mustard and ketchup'}]},
-      { category:'Local Food', items:[{name:'Pap & Stew',price:45,desc:'Traditional maize pap with beef stew'},{name:'Vetkoek',price:25,desc:'Fried dough with mince filling'}]},
-      { category:'Drinks', items:[{name:'Milkshake',price:40,desc:'Chocolate, vanilla or strawberry'},{name:'Soft Drinks',price:20,desc:'All popular brands'},{name:'Water',price:15,desc:'Still or sparkling'}]},
-    ]
-  },
+  { name:"Malandela's Restaurant", region:'Malkerns', desc:'Traditional Swazi cuisine in a beautiful garden setting', rating:'4.8', icon:'🍴', price:'E 80–200', hours:'Mon–Sun 11am–9pm', menu:[
+    { category:'Starters', items:[{name:'Sishwala Bites',price:45,desc:'Traditional maize bites with dipping sauce'},{name:'Swazi Soup',price:55,desc:'Rich traditional vegetable soup with bread'}]},
+    { category:'Main Course', items:[{name:'Grilled Tilapia',price:145,desc:'Fresh local fish with sishwala'},{name:'Swazi Chicken',price:135,desc:'Free-range chicken in traditional sauce'},{name:'Braai Platter',price:185,desc:'Mixed grilled meats with pap and salad'}]},
+    { category:'Traditional', items:[{name:'Umncweba Plate',price:95,desc:'Dried Swazi meat with emasi and rice'},{name:'Sishwala Special',price:75,desc:'Thick maize porridge with relish'}]},
+    { category:'Drinks', items:[{name:'Tjwala',price:25,desc:'Traditional Swazi fermented beer'},{name:'Marula Juice',price:30,desc:'Fresh marula fruit juice'},{name:'Soft Drinks',price:20,desc:'Coke, Sprite, Fanta'}]},
+  ]},
+  { name:"Tum's George Hotel", region:'Mbabane', desc:'Fine dining with panoramic views of the Ezulwini Valley', rating:'4.6', icon:'🍽️', price:'E 120–300', hours:'Daily 7am–10pm', menu:[
+    { category:'Mains', items:[{name:'Beef Tenderloin',price:245,desc:'Premium cut with seasonal vegetables'},{name:'Seafood Pasta',price:195,desc:'Imported seafood in cream sauce'},{name:'Vegetarian Platter',price:145,desc:'Seasonal vegetables with quinoa'}]},
+    { category:'Drinks', items:[{name:'House Wine',price:85,desc:'Red or white per glass'},{name:'Fresh Juice',price:35,desc:'Orange, mango or mixed'}]},
+  ]},
+  { name:'Foresters Arms Hotel', region:'Malkerns', desc:'Classic pub meals in a cozy countryside atmosphere', rating:'4.4', icon:'🏡', price:'E 60–150', hours:'Daily 11am–10pm', menu:[
+    { category:'Pub Meals', items:[{name:'Beef Burger',price:95,desc:'100% beef patty with chips'},{name:'Fish & Chips',price:105,desc:'Battered fish with thick-cut chips'}]},
+    { category:'Drinks', items:[{name:'Draft Beer',price:35,desc:'Local Sibebe Lager on tap'},{name:'Soft Drinks',price:20,desc:'All popular brands'}]},
+  ]},
+  { name:'Gables Food Court', region:'Ezulwini', desc:'Local and international food options for every budget', rating:'4.2', icon:'🛍️', price:'E 40–120', hours:'Daily 9am–8pm', menu:[
+    { category:'Fast Food', items:[{name:'Chicken & Chips',price:65,desc:'Fried chicken with seasoned chips'},{name:'Pizza Slice',price:45,desc:'Various toppings available'}]},
+    { category:'Drinks', items:[{name:'Milkshake',price:40,desc:'Chocolate, vanilla or strawberry'},{name:'Soft Drinks',price:20,desc:'All popular brands'}]},
+  ]},
 ];
 
 const hotels = [
@@ -80,13 +71,6 @@ const hotels = [
   { name:'Mantengha Cultural Village', region:'Ezulwini', desc:'Authentic cultural experience in traditional Swazi huts', rating:'4.7', icon:'🛖', price:'E 600–1,200/night', stars:'★★★★☆', amenities:['🎭 Cultural Shows','🌿 Nature Walks','🍽️ Traditional Food','📸 Photography Tours'] },
   { name:'Foresters Arms', region:'Malkerns', desc:'Charming country hotel surrounded by forest and gardens', rating:'4.5', icon:'🌲', price:'E 800–1,800/night', stars:'★★★★☆', amenities:['🎣 Fishing','🐎 Horse Riding','🍺 Pub','🌳 Forest Trails'] },
   { name:'Lidwala Backpacker Lodge', region:'Mbabane', desc:'Budget-friendly lodge with stunning rock formations', rating:'4.3', icon:'⛺', price:'E 150–400/night', stars:'★★★☆☆', amenities:['🔥 Braai Area','🌄 Rock Views','🚿 Shared Bathrooms','📶 Free WiFi'] },
-];
-
-const localStores = [
-  { name:'Swazi Candles', type:'Craft', region:'Malkerns', priceRange:'E 50–500', rating:'4.8', desc:'World-famous handmade candles and crafts' },
-  { name:'Gone Rural', type:'Craft', region:'Malkerns', priceRange:'E 100–2,000', rating:'4.7', desc:'Women-made woven baskets and home décor' },
-  { name:'Ngwenya Glass Factory', type:'Glass Art', region:'Ngwenya', priceRange:'E 80–800', rating:'4.6', desc:'Recycled glass art and sculptures' },
-  { name:'Manzini Market', type:'Market', region:'Manzini', priceRange:'E 10–200', rating:'4.3', desc:'Largest traditional market in Eswatini' },
 ];
 
 const weatherData = {
@@ -99,35 +83,17 @@ const weatherData = {
   'Sun':      [{name:'Mbabane',temp:17,icon:'🌧️',desc:'Rainy',humidity:'85%',wind:'18 km/h',uv:'Low'},{name:'Manzini',temp:21,icon:'⛅',desc:'Overcast',humidity:'70%',wind:'14 km/h',uv:'Low'},{name:'Lubombo',temp:25,icon:'⛅',desc:'Cloudy',humidity:'52%',wind:'13 km/h',uv:'Moderate'}],
 };
 
-const LANG_NAMES = { en:'🇬🇧 EN', ss:'🇸🇿 SS', zu:'🇿🇦 ZU', af:'🇿🇦 AF', pt:'🇲🇿 PT', fr:'🇫🇷 FR', de:'🇩🇪 DE', zh:'🇨🇳 ZH', ar:'🇸🇦 AR' };
-
-// ── TRANSLATION DATA ──────────────────────────────────────
-const TRANSLATIONS = {
-  'Hello': { ss:'Sawubona', zu:'Sawubona', af:'Hallo', pt:'Olá', fr:'Bonjour', de:'Hallo', zh:'你好', ar:'مرحبا' },
-  'Thank you': { ss:'Ngiyabonga', zu:'Ngiyabonga', af:'Dankie', pt:'Obrigado', fr:'Merci', de:'Danke', zh:'谢谢', ar:'شكراً' },
-  'Where is the toilet?': { ss:'Indlu yokuhlambela ikuphi?', zu:'Indlu yangasese ikuphi?', af:'Waar is die toilet?', pt:'Onde é o banheiro?', fr:'Où sont les toilettes?', de:'Wo ist die Toilette?', zh:'厕所在哪里?', ar:'أين الحمام؟' },
-  'How much does this cost?': { ss:'Ubiza malini loku?', zu:'Kuyimalini loku?', af:'Hoeveel kos dit?', pt:'Quanto custa isso?', fr:'Combien ça coûte?', de:'Wie viel kostet das?', zh:'这个多少钱?', ar:'كم يكلف هذا؟' },
-  'I need help': { ss:'Ngidinga lusito', zu:'Ngidinga usizo', af:'Ek het hulp nodig', pt:'Preciso de ajuda', fr:"J'ai besoin d'aide", de:'Ich brauche Hilfe', zh:'我需要帮助', ar:'أحتاج مساعدة' },
-  'Good morning': { ss:'Sawubona ekuseni', zu:'Sawubona ekuseni', af:'Goeie môre', pt:'Bom dia', fr:'Bonjour', de:'Guten Morgen', zh:'早上好', ar:'صباح الخير' },
-  'Good evening': { ss:'Lihle ntambama', zu:'Sawubona ntambama', af:'Goeie aand', pt:'Boa noite', fr:'Bonsoir', de:'Guten Abend', zh:'晚上好', ar:'مساء الخير' },
-  'Goodbye': { ss:'Sala kahle', zu:'Sala kahle', af:'Totsiens', pt:'Adeus', fr:'Au revoir', de:'Auf Wiedersehen', zh:'再见', ar:'وداعاً' },
-  'Police': { ss:'Amaphoyisa', zu:'Amaphoyisa', af:'Polisie', pt:'Polícia', fr:'Police', de:'Polizei', zh:'警察', ar:'شرطة' },
-  'Hospital': { ss:'Sibitela', zu:'Isibhedlela', af:'Hospitaal', pt:'Hospital', fr:'Hôpital', de:'Krankenhaus', zh:'医院', ar:'مستشفى' },
-  'Water': { ss:'Emanti', zu:'Amanzi', af:'Water', pt:'Água', fr:'Eau', de:'Wasser', zh:'水', ar:'ماء' },
-  'Food': { ss:'Kudla', zu:'Ukudla', af:'Kos', pt:'Comida', fr:'Nourriture', de:'Essen', zh:'食物', ar:'طعام' },
-};
-
 function App() {
-  const [screen, setScreen]   = useState('splash');
-  const [tab, setTab]         = useState('home');
-  const [lang, setLang]       = useState('en');
-  const [user, setUser]       = useState(null);
+  const [screen, setScreen] = useState('splash');
+  const [tab, setTab] = useState('home');
+  const [lang, setLang] = useState('en');
+  const [user, setUser] = useState(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
-  const [selectedPlace, setSelectedPlace]           = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [selectedHotel, setSelectedHotel]           = useState(null);
-  const [showVirtualTour, setShowVirtualTour]       = useState(null);
-  const t = T[lang];
+  const [selectedHotel, setSelectedHotel] = useState(null);
+  const [showVirtualTour, setShowVirtualTour] = useState(null);
+  const t = T[lang] || T['en'];
 
   if (screen === 'splash') {
     return (
@@ -173,7 +139,6 @@ function App() {
           <span style={{fontSize:22}}>🇸🇿</span>
         </div>
       </div>
-
       <div style={styles.content}>
         {tab==='home'      && <HomeTab setTab={setTab} onSelect={setSelectedPlace} onSelectRestaurant={setSelectedRestaurant} onSelectHotel={setSelectedHotel} t={t}/>}
         {tab==='explore'   && <ExploreTab onSelect={setSelectedPlace} onVirtualTour={setShowVirtualTour} t={t}/>}
@@ -183,16 +148,15 @@ function App() {
         {tab==='ai'        && <AITab t={t}/>}
         {tab==='business'  && <BusinessTab t={t}/>}
       </div>
-
       <div style={styles.bottomNav}>
         {[
-          {id:'home',     icon:'🏠', label:t.home},
-          {id:'explore',  icon:'🔭', label:t.explore2},
-          {id:'translate',icon:'🌐', label:t.translate},
-          {id:'compare',  icon:'⚖️',  label:t.compare},
-          {id:'map',      icon:'🗺️',  label:t.navigate},
-          {id:'ai',       icon:'🤖', label:t.ai},
-          {id:'business', icon:'🏢', label:t.business},
+          {id:'home',      icon:'🏠', label:t.home},
+          {id:'explore',   icon:'🔭', label:t.explore2},
+          {id:'translate', icon:'🌐', label:t.translate},
+          {id:'compare',   icon:'⚖️', label:t.compare},
+          {id:'map',       icon:'🗺️', label:t.navigate},
+          {id:'ai',        icon:'🤖', label:t.ai},
+          {id:'business',  icon:'🏢', label:t.business},
         ].map(item=>(
           <div key={item.id} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>setTab(item.id)}>
             <span style={{fontSize:18}}>{item.icon}</span>
@@ -204,20 +168,17 @@ function App() {
   );
 }
 
-// ── AUTH ──────────────────────────────────────────────────
 function AuthScreen({onLogin,t}) {
-  const [mode,setMode]         = useState('login');
-  const [email,setEmail]       = useState('');
+  const [mode,setMode] = useState('login');
+  const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
-  const [name,setName]         = useState('');
-  const [error,setError]       = useState('');
-
+  const [name,setName] = useState('');
+  const [error,setError] = useState('');
   const handleLogin = ()=>{
     if(!email||!password){setError('Please fill in all fields');return;}
     if(email&&password.length>=6){onLogin({name:name||email.split('@')[0],email});return;}
     setError('Password must be at least 6 characters');
   };
-
   return (
     <div style={{...styles.splash,justifyContent:'flex-start',paddingTop:'8vh'}}>
       <div style={styles.splashGlow}/>
@@ -248,46 +209,33 @@ function AuthScreen({onLogin,t}) {
   );
 }
 
-// ── VIRTUAL TOUR ──────────────────────────────────────────
 function VirtualTourScreen({place,onBack,t}) {
   const [tourStep,setTourStep] = useState(0);
   const [speaking,setSpeaking] = useState(false);
   const [showVideo,setShowVideo] = useState(false);
-
   const tourSteps = [
-    { title:`Welcome to ${place.name}`, desc:`You are about to experience a virtual tour of one of Eswatini's most magnificent destinations. ${place.fullDesc}`, icon:'🎭' },
-    { title:'Location & Access', desc:`Located at ${place.location}. ${place.hours}. Entry fee: ${place.price}. This destination is accessible by car, kombi taxi, or organised tour.`, icon:'📍' },
-    { title:'What to See & Do', desc:`${place.tips.join('. ')}. This is a must-visit destination for any tourist coming to the Kingdom of Eswatini.`, icon:'👁️' },
-    { title:'Cultural Significance', desc:`${place.name} is deeply connected to the heritage of the Swazi people and the Kingdom of Eswatini. Visitors are encouraged to be respectful and embrace the local culture.`, icon:'🇸🇿' },
+    { title:`Welcome to ${place.name}`, desc:`You are about to experience a virtual tour of one of Eswatini's most magnificent destinations. Located at ${place.location}. Entry: ${place.price}.`, icon:'📍' },
+    { title:'What to See & Do', desc:`${place.name} is deeply connected to the heritage of the Swazi people. Visitors are encouraged to be respectful and embrace the local culture. ${place.fullDesc}`, icon:'🇸🇿' },
   ];
-
-  const speakText = (text) => {
-    if('speechSynthesis' in window) {
+  const speakText = (text)=>{
+    if('speechSynthesis' in window){
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.onstart = ()=>setSpeaking(true);
-      utterance.onend = ()=>setSpeaking(false);
-      window.speechSynthesis.speak(utterance);
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate=0.9; u.pitch=1;
+      u.onstart=()=>setSpeaking(true);
+      u.onend=()=>setSpeaking(false);
+      window.speechSynthesis.speak(u);
     }
   };
-
-  const stopSpeaking = ()=>{
-    window.speechSynthesis.cancel();
-    setSpeaking(false);
-  };
-
   return (
     <div style={styles.app}>
       <div style={{background:'linear-gradient(135deg,#0a1628,#1a3a5c)',padding:'16px',display:'flex',alignItems:'center',gap:12,borderBottom:'0.5px solid rgba(201,162,39,0.25)',flexShrink:0}}>
-        <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'8px 14px',color:'#f0f4ff',fontSize:13,cursor:'pointer'}}>← {t.cancel}</button>
+        <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'8px 14px',color:'#f0f4ff',fontSize:13,cursor:'pointer'}}>← Back</button>
         <div>
           <div style={{fontSize:14,fontWeight:700,color:'#c9a227'}}>{t.virtualTour}</div>
           <div style={{fontSize:11,color:'#8fa3c4'}}>{place.name}</div>
         </div>
       </div>
-
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         {!showVideo ? (
           <>
@@ -295,25 +243,14 @@ function VirtualTourScreen({place,onBack,t}) {
               <div style={{fontSize:48,marginBottom:12}}>{tourSteps[tourStep].icon}</div>
               <div style={{fontSize:18,fontWeight:700,color:'#c9a227',marginBottom:12}}>{tourSteps[tourStep].title}</div>
               <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:16}}>{tourSteps[tourStep].desc}</div>
-              <div style={{display:'flex',gap:8,justifyContent:'center'}}>
-                <button onClick={()=>speakText(tourSteps[tourStep].desc)} style={{padding:'10px 20px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:13}}>
-                  {speaking?'🔊 Speaking...':'🔊 Listen'}
-                </button>
-                {speaking&&<button onClick={stopSpeaking} style={{padding:'10px 16px',borderRadius:50,border:'0.5px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.15)',color:'#e24b4a',cursor:'pointer',fontSize:13}}>⏹ Stop</button>}
-              </div>
+              <button onClick={()=>speakText(tourSteps[tourStep].desc)} style={{padding:'10px 20px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:13}}>
+                {speaking?'🔊 Speaking...':'🔊 Listen'}
+              </button>
             </div>
-
-            <div style={{display:'flex',gap:6,justifyContent:'center',marginBottom:16}}>
-              {tourSteps.map((_,i)=>(
-                <div key={i} onClick={()=>setTourStep(i)} style={{width:i===tourStep?24:8,height:8,borderRadius:4,background:i===tourStep?'#c9a227':'rgba(201,162,39,0.3)',cursor:'pointer',transition:'all 0.3s'}}/>
-              ))}
-            </div>
-
             <div style={{display:'flex',gap:10,marginBottom:16}}>
               <button onClick={()=>setTourStep(p=>Math.max(0,p-1))} disabled={tourStep===0} style={{flex:1,padding:'12px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:tourStep===0?'#4a5568':'#c9a227',cursor:tourStep===0?'not-allowed':'pointer',fontSize:14}}>← Previous</button>
               <button onClick={()=>setTourStep(p=>Math.min(tourSteps.length-1,p+1))} disabled={tourStep===tourSteps.length-1} style={{flex:1,padding:'12px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:tourStep===tourSteps.length-1?'transparent':'rgba(201,162,39,0.15)',color:tourStep===tourSteps.length-1?'#4a5568':'#c9a227',cursor:tourStep===tourSteps.length-1?'not-allowed':'pointer',fontSize:14}}>Next →</button>
             </div>
-
             <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
               <div style={{padding:'12px 14px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                 <div>
@@ -323,7 +260,6 @@ function VirtualTourScreen({place,onBack,t}) {
                 <button onClick={()=>setShowVideo(true)} style={{padding:'10px 18px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:13,fontWeight:700,cursor:'pointer'}}>▶ Watch</button>
               </div>
             </div>
-
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:16}}>
               {place.gallery.map((img,i)=>(
                 <div key={i} style={{height:80,borderRadius:10,overflow:'hidden'}}>
@@ -336,18 +272,9 @@ function VirtualTourScreen({place,onBack,t}) {
           <div>
             <button onClick={()=>setShowVideo(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'8px 14px',color:'#f0f4ff',fontSize:13,cursor:'pointer',marginBottom:14}}>← Back to Tour</button>
             <div style={{borderRadius:16,overflow:'hidden',marginBottom:14}}>
-              <iframe
-                width="100%"
-                height="220"
-                src={`https://www.youtube.com/embed/${place.videoId}?autoplay=1`}
-                title={place.videoTitle}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{display:'block'}}
-              />
+              <iframe width="100%" height="220" src={`https://www.youtube.com/embed/${place.videoId}?autoplay=1`} title={place.videoTitle} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{display:'block'}}/>
             </div>
-            <div style={{fontSize:13,color:'#8fa3c4',textAlign:'center',marginBottom:16}}>{place.videoTitle}</div>
+            <div style={{fontSize:13,color:'#8fa3c4',textAlign:'center'}}>{place.videoTitle}</div>
           </div>
         )}
       </div>
@@ -355,7 +282,6 @@ function VirtualTourScreen({place,onBack,t}) {
   );
 }
 
-// ── PHOTO SLIDESHOW ───────────────────────────────────────
 function PhotoSlideshow({images,height=280}) {
   const [current,setCurrent] = useState(0);
   const [playing,setPlaying] = useState(true);
@@ -366,13 +292,9 @@ function PhotoSlideshow({images,height=280}) {
   },[playing,images.length]);
   return (
     <div style={{position:'relative',height,overflow:'hidden',background:'#0d2540'}}>
-      {images.map((img,i)=>(
-        <img key={i} src={img} alt="" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',objectFit:'cover',opacity:i===current?1:0,transition:'opacity 0.8s ease'}}/>
-      ))}
+      {images.map((img,i)=>(<img key={i} src={img} alt="" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',objectFit:'cover',opacity:i===current?1:0,transition:'opacity 0.8s ease'}}/>))}
       <div style={{position:'absolute',bottom:12,left:'50%',transform:'translateX(-50%)',display:'flex',gap:6}}>
-        {images.map((_,i)=>(
-          <div key={i} onClick={()=>{setCurrent(i);setPlaying(false);}} style={{width:i===current?20:6,height:6,borderRadius:3,background:i===current?'#c9a227':'rgba(255,255,255,0.5)',cursor:'pointer',transition:'all 0.3s'}}/>
-        ))}
+        {images.map((_,i)=>(<div key={i} onClick={()=>{setCurrent(i);setPlaying(false);}} style={{width:i===current?20:6,height:6,borderRadius:3,background:i===current?'#c9a227':'rgba(255,255,255,0.5)',cursor:'pointer',transition:'all 0.3s'}}/>))}
       </div>
       <button onClick={()=>{setCurrent(p=>(p-1+images.length)%images.length);setPlaying(false);}} style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.6)',border:'none',borderRadius:'50%',width:32,height:32,color:'white',fontSize:16,cursor:'pointer'}}>‹</button>
       <button onClick={()=>{setCurrent(p=>(p+1)%images.length);setPlaying(false);}} style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.6)',border:'none',borderRadius:'50%',width:32,height:32,color:'white',fontSize:16,cursor:'pointer'}}>›</button>
@@ -380,9 +302,8 @@ function PhotoSlideshow({images,height=280}) {
   );
 }
 
-// ── WEATHER ───────────────────────────────────────────────
 function WeatherWidget({t}) {
-  const [day,setDay]           = useState('Today');
+  const [day,setDay] = useState('Today');
   const [selected,setSelected] = useState(null);
   const days = Object.keys(weatherData);
   const cities = weatherData[day];
@@ -390,19 +311,15 @@ function WeatherWidget({t}) {
     <div style={{marginBottom:16}}>
       <div style={styles.sectionTitle}>{t.weather}</div>
       <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,marginBottom:12,scrollbarWidth:'none'}}>
-        {days.map(d=>(
-          <button key={d} onClick={()=>{setDay(d);setSelected(null);}} style={{flexShrink:0,padding:'6px 14px',borderRadius:20,border:`0.5px solid ${d===day?'#c9a227':'rgba(201,162,39,0.2)'}`,background:d===day?'rgba(201,162,39,0.15)':'transparent',color:d===day?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:d===day?600:400}}>{d}</button>
-        ))}
+        {days.map(d=>(<button key={d} onClick={()=>{setDay(d);setSelected(null);}} style={{flexShrink:0,padding:'6px 14px',borderRadius:20,border:`0.5px solid ${d===day?'#c9a227':'rgba(201,162,39,0.2)'}`,background:d===day?'rgba(201,162,39,0.15)':'transparent',color:d===day?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:d===day?600:400}}>{d}</button>))}
       </div>
       <div style={{display:'flex',gap:10}}>
-        {cities.map(c=>(
-          <div key={c.name} onClick={()=>setSelected(selected?.name===c.name?null:c)} style={{flex:1,background:selected?.name===c.name?'rgba(24,95,165,0.25)':'rgba(24,95,165,0.12)',border:`0.5px solid ${selected?.name===c.name?'rgba(24,95,165,0.6)':'rgba(24,95,165,0.3)'}`,borderRadius:12,padding:'12px 8px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
-            <div style={{fontSize:24}}>{c.icon}</div>
-            <div style={{fontSize:18,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{c.temp}°C</div>
-            <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginTop:2}}>{c.name}</div>
-            <div style={{fontSize:10,color:'#8fa3c4',marginTop:2}}>{c.desc}</div>
-          </div>
-        ))}
+        {cities.map(c=>(<div key={c.name} onClick={()=>setSelected(selected?.name===c.name?null:c)} style={{flex:1,background:selected?.name===c.name?'rgba(24,95,165,0.25)':'rgba(24,95,165,0.12)',border:`0.5px solid ${selected?.name===c.name?'rgba(24,95,165,0.6)':'rgba(24,95,165,0.3)'}`,borderRadius:12,padding:'12px 8px',textAlign:'center',cursor:'pointer'}}>
+          <div style={{fontSize:24}}>{c.icon}</div>
+          <div style={{fontSize:18,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{c.temp}°C</div>
+          <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginTop:2}}>{c.name}</div>
+          <div style={{fontSize:10,color:'#8fa3c4',marginTop:2}}>{c.desc}</div>
+        </div>))}
       </div>
       {selected&&(
         <div style={{background:'rgba(24,95,165,0.12)',border:'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:14,marginTop:10}}>
@@ -422,10 +339,9 @@ function WeatherWidget({t}) {
   );
 }
 
-// ── CURRENCY ──────────────────────────────────────────────
 function CurrencyConverter({t}) {
   const [amount,setAmount] = useState('100');
-  const [from,setFrom]     = useState('USD');
+  const [from,setFrom] = useState('USD');
   const result = amount?(parseFloat(amount)*RATES_TO_SZL[from]).toFixed(2):'0.00';
   return (
     <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:14,marginBottom:16}}>
@@ -441,108 +357,58 @@ function CurrencyConverter({t}) {
         <span style={{fontSize:13,color:'#8fa3c4'}}>{amount||'0'} {from} =</span>
         <span style={{fontSize:22,fontWeight:700,color:'#c9a227'}}>E {result} SZL</span>
       </div>
-      <div style={{fontSize:10,color:'#8fa3c4',marginTop:8,textAlign:'center'}}>💡 SZL = Emalangeni — official currency of Eswatini</div>
     </div>
   );
 }
 
-// ── TRANSLATE TAB ─────────────────────────────────────────
 function TranslateTab({t,lang}) {
   const [inputText,setInputText] = useState('');
-  const [fromLang,setFromLang]   = useState('en');
-  const [toLang,setToLang]       = useState('ss');
-  const [result,setResult]       = useState('');
-  const [speaking,setSpeaking]   = useState(false);
-
+  const [toLang,setToLang] = useState('ss');
+  const [result,setResult] = useState('');
+  const [speaking,setSpeaking] = useState(false);
   const translate = ()=>{
     if(!inputText.trim()) return;
     const key = Object.keys(TRANSLATIONS).find(k=>k.toLowerCase()===inputText.toLowerCase().trim());
-    if(key && TRANSLATIONS[key][toLang]) {
-      setResult(TRANSLATIONS[key][toLang]);
-    } else {
-      const phrases = {
-        'hello':    {ss:'Sawubona',zu:'Sawubona',af:'Hallo',pt:'Olá',fr:'Bonjour',de:'Hallo',zh:'你好',ar:'مرحبا'},
-        'hi':       {ss:'Sawubona',zu:'Sawubona',af:'Hallo',pt:'Oi',fr:'Salut',de:'Hallo',zh:'嗨',ar:'مرحبا'},
-        'yes':      {ss:'Yebo',zu:'Yebo',af:'Ja',pt:'Sim',fr:'Oui',de:'Ja',zh:'是',ar:'نعم'},
-        'no':       {ss:'Cha',zu:'Cha',af:'Nee',pt:'Não',fr:'Non',de:'Nein',zh:'不',ar:'لا'},
-        'sorry':    {ss:'Ngiyaxolisa',zu:'Ngiyaxolisa',af:'Jammer',pt:'Desculpe',fr:'Désolé',de:'Entschuldigung',zh:'对不起',ar:'آسف'},
-        'welcome':  {ss:'Siyakemukela',zu:'Siyakwamukela',af:'Welkom',pt:'Bem-vindo',fr:'Bienvenue',de:'Willkommen',zh:'欢迎',ar:'مرحباً'},
-        'please':   {ss:'Ngicela',zu:'Ngicela',af:'Asseblief',pt:'Por favor',fr:'S\'il vous plaît',de:'Bitte',zh:'请',ar:'من فضلك'},
-        'money':    {ss:'Imali',zu:'Imali',af:'Geld',pt:'Dinheiro',fr:'Argent',de:'Geld',zh:'钱',ar:'مال'},
-        'beautiful':{ss:'Kuhle',zu:'Kuhle',af:'Mooi',pt:'Bonito',fr:'Beau',de:'Schön',zh:'美丽',ar:'جميل'},
-        'eswatini': {ss:'eSwatini',zu:'eSwatini',af:'Eswatini',pt:'Eswatini',fr:'Eswatini',de:'Eswatini',zh:'斯威士兰',ar:'إسواتيني'},
-      };
-      const lower = inputText.toLowerCase().trim();
-      if(phrases[lower]&&phrases[lower][toLang]) {
-        setResult(phrases[lower][toLang]);
-      } else {
-        setResult(`Translation for "${inputText}" → ${toLang.toUpperCase()}: Coming soon! Try common phrases below.`);
-      }
-    }
+    if(key && TRANSLATIONS[key][toLang]) { setResult(TRANSLATIONS[key][toLang]); return; }
+    setResult(`Translation coming soon! Try the common phrases below.`);
   };
-
   const speak = (text)=>{
-    if('speechSynthesis' in window) {
+    if('speechSynthesis' in window){
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
-      u.onstart=()=>setSpeaking(true);
-      u.onend=()=>setSpeaking(false);
+      u.onstart=()=>setSpeaking(true); u.onend=()=>setSpeaking(false);
       window.speechSynthesis.speak(u);
     }
   };
-
   return (
     <div>
       <div style={styles.sectionTitle}>{t.translate} 🌐</div>
-      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:16}}>Translate words and phrases for your Eswatini journey</div>
-
       <div style={{display:'flex',gap:10,marginBottom:12,alignItems:'center'}}>
-        <select value={fromLang} onChange={e=>setFromLang(e.target.value)} style={{flex:1,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#c9a227',fontSize:13,outline:'none',cursor:'pointer'}}>
-          {Object.entries(LANG_NAMES).map(([code,label])=><option key={code} value={code}>{label}</option>)}
-        </select>
-        <span style={{color:'#c9a227',fontSize:20}}>→</span>
+        <span style={{fontSize:13,color:'#8fa3c4'}}>Translate to:</span>
         <select value={toLang} onChange={e=>setToLang(e.target.value)} style={{flex:1,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#c9a227',fontSize:13,outline:'none',cursor:'pointer'}}>
           {Object.entries(LANG_NAMES).map(([code,label])=><option key={code} value={code}>{label}</option>)}
         </select>
       </div>
-
-      <textarea value={inputText} onChange={e=>setInputText(e.target.value)} placeholder="Type a word or phrase to translate..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box',marginBottom:10}}/>
-
+      <textarea value={inputText} onChange={e=>setInputText(e.target.value)} placeholder="Type a word or phrase..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box',marginBottom:10}}/>
       <button style={{...styles.btnPrimary,marginBottom:14}} onClick={translate}>Translate →</button>
-
       {result&&(
         <div style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.3)',borderRadius:12,padding:16,marginBottom:16}}>
-          <div style={{fontSize:11,color:'#8fa3c4',marginBottom:6}}>Translation ({LANG_NAMES[toLang]}):</div>
+          <div style={{fontSize:11,color:'#8fa3c4',marginBottom:6}}>Translation:</div>
           <div style={{fontSize:20,fontWeight:600,color:'#f0f4ff',marginBottom:12}}>{result}</div>
-          <button onClick={()=>speak(result)} style={{padding:'8px 16px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:12}}>
-            {speaking?'🔊 Speaking...':'🔊 Hear Pronunciation'}
-          </button>
+          <button onClick={()=>speak(result)} style={{padding:'8px 16px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:12}}>{speaking?'🔊 Speaking...':'🔊 Hear Pronunciation'}</button>
         </div>
       )}
-
       <div style={styles.sectionTitle}>Common Phrases</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:16}}>
         {Object.entries(TRANSLATIONS).map(([phrase,trans])=>(
-          <div key={phrase} onClick={()=>{setInputText(phrase);setResult(trans[toLang]||trans['ss']||phrase);}} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'10px 12px',cursor:'pointer'}}>
+          <div key={phrase} onClick={()=>{setInputText(phrase);setResult(trans[toLang]||phrase);}} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'10px 12px',cursor:'pointer'}}>
             <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:3}}>{phrase}</div>
             <div style={{fontSize:11,color:'#c9a227'}}>{trans['ss']}</div>
           </div>
         ))}
       </div>
-
       <div style={styles.sectionTitle}>siSwati Essentials 🇸🇿</div>
-      {[
-        ['Sawubona','Hello / I see you'],
-        ['Ngiyabonga','Thank you'],
-        ['Yebo','Yes'],
-        ['Cha','No'],
-        ['Siyabonga','We thank you'],
-        ['Sala kahle','Goodbye (stay well)'],
-        ['Hamba kahle','Go well'],
-        ['Ngiyakuthanda','I love you'],
-        ['Eswatini','The Kingdom of Eswatini'],
-        ['Incaba','Fortress / Hidden treasure'],
-      ].map(([ss,en2])=>(
+      {[['Sawubona','Hello / I see you'],['Ngiyabonga','Thank you'],['Yebo','Yes'],['Cha','No'],['Sala kahle','Goodbye (stay well)'],['Hamba kahle','Go well'],['Incaba','Fortress / Hidden treasure']].map(([ss,en2])=>(
         <div key={ss} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 0',borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
           <div style={{fontSize:15,fontWeight:600,color:'#c9a227'}}>{ss}</div>
           <div style={{fontSize:12,color:'#8fa3c4'}}>{en2}</div>
@@ -553,81 +419,56 @@ function TranslateTab({t,lang}) {
   );
 }
 
-// ── COMPARE TAB ───────────────────────────────────────────
 function CompareTab({t}) {
   const [category,setCategory] = useState('attractions');
-
-  const attractionComparison = [
-    { name:'Hlane Royal Reserve', price:'E 150', rating:4.9, crowd:'Low', type:'Wildlife', best:'Big 5 Safari' },
-    { name:'Mantenga Falls',      price:'E 80',  rating:4.8, crowd:'Medium', type:'Nature',  best:'Swimming & Hiking' },
-    { name:'Malolotja Reserve',   price:'E 120', rating:4.8, crowd:'Very Low', type:'Nature', best:'Zipline & Hiking' },
-    { name:'Lobamba Village',     price:'E 50',  rating:4.7, crowd:'Low', type:'Culture', best:'Cultural Immersion' },
-    { name:'Sibebe Rock',         price:'E 60',  rating:4.5, crowd:'Low', type:'Adventure', best:'Panoramic Views' },
-    { name:'Swazi Candles',       price:'Free',  rating:4.6, crowd:'Medium', type:'Culture', best:'Shopping & Crafts' },
-  ];
-
-  const hotelComparison = [
-    { name:'Royal Swazi Spa',     price:'E 1,800+', rating:4.9, stars:'★★★★★', best:'Luxury & Spa' },
-    { name:'Mantengha Village',   price:'E 600+',  rating:4.7, stars:'★★★★☆', best:'Cultural Experience' },
-    { name:'Foresters Arms',      price:'E 800+',  rating:4.5, stars:'★★★★☆', best:'Countryside Charm' },
-    { name:'Lidwala Backpacker',  price:'E 150+',  rating:4.3, stars:'★★★☆☆', best:'Budget Travel' },
-  ];
-
-  const restaurantComparison = [
-    { name:"Malandela's",         price:'E 80–200',  rating:4.8, cuisine:'Traditional Swazi', best:'Authentic Experience' },
-    { name:"Tum's George Hotel",  price:'E 120–300', rating:4.6, cuisine:'Fine Dining',       best:'Special Occasions' },
-    { name:'Foresters Arms',      price:'E 60–150',  rating:4.4, cuisine:'Pub Meals',         best:'Casual Dining' },
-    { name:'Gables Food Court',   price:'E 40–120',  rating:4.2, cuisine:'Mixed',             best:'Budget Meals' },
-  ];
-
-  const storeComparison = [
-    { name:'Swazi Candles',       price:'E 50–500',   rating:4.8, type:'Candles & Crafts',  best:'Unique Gifts' },
-    { name:'Gone Rural',          price:'E 100–2000', rating:4.7, type:'Woven Crafts',       best:'Premium Baskets' },
-    { name:'Ngwenya Glass',       price:'E 80–800',   rating:4.6, type:'Glass Art',          best:'Art Collectors' },
-    { name:'Manzini Market',      price:'E 10–200',   rating:4.3, type:'Traditional Market', best:'Budget Shopping' },
-  ];
-
-  const data = category==='attractions'?attractionComparison:category==='hotels'?hotelComparison:category==='restaurants'?restaurantComparison:storeComparison;
-
+  const data = {
+    attractions:[
+      {name:'Hlane Royal Reserve',price:'E 150',rating:4.9,best:'Big 5 Safari'},
+      {name:'Mantenga Falls',price:'E 80',rating:4.8,best:'Swimming & Hiking'},
+      {name:'Malolotja Reserve',price:'E 120',rating:4.8,best:'Zipline & Hiking'},
+      {name:'Lobamba Village',price:'E 50',rating:4.7,best:'Cultural Immersion'},
+      {name:'Sibebe Rock',price:'E 60',rating:4.5,best:'Panoramic Views'},
+      {name:'Swazi Candles',price:'Free',rating:4.6,best:'Shopping & Crafts'},
+    ],
+    hotels:[
+      {name:'Royal Swazi Spa',price:'E 1,800+',rating:4.9,best:'Luxury & Spa'},
+      {name:'Mantengha Village',price:'E 600+',rating:4.7,best:'Cultural Experience'},
+      {name:'Foresters Arms',price:'E 800+',rating:4.5,best:'Countryside Charm'},
+      {name:'Lidwala Backpacker',price:'E 150+',rating:4.3,best:'Budget Travel'},
+    ],
+    restaurants:[
+      {name:"Malandela's",price:'E 80–200',rating:4.8,best:'Authentic Experience'},
+      {name:"Tum's George Hotel",price:'E 120–300',rating:4.6,best:'Special Occasions'},
+      {name:'Foresters Arms',price:'E 60–150',rating:4.4,best:'Casual Dining'},
+      {name:'Gables Food Court',price:'E 40–120',rating:4.2,best:'Budget Meals'},
+    ],
+  };
+  const items = data[category] || data.attractions;
   return (
     <div>
       <div style={styles.sectionTitle}>{t.comparePrice} 🇸🇿</div>
-      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14}}>Compare prices and value across Eswatini</div>
-
       <div style={{display:'flex',gap:8,marginBottom:16,overflowX:'auto',scrollbarWidth:'none'}}>
-        {[['attractions','🏞️ Attractions'],['hotels','🏨 Hotels'],['restaurants','🍴 Restaurants'],['stores','🛍️ Stores']].map(([cat,label])=>(
+        {[['attractions','🏞️ Attractions'],['hotels','🏨 Hotels'],['restaurants','🍴 Restaurants']].map(([cat,label])=>(
           <button key={cat} onClick={()=>setCategory(cat)} style={{flexShrink:0,padding:'8px 14px',borderRadius:20,border:`0.5px solid ${category===cat?'#c9a227':'rgba(201,162,39,0.2)'}`,background:category===cat?'rgba(201,162,39,0.15)':'transparent',color:category===cat?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:category===cat?600:400}}>{label}</button>
         ))}
       </div>
-
       <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
-        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:0,background:'rgba(201,162,39,0.1)',padding:'10px 12px'}}>
-          {['Name','Price','Rating','Best For'].map(h=>(
-            <div key={h} style={{fontSize:10,fontWeight:700,color:'#c9a227',textTransform:'uppercase',letterSpacing:0.5}}>{h}</div>
-          ))}
+        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',background:'rgba(201,162,39,0.1)',padding:'10px 12px'}}>
+          {['Name','Price','Rating','Best For'].map(h=>(<div key={h} style={{fontSize:10,fontWeight:700,color:'#c9a227',textTransform:'uppercase'}}>{h}</div>))}
         </div>
-        {data.map((item,i)=>(
-          <div key={i} style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:0,padding:'12px',borderBottom:i<data.length-1?'0.5px solid rgba(255,255,255,0.05)':'none',background:i%2===0?'transparent':'rgba(255,255,255,0.02)'}}>
+        {items.map((item,i)=>(
+          <div key={i} style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',padding:'12px',borderBottom:i<items.length-1?'0.5px solid rgba(255,255,255,0.05)':'none',background:i%2===0?'transparent':'rgba(255,255,255,0.02)'}}>
             <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff'}}>{item.name}</div>
             <div style={{fontSize:11,color:'#5dcaa5'}}>{item.price}</div>
-            <div style={{fontSize:11,color:'#c9a227'}}>{'⭐'.repeat(Math.floor(item.rating))} {item.rating}</div>
+            <div style={{fontSize:11,color:'#c9a227'}}>⭐ {item.rating}</div>
             <div style={{fontSize:10,color:'#8fa3c4'}}>{item.best}</div>
           </div>
         ))}
-      </div>
-
-      <div style={{background:'rgba(29,158,117,0.08)',border:'0.5px solid rgba(29,158,117,0.2)',borderRadius:12,padding:14,marginBottom:16}}>
-        <div style={{fontSize:13,fontWeight:600,color:'#5dcaa5',marginBottom:8}}>💡 Best Value in Eswatini</div>
-        {category==='attractions'&&<div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.7}}>🥇 Best Overall: <span style={{color:'#c9a227'}}>Hlane Royal Reserve</span> — Big 5 for E150<br/>💰 Best Budget: <span style={{color:'#c9a227'}}>Swazi Candles</span> — Free entry, world-class crafts<br/>🌿 Best Hidden Gem: <span style={{color:'#c9a227'}}>Malolotja Reserve</span> — Zipline + hiking E120</div>}
-        {category==='hotels'&&<div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.7}}>🥇 Best Luxury: <span style={{color:'#c9a227'}}>Royal Swazi Spa</span> — 5-star experience<br/>💰 Best Budget: <span style={{color:'#c9a227'}}>Lidwala Backpacker</span> — from E150/night<br/>🌿 Best Experience: <span style={{color:'#c9a227'}}>Mantengha Village</span> — authentic Swazi culture</div>}
-        {category==='restaurants'&&<div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.7}}>🥇 Best Traditional: <span style={{color:'#c9a227'}}>Malandela's</span> — authentic Swazi cuisine<br/>💰 Best Budget: <span style={{color:'#c9a227'}}>Gables Food Court</span> — from E40<br/>🌿 Best Special Occasion: <span style={{color:'#c9a227'}}>Tum's George Hotel</span></div>}
-        {category==='stores'&&<div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.7}}>🥇 Most Unique: <span style={{color:'#c9a227'}}>Swazi Candles</span> — world-famous<br/>💰 Best Budget: <span style={{color:'#c9a227'}}>Manzini Market</span> — from E10<br/>🌿 Best Quality: <span style={{color:'#c9a227'}}>Gone Rural</span> — premium crafts</div>}
       </div>
     </div>
   );
 }
 
-// ── EXPLORE TAB ───────────────────────────────────────────
 function ExploreTab({onSelect,onVirtualTour,t}) {
   const [filter,setFilter] = useState('All');
   const categories = ['All','Wildlife','Nature','Culture','Adventure'];
@@ -636,9 +477,7 @@ function ExploreTab({onSelect,onVirtualTour,t}) {
     <div>
       <div style={styles.sectionTitle}>{t.explore2} Eswatini 🇸🇿</div>
       <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,marginBottom:14,scrollbarWidth:'none'}}>
-        {categories.map(cat=>(
-          <button key={cat} onClick={()=>setFilter(cat)} style={{flexShrink:0,padding:'8px 16px',borderRadius:20,border:`0.5px solid ${filter===cat?'#c9a227':'rgba(201,162,39,0.2)'}`,background:filter===cat?'rgba(201,162,39,0.15)':'transparent',color:filter===cat?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===cat?600:400}}>{cat}</button>
-        ))}
+        {categories.map(cat=>(<button key={cat} onClick={()=>setFilter(cat)} style={{flexShrink:0,padding:'8px 16px',borderRadius:20,border:`0.5px solid ${filter===cat?'#c9a227':'rgba(201,162,39,0.2)'}`,background:filter===cat?'rgba(201,162,39,0.15)':'transparent',color:filter===cat?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===cat?600:400}}>{cat}</button>))}
       </div>
       {filtered.map(p=>(
         <div key={p.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
@@ -664,16 +503,15 @@ function ExploreTab({onSelect,onVirtualTour,t}) {
   );
 }
 
-// ── REVIEWS ───────────────────────────────────────────────
 function ReviewsSection({placeName,t}) {
   const [reviews,setReviews] = useState([
     {name:'Sarah M.',flag:'🇬🇧',stars:5,text:"Absolutely breathtaking! One of the best experiences of my life.",date:'2 days ago'},
-    {name:'João P.', flag:'🇧🇷',stars:5,text:'Incredible wildlife and friendly people. Will definitely come back!',date:'1 week ago'},
+    {name:'João P.',flag:'🇧🇷',stars:5,text:'Incredible wildlife and friendly people. Will definitely come back!',date:'1 week ago'},
     {name:'Thandi D.',flag:'🇿🇦',stars:4,text:'Beautiful place, well maintained. The guided tour was very informative.',date:'2 weeks ago'},
   ]);
   const [showForm,setShowForm] = useState(false);
-  const [newName,setNewName]   = useState('');
-  const [newText,setNewText]   = useState('');
+  const [newName,setNewName] = useState('');
+  const [newText,setNewText] = useState('');
   const [newStars,setNewStars] = useState(5);
   const submit = ()=>{
     if(!newName.trim()||!newText.trim()) return;
@@ -688,11 +526,7 @@ function ReviewsSection({placeName,t}) {
       </div>
       {showForm&&(
         <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:14,marginBottom:12}}>
-          <div style={{display:'flex',gap:6,marginBottom:10}}>
-            {[1,2,3,4,5].map(s=>(
-              <span key={s} onClick={()=>setNewStars(s)} style={{fontSize:24,cursor:'pointer',opacity:s<=newStars?1:0.3}}>⭐</span>
-            ))}
-          </div>
+          <div style={{display:'flex',gap:6,marginBottom:10}}>{[1,2,3,4,5].map(s=>(<span key={s} onClick={()=>setNewStars(s)} style={{fontSize:24,cursor:'pointer',opacity:s<=newStars?1:0.3}}>⭐</span>))}</div>
           <input value={newName} onChange={e=>setNewName(e.target.value)} placeholder="Your name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'10px 12px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:8,boxSizing:'border-box'}}/>
           <textarea value={newText} onChange={e=>setNewText(e.target.value)} placeholder="Share your experience..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'10px 12px',color:'#f0f4ff',fontSize:13,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box'}}/>
           <div style={{display:'flex',gap:8,marginTop:8}}>
@@ -718,7 +552,6 @@ function ReviewsSection({placeName,t}) {
   );
 }
 
-// ── DETAIL SCREEN ─────────────────────────────────────────
 function DetailScreen({place,onBack,t,onVirtualTour}) {
   const [saved,setSaved] = useState(false);
   return (
@@ -773,13 +606,11 @@ function DetailScreen({place,onBack,t,onVirtualTour}) {
   );
 }
 
-// ── RESTAURANT DETAIL WITH ORDERING ──────────────────────
 function RestaurantDetail({item,onBack,t}) {
-  const [cart,setCart]       = useState([]);
+  const [cart,setCart] = useState([]);
   const [showCart,setShowCart] = useState(false);
   const [orderPlaced,setOrderPlaced] = useState(false);
   const [tableNum,setTableNum] = useState('');
-
   const addToCart = (menuItem)=>{
     setCart(prev=>{
       const existing = prev.find(c=>c.name===menuItem.name);
@@ -787,37 +618,22 @@ function RestaurantDetail({item,onBack,t}) {
       return [...prev,{...menuItem,qty:1}];
     });
   };
-
-  const total = cart.reduce((sum,item)=>sum+item.price*item.qty,0);
-
-  const placeOrder = ()=>{
-    if(!tableNum){alert('Please enter your table number or delivery details');return;}
-    setOrderPlaced(true);
-  };
-
+  const total = cart.reduce((sum,i)=>sum+i.price*i.qty,0);
+  const placeOrder = ()=>{ if(!tableNum){alert('Please enter your table number');return;} setOrderPlaced(true); };
   if(orderPlaced) return (
     <div style={styles.app}>
       <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:32,textAlign:'center'}}>
         <div style={{fontSize:64,marginBottom:16}}>✅</div>
         <div style={{fontSize:22,fontWeight:700,color:'#5dcaa5',marginBottom:8}}>Order Placed!</div>
-        <div style={{fontSize:14,color:'#8fa3c4',lineHeight:1.7,marginBottom:24}}>Your order from {item.name} has been received. Table/Delivery: {tableNum}<br/>Estimated time: 20–30 minutes</div>
+        <div style={{fontSize:14,color:'#8fa3c4',lineHeight:1.7,marginBottom:24}}>Your order from {item.name} has been received.<br/>Table: {tableNum} · Estimated time: 20–30 minutes</div>
         <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:14,padding:16,width:'100%',marginBottom:20}}>
-          <div style={{fontSize:14,fontWeight:600,color:'#5dcaa5',marginBottom:10}}>Your Order:</div>
-          {cart.map(c=>(
-            <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}>
-              <span>{c.name} x{c.qty}</span>
-              <span style={{color:'#c9a227'}}>E {c.price*c.qty}</span>
-            </div>
-          ))}
-          <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:10,paddingTop:10,display:'flex',justifyContent:'space-between',fontWeight:700,color:'#c9a227',fontSize:16}}>
-            <span>Total</span><span>E {total}</span>
-          </div>
+          {cart.map(c=>(<div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}><span>{c.name} x{c.qty}</span><span style={{color:'#c9a227'}}>E {c.price*c.qty}</span></div>))}
+          <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:10,paddingTop:10,display:'flex',justifyContent:'space-between',fontWeight:700,color:'#c9a227',fontSize:16}}><span>Total</span><span>E {total}</span></div>
         </div>
-        <button style={styles.btnPrimary} onClick={onBack}>← Back to Restaurants</button>
+        <button style={styles.btnPrimary} onClick={onBack}>← Back</button>
       </div>
     </div>
   );
-
   return (
     <div style={styles.app}>
       <div style={{background:'linear-gradient(135deg,#1a3a1a,#2d5a2d)',height:180,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,position:'relative'}}>
@@ -828,24 +644,15 @@ function RestaurantDetail({item,onBack,t}) {
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <h2 style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:4}}>{item.name}</h2>
         <div style={{fontSize:12,color:'#8fa3c4',marginBottom:12}}>📍 {item.region} · ⭐ {item.rating} · 🕐 {item.hours}</div>
-
         {showCart&&cart.length>0&&(
           <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:14,padding:14,marginBottom:14}}>
             <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:10}}>🛒 Your Cart</div>
-            {cart.map(c=>(
-              <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}>
-                <span>{c.name} x{c.qty}</span>
-                <span style={{color:'#c9a227'}}>E {c.price*c.qty}</span>
-              </div>
-            ))}
-            <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,fontSize:15,fontWeight:700,color:'#c9a227',display:'flex',justifyContent:'space-between'}}>
-              <span>Total:</span><span>E {total}</span>
-            </div>
+            {cart.map(c=>(<div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}><span>{c.name} x{c.qty}</span><span style={{color:'#c9a227'}}>E {c.price*c.qty}</span></div>))}
+            <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,fontSize:15,fontWeight:700,color:'#c9a227',display:'flex',justifyContent:'space-between'}}><span>Total:</span><span>E {total}</span></div>
             <input value={tableNum} onChange={e=>setTableNum(e.target.value)} placeholder="Table number or delivery address" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#f0f4ff',fontSize:13,outline:'none',marginTop:10,boxSizing:'border-box'}}/>
             <button style={{...styles.btnPrimary,marginTop:10}} onClick={placeOrder}>Place Order →</button>
           </div>
         )}
-
         {item.menu.map(cat=>(
           <div key={cat.category} style={{marginBottom:16}}>
             <div style={{fontSize:14,fontWeight:700,color:'#c9a227',marginBottom:10,borderBottom:'0.5px solid rgba(201,162,39,0.2)',paddingBottom:6}}>{cat.category}</div>
@@ -867,12 +674,11 @@ function RestaurantDetail({item,onBack,t}) {
   );
 }
 
-// ── HOTEL DETAIL ──────────────────────────────────────────
 function HotelDetail({item,onBack,t}) {
   const [showBooking,setShowBooking] = useState(false);
-  const [checkIn,setCheckIn]   = useState('');
+  const [checkIn,setCheckIn] = useState('');
   const [checkOut,setCheckOut] = useState('');
-  const [guests,setGuests]     = useState('2');
+  const [guests,setGuests] = useState('2');
   return (
     <div style={styles.app}>
       <div style={{background:'linear-gradient(135deg,#1a2a3a,#2d3d5a)',height:200,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,position:'relative'}}>
@@ -890,9 +696,7 @@ function HotelDetail({item,onBack,t}) {
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{item.desc}</div>
         <div style={{fontSize:14,color:'#c9a227',fontWeight:600,marginBottom:10}}>Amenities</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:16}}>
-          {item.amenities.map(a=>(
-            <span key={a} style={styles.tag}>{a}</span>
-          ))}
+          {item.amenities.map(a=>(<span key={a} style={styles.tag}>{a}</span>))}
         </div>
         {!showBooking?(
           <button style={{...styles.btnPrimary,marginBottom:12}} onClick={()=>setShowBooking(true)}>🛏️ Book Now</button>
@@ -915,13 +719,9 @@ function HotelDetail({item,onBack,t}) {
   );
 }
 
-// ── HOME TAB ──────────────────────────────────────────────
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,t}) {
   const [activeSection,setActiveSection] = useState('attractions');
-  const handleSOS = ()=>{
-    if(window.confirm('🆘 Call Eswatini Emergency Services?\n\nPolice: 999\nAmbulance: 977\nFire: 933'))
-      window.location.href='tel:999';
-  };
+  const handleSOS = ()=>{ if(window.confirm('🆘 Call Eswatini Emergency Services?\n\nPolice: 999\nAmbulance: 977\nFire: 933')) window.location.href='tel:999'; };
   return (
     <div>
       <div style={styles.sosBtn} onClick={handleSOS}>
@@ -976,39 +776,35 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,t}) {
       {activeSection==='restaurants'&&(
         <>
           <div style={styles.sectionTitle}>{t.restaurants}</div>
-          {restaurants.map(r=>(
-            <div key={r.name} style={{...styles.bizCard,cursor:'pointer'}} onClick={()=>onSelectRestaurant(r)}>
-              <div style={{width:50,height:50,borderRadius:12,background:'rgba(29,158,117,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0}}>{r.icon}</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
-                <div style={{fontSize:12,color:'#8fa3c4',marginTop:2}}>📍 {r.region}</div>
-                <div style={{fontSize:11,color:'#6a85a8',marginTop:3}}>{r.desc}</div>
-              </div>
-              <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:13,fontWeight:600,color:'#c9a227'}}>⭐ {r.rating}</div>
-                <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Tap to order →</div>
-              </div>
+          {restaurants.map(r=>(<div key={r.name} style={{...styles.bizCard,cursor:'pointer'}} onClick={()=>onSelectRestaurant(r)}>
+            <div style={{width:50,height:50,borderRadius:12,background:'rgba(29,158,117,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0}}>{r.icon}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
+              <div style={{fontSize:12,color:'#8fa3c4',marginTop:2}}>📍 {r.region}</div>
+              <div style={{fontSize:11,color:'#6a85a8',marginTop:3}}>{r.desc}</div>
             </div>
-          ))}
+            <div style={{textAlign:'right',flexShrink:0}}>
+              <div style={{fontSize:13,fontWeight:600,color:'#c9a227'}}>⭐ {r.rating}</div>
+              <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Tap to order →</div>
+            </div>
+          </div>))}
         </>
       )}
       {activeSection==='hotels'&&(
         <>
           <div style={styles.sectionTitle}>{t.hotels}</div>
-          {hotels.map(h=>(
-            <div key={h.name} style={{...styles.bizCard,cursor:'pointer'}} onClick={()=>onSelectHotel(h)}>
-              <div style={{width:50,height:50,borderRadius:12,background:'rgba(201,162,39,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0}}>{h.icon}</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>{h.name}</div>
-                <div style={{fontSize:12,color:'#8fa3c4',marginTop:2}}>📍 {h.region}</div>
-                <div style={{fontSize:11,color:'#c9a227',marginTop:3}}>{h.stars}</div>
-              </div>
-              <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:11,color:'#5dcaa5'}}>{h.price}</div>
-                <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Tap to book →</div>
-              </div>
+          {hotels.map(h=>(<div key={h.name} style={{...styles.bizCard,cursor:'pointer'}} onClick={()=>onSelectHotel(h)}>
+            <div style={{width:50,height:50,borderRadius:12,background:'rgba(201,162,39,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0}}>{h.icon}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>{h.name}</div>
+              <div style={{fontSize:12,color:'#8fa3c4',marginTop:2}}>📍 {h.region}</div>
+              <div style={{fontSize:11,color:'#c9a227',marginTop:3}}>{h.stars}</div>
             </div>
-          ))}
+            <div style={{textAlign:'right',flexShrink:0}}>
+              <div style={{fontSize:11,color:'#5dcaa5'}}>{h.price}</div>
+              <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Tap to book →</div>
+            </div>
+          </div>))}
         </>
       )}
       <div style={styles.sectionTitle}>{t.hiddenGem}</div>
@@ -1018,9 +814,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,t}) {
           <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginBottom:6}}>Shiselweni Region 🌿</div>
           <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:10}}>Eswatini's southern paradise — untouched forests, rivers and traditional villages.</div>
           <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-            {['🌿 Nature','📍 South','🆓 Uncrowded'].map(tag=>(
-              <span key={tag} style={styles.tag}>{tag}</span>
-            ))}
+            {['🌿 Nature','📍 South','🆓 Uncrowded'].map(tag=>(<span key={tag} style={styles.tag}>{tag}</span>))}
           </div>
         </div>
       </div>
@@ -1028,11 +822,10 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,t}) {
   );
 }
 
-// ── MAP TAB ───────────────────────────────────────────────
 function MapTab({t}) {
-  const [location,setLocation]       = useState(null);
+  const [location,setLocation] = useState(null);
   const [activeRoute,setActiveRoute] = useState(null);
-  const [error,setError]             = useState('');
+  const [error,setError] = useState('');
   const watchRef = useRef(null);
   useEffect(()=>()=>{if(watchRef.current)navigator.geolocation.clearWatch(watchRef.current);},[]);
   const startTracking = ()=>{
@@ -1049,9 +842,9 @@ function MapTab({t}) {
     );
   };
   const routes = [
-    {name:'🌿 Scenic Route', time:'2h 15m',dist:'87 km',type:'Recommended',color:'#5dcaa5',desc:'Pass through Ezulwini Valley, Mantenga Falls, and Lobamba.',stops:['Mantenga Falls','Lobamba Village','Swazi Candles'],url:'https://www.google.com/maps/dir/Mbabane/Mantenga+Falls+Eswatini/Lobamba+Eswatini'},
-    {name:'⚡ Fastest Route', time:'1h 20m',dist:'62 km',type:'Quick',color:'#c9a227',desc:'Direct highway via MR3.',stops:['Manzini Highway','Mbabane Bypass'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Eswatini'},
-    {name:'💰 Budget Route',  time:'2h 45m',dist:'E45',type:'Affordable',color:'#534ab7',desc:'Uses public kombi taxis.',stops:['Manzini Bus Rank','Mbabane Market'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Bus+Rank+Eswatini'},
+    {name:'🌿 Scenic Route',time:'2h 15m',dist:'87 km',type:'Recommended',color:'#5dcaa5',desc:'Pass through Ezulwini Valley, Mantenga Falls, and Lobamba.',stops:['Mantenga Falls','Lobamba Village','Swazi Candles'],url:'https://www.google.com/maps/dir/Mbabane/Mantenga+Falls+Eswatini/Lobamba+Eswatini'},
+    {name:'⚡ Fastest Route',time:'1h 20m',dist:'62 km',type:'Quick',color:'#c9a227',desc:'Direct highway via MR3.',stops:['Manzini Highway','Mbabane Bypass'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Eswatini'},
+    {name:'💰 Budget Route',time:'2h 45m',dist:'E45',type:'Affordable',color:'#534ab7',desc:'Uses public kombi taxis.',stops:['Manzini Bus Rank','Mbabane Market'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Bus+Rank+Eswatini'},
   ];
   return (
     <div>
@@ -1069,7 +862,7 @@ function MapTab({t}) {
               <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{location.lng.toFixed(6)}</div>
             </div>
           </div>
-          <div style={{fontSize:12,color:'#5dcaa5',marginBottom:10}}>🟢 Updating live every 3 seconds · ±{location.acc}m accuracy</div>
+          <div style={{fontSize:12,color:'#5dcaa5',marginBottom:10}}>🟢 Updating live · ±{location.acc}m accuracy</div>
           <button style={{...styles.btnPrimary,padding:'10px',fontSize:13}} onClick={()=>window.open(`https://www.google.com/maps?q=${location.lat},${location.lng}`,'_blank')}>📍 Open in Google Maps</button>
         </div>
       ):(
@@ -1078,23 +871,6 @@ function MapTab({t}) {
           <button style={{...styles.btnPrimary,marginBottom:14}} onClick={startTracking}>📍 Show My Live Location</button>
         </>
       )}
-      <div style={{background:'#0d2540',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:16,height:200,overflow:'hidden',marginBottom:16}}>
-        <svg width="100%" height="100%" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="340" height="200" fill="#0d2540"/>
-          <rect x="10" y="10" width="320" height="180" rx="10" fill="#0f2a4a" stroke="rgba(201,162,39,0.2)" strokeWidth="0.5"/>
-          <path d="M60 165 Q120 135 170 100 Q220 68 275 45" stroke="#c9a227" strokeWidth="3" fill="none" strokeDasharray="6,4" opacity="0.9"/>
-          <circle cx="60" cy="165" r="8" fill="#e24b4a"/>
-          <text x="60" y="169" textAnchor="middle" fill="white" fontSize="9" fontWeight="700">{location?'📍':'YOU'}</text>
-          <circle cx="170" cy="100" r="9" fill="#c9a227"/>
-          <text x="170" y="104" textAnchor="middle" fill="#0a1628" fontSize="10" fontWeight="700">★</text>
-          <circle cx="275" cy="45" r="7" fill="#5dcaa5"/>
-          <text x="275" y="49" textAnchor="middle" fill="white" fontSize="8" fontWeight="700">B</text>
-          <rect x="110" y="85" width="70" height="16" rx="4" fill="rgba(201,162,39,0.25)" stroke="rgba(201,162,39,0.5)" strokeWidth="0.5"/>
-          <text x="145" y="97" textAnchor="middle" fill="#c9a227" fontSize="8">Mantenga Falls</text>
-          <rect x="240" y="32" width="60" height="14" rx="4" fill="rgba(93,202,165,0.2)" stroke="rgba(93,202,165,0.4)" strokeWidth="0.5"/>
-          <text x="270" y="43" textAnchor="middle" fill="#5dcaa5" fontSize="8">Hlane Reserve</text>
-        </svg>
-      </div>
       <div style={styles.sectionTitle}>Smart Routes</div>
       {routes.map(r=>(
         <div key={r.name}>
@@ -1104,18 +880,17 @@ function MapTab({t}) {
                 <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
                 <div style={{fontSize:12,color:'#8fa3c4',marginTop:3}}>{r.time} · {r.dist}</div>
               </div>
-              <span style={{fontSize:11,padding:'3px 10px',borderRadius:20,border:`0.5px solid ${r.color}`,color:r.color}}>{r.type}</span>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{fontSize:11,padding:'3px 10px',borderRadius:20,border:`0.5px solid ${r.color}`,color:r.color}}>{r.type}</span>
+                <span style={{color:'#8fa3c4',fontSize:16}}>{activeRoute===r.name?'▲':'▼'}</span>
+              </div>
             </div>
           </div>
           {activeRoute===r.name&&(
             <div style={{background:'rgba(255,255,255,0.03)',border:`0.5px solid ${r.color}`,borderTop:'none',borderRadius:'0 0 12px 12px',padding:14,marginBottom:10}}>
               <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.6,marginBottom:10}}>{r.desc}</div>
-              {r.stops.map((s,i)=>(
-                <div key={i} style={{display:'flex',gap:8,alignItems:'center',marginBottom:6}}>
-                  <div style={{width:6,height:6,borderRadius:'50%',background:r.color,flexShrink:0}}/>
-                  <div style={{fontSize:12,color:'#8fa3c4'}}>{s}</div>
-                </div>
-              ))}
+              <div style={{fontSize:12,color:'#c9a227',fontWeight:600,marginBottom:8}}>📍 Stops along the way:</div>
+              {r.stops.map((s,i)=>(<div key={i} style={{display:'flex',gap:8,alignItems:'center',marginBottom:6}}><div style={{width:6,height:6,borderRadius:'50%',background:r.color,flexShrink:0}}/><div style={{fontSize:12,color:'#8fa3c4'}}>{s}</div></div>))}
               <button style={{...styles.btnPrimary,marginTop:12,padding:'11px',fontSize:13}} onClick={()=>window.open(r.url,'_blank')}>🗺️ Open in Google Maps</button>
             </div>
           )}
@@ -1125,27 +900,22 @@ function MapTab({t}) {
   );
 }
 
-// ── AI TAB ────────────────────────────────────────────────
 function AITab({t}) {
   const [messages,setMessages] = useState([
     {role:'ai',text:"Sawubona! 👋 I'm Vaka, your Incaba AI Guide for the Kingdom of Eswatini.\n\nI speak 9 languages and can help with:\n• 🗓 Trip planning\n• 🦁 Wildlife & nature\n• 🍽 Food & restaurants\n• 🎭 Culture & festivals\n• 🏨 Hotels & booking\n• 💱 Currency & weather\n• 🚌 Transport\n• 🆘 Emergency help\n\nWhat would you like to know? 💎"}
   ]);
-  const [input,setInput]   = useState('');
+  const [input,setInput] = useState('');
   const [typing,setTyping] = useState(false);
   const [speaking,setSpeaking] = useState(false);
   const chatRef = useRef(null);
-
-  useEffect(()=>{
-    if(chatRef.current) chatRef.current.scrollTop=chatRef.current.scrollHeight;
-  },[messages,typing]);
+  useEffect(()=>{ if(chatRef.current) chatRef.current.scrollTop=chatRef.current.scrollHeight; },[messages,typing]);
 
   const speakText = (text)=>{
     if('speechSynthesis' in window){
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text.replace(/[🌍🇸🇿💎🤖🦁🍽🎭🏨💱🚌🆘🗓📍⭐]/g,''));
       u.rate=0.9; u.pitch=1.1;
-      u.onstart=()=>setSpeaking(true);
-      u.onend=()=>setSpeaking(false);
+      u.onstart=()=>setSpeaking(true); u.onend=()=>setSpeaking(false);
       window.speechSynthesis.speak(u);
     }
   };
@@ -1183,23 +953,11 @@ function AITab({t}) {
         <div style={{fontSize:36}}>🤖</div>
         <div style={{fontSize:16,fontWeight:700,color:'#f0f4ff'}}>{t.aiTitle}</div>
         <div style={{fontSize:11,color:'#8fa3c4'}}>{t.aiSub}</div>
-        {lastAI&&(
-          <button onClick={()=>speakText(lastAI.text)} style={{marginTop:6,padding:'5px 14px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>
-            {speaking?'🔊 Speaking...':'🔊 Read Last Answer Aloud'}
-          </button>
-        )}
+        {lastAI&&(<button onClick={()=>speakText(lastAI.text)} style={{marginTop:6,padding:'5px 14px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>{speaking?'🔊 Speaking...':'🔊 Read Aloud'}</button>)}
       </div>
       <div ref={chatRef} style={{flex:1,overflowY:'auto',paddingBottom:12}}>
-        {messages.map((m,i)=>(
-          <div key={i} style={m.role==='ai'?styles.bubbleAI:styles.bubbleUser}>{m.text}</div>
-        ))}
-        {typing&&(
-          <div style={{...styles.bubbleAI,display:'flex',gap:6,alignItems:'center',padding:'16px'}}>
-            <div style={{width:8,height:8,borderRadius:'50%',background:'#8fa3c4'}}/>
-            <div style={{width:8,height:8,borderRadius:'50%',background:'#8fa3c4'}}/>
-            <div style={{width:8,height:8,borderRadius:'50%',background:'#8fa3c4'}}/>
-          </div>
-        )}
+        {messages.map((m,i)=>(<div key={i} style={m.role==='ai'?styles.bubbleAI:styles.bubbleUser}>{m.text}</div>))}
+        {typing&&(<div style={{...styles.bubbleAI,display:'flex',gap:6,alignItems:'center',padding:'16px'}}><div style={{width:8,height:8,borderRadius:'50%',background:'#8fa3c4'}}/><div style={{width:8,height:8,borderRadius:'50%',background:'#8fa3c4'}}/><div style={{width:8,height:8,borderRadius:'50%',background:'#8fa3c4'}}/></div>)}
       </div>
       <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:10}}>
         {['Plan my trip','Wildlife','Local food','Culture','Weather','Currency','Hotels','Emergency'].map(s=>(
@@ -1220,18 +978,17 @@ function AITab({t}) {
   );
 }
 
-// ── BUSINESS TAB ──────────────────────────────────────────
 function BusinessTab({t}) {
-  const [step,setStep]             = useState('list');
-  const [form,setForm]             = useState({name:'',type:'Hotel',region:'',phone:'',email:'',desc:'',website:''});
-  const [cardNum,setCardNum]       = useState('');
-  const [expiry,setExpiry]         = useState('');
-  const [cvv,setCvv]               = useState('');
+  const [step,setStep] = useState('list');
+  const [form,setForm] = useState({name:'',type:'Hotel',region:'',phone:'',email:'',desc:'',website:''});
+  const [cardNum,setCardNum] = useState('');
+  const [expiry,setExpiry] = useState('');
+  const [cvv,setCvv] = useState('');
   const [selectedBiz,setSelectedBiz] = useState(null);
   const [businesses,setBusinesses] = useState([
-    {name:'Royal Swazi Hotel',      type:'Hotel',       region:'Ezulwini Valley',icon:'🏨',views:'1,240',verified:true,revenue:'E 4,500'},
-    {name:"Malandela's Restaurant", type:'Restaurant',  region:'Malkerns',       icon:'🍴',views:'876',  verified:true,revenue:'E 2,800'},
-    {name:'Swazi Candles Market',   type:'Craft Market',region:'Malkerns',       icon:'🎨',views:'654',  verified:true,revenue:'E 1,200'},
+    {name:'Royal Swazi Hotel',type:'Hotel',region:'Ezulwini Valley',icon:'🏨',views:'1,240',verified:true,revenue:'E 4,500'},
+    {name:"Malandela's Restaurant",type:'Restaurant',region:'Malkerns',icon:'🍴',views:'876',verified:true,revenue:'E 2,800'},
+    {name:'Swazi Candles Market',type:'Craft Market',region:'Malkerns',icon:'🎨',views:'654',verified:true,revenue:'E 1,200'},
   ]);
   const submitPayment = ()=>{
     if(!cardNum||!expiry||!cvv){alert('Please fill in all payment details');return;}
@@ -1242,6 +999,7 @@ function BusinessTab({t}) {
     setForm({name:'',type:'Hotel',region:'',phone:'',email:'',desc:'',website:''});
     setCardNum(''); setExpiry(''); setCvv('');
   };
+
   if(selectedBiz) return (
     <div style={styles.app}>
       <div style={{background:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',height:180,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,position:'relative'}}>
@@ -1255,19 +1013,12 @@ function BusinessTab({t}) {
           <span style={styles.tag}>{selectedBiz.type}</span>
           {selectedBiz.verified&&<span style={{...styles.tag,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)'}}>✓ Verified</span>}
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:14}}>
-          {[['👁️ Views',selectedBiz.views+'/week'],['💰 Revenue',selectedBiz.revenue],['⭐ Rating','4.7']].map(([l,v])=>(
-            <div key={l} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'12px 8px',textAlign:'center'}}>
-              <div style={{fontSize:10,color:'#8fa3c4',marginBottom:4}}>{l}</div>
-              <div style={{fontSize:13,fontWeight:600,color:'#c9a227'}}>{v}</div>
-            </div>
-          ))}
-        </div>
         <ReviewsSection placeName={selectedBiz.name} t={t}/>
         <button style={{...styles.btnPrimary,marginBottom:20}} onClick={()=>window.open(`https://www.google.com/maps/search/${encodeURIComponent(selectedBiz.name)}+Eswatini`,'_blank')}>🗺️ Get Directions</button>
       </div>
     </div>
   );
+
   return (
     <div>
       {step==='list'&&(
@@ -1275,11 +1026,7 @@ function BusinessTab({t}) {
           <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:16,padding:20,marginBottom:14}}>
             <div style={{fontSize:11,color:'#5dcaa5',fontWeight:600,letterSpacing:1,marginBottom:6}}>BUSINESS PORTAL</div>
             <div style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:6}}>Grow With Tourism 🌱</div>
-            <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:4}}>List your business and reach thousands of tourists.</div>
-            <div style={{display:'flex',alignItems:'center',gap:8,background:'rgba(201,162,39,0.08)',borderRadius:10,padding:'10px 12px',marginBottom:14}}>
-              <span style={{fontSize:20}}>💰</span>
-              <div><div style={{fontSize:13,fontWeight:600,color:'#c9a227'}}>E200/month listing fee</div><div style={{fontSize:11,color:'#8fa3c4'}}>Pay upfront — listing goes live within 24 hours</div></div>
-            </div>
+            <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:14}}>List your business and reach thousands of tourists.</div>
             <button style={{...styles.btnPrimary,padding:'11px 24px',fontSize:14}} onClick={()=>setStep('register')}>+ Register Your Business</button>
           </div>
           <div style={styles.sectionTitle}>Active Businesses</div>
@@ -1314,7 +1061,7 @@ function BusinessTab({t}) {
           <div style={{marginBottom:16}}>
             <div style={{fontSize:12,color:'#8fa3c4',marginBottom:6}}>Business Type</div>
             <select value={form.type} onChange={e=>setForm(prev=>({...prev,type:e.target.value}))} style={{width:'100%',background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 14px',color:'#c9a227',fontSize:13,outline:'none',cursor:'pointer'}}>
-              {['Hotel','Restaurant','Craft Market','Tour Operator','Activity Centre','Transport','Spa & Wellness','Local Store','Other'].map(o=><option key={o} value={o}>{o}</option>)}
+              {['Hotel','Restaurant','Craft Market','Tour Operator','Activity Centre','Transport','Spa & Wellness','Other'].map(o=><option key={o} value={o}>{o}</option>)}
             </select>
           </div>
           <button style={styles.btnPrimary} onClick={()=>{if(!form.name||!form.phone||!form.email){alert('Please fill required fields');return;}setStep('payment');}}>Continue to Payment →</button>
