@@ -1137,4 +1137,4 @@ const styles = {
   pill:{padding:'6px 12px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.25)',fontSize:11,cursor:'pointer',background:'rgba(255,255,255,0.04)',color:'#f0f4ff',fontFamily:'inherit'},
 };
 
-export default App;
+export default App;// updated
