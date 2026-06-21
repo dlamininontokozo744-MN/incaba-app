@@ -245,6 +245,7 @@ const restaurants = [
   {
     name:"Malandela's Restaurant", region:'Malkerns', rating:'4.8',
     price:'E 80 to 200', hours:'11am to 9pm daily',
+    phone:'+268 2528 3110', email:'bookings@malandelas.com', address:"Malandela's Farm, Malkerns Valley, Eswatini", lat:-26.5212, lng:31.2003,
     coverImg: photo('african,restaurant,garden,outdoor'),
     desc:'Traditional Swazi cuisine in a beautiful garden setting',
     menu:[
@@ -270,6 +271,7 @@ const restaurants = [
   {
     name:"Tum's George Hotel", region:'Mbabane', rating:'4.6',
     price:'E 120 to 300', hours:'7am to 10pm daily',
+    phone:'+268 2404 4030', email:'reservations@tumsgeorge.com', address:'Mbabane, Eswatini', lat:-26.3054, lng:31.1367,
     coverImg: photo('fine,dining,restaurant,elegant'),
     desc:'Fine dining with panoramic views of the Ezulwini Valley',
     menu:[
@@ -290,6 +292,7 @@ const restaurants = [
   {
     name:'Foresters Arms', region:'Malkerns', rating:'4.4',
     price:'E 60 to 150', hours:'11am to 10pm daily',
+    phone:'+268 2528 3344', email:'info@forestersarms.co.sz', address:'Mhlambanyatsi, Eswatini', lat:-26.5523, lng:31.0136,
     coverImg: photo('pub,restaurant,countryside,cozy'),
     desc:'Classic pub meals in a cozy countryside atmosphere',
     menu:[
@@ -310,6 +313,7 @@ const restaurants = [
   {
     name:'Gables Food Court', region:'Ezulwini', rating:'4.2',
     price:'E 40 to 120', hours:'9am to 8pm daily',
+    phone:'+268 2416 1100', email:'info@gablescentre.co.sz', address:'Gables Shopping Centre, Ezulwini, Eswatini', lat:-26.4453, lng:31.1366,
     coverImg: photo('food,court,mall,restaurant'),
     desc:'Local and international food options for every budget',
     menu:[
@@ -734,35 +738,102 @@ function DetailScreen({place,onBack,t,onVirtualTour}) {
 }
 
 // ── RESTAURANT DETAIL WITH PHOTOS & ORDERING ──────────────
+// Generates a short human-friendly pickup/proof-of-order code, e.g. "MK-4D7A"
+function genOrderCode(item){
+  const prefix=(item.name||'OR').replace(/[^A-Za-z]/g,'').slice(0,2).toUpperCase()||'OR';
+  const rand=Math.random().toString(36).slice(2,6).toUpperCase();
+  return prefix+'-'+rand;
+}
+
 function RestaurantDetail({item,onBack,t}) {
-  const [cart,setCart]         = useState([]);
-  const [showCart,setShowCart] = useState(false);
-  const [ordered,setOrdered]   = useState(false);
-  const [tableNum,setTableNum] = useState('');
+  const [cart,setCart]           = useState([]);
+  const [showCart,setShowCart]   = useState(false);
+  const [ordered,setOrdered]     = useState(false);
+  const [cancelled,setCancelled] = useState(false);
+  const [tableNum,setTableNum]   = useState('');
+  const [diningMode,setDiningMode] = useState(null); // 'dinein' | 'takeaway'
+  const [orderCode,setOrderCode] = useState('');
+  const [orderTime,setOrderTime] = useState(null);
+
   const addToCart = mi=>{
     setCart(prev=>{
       const ex=prev.find(c=>c.name===mi.name);
       return ex?prev.map(c=>c.name===mi.name?{...c,qty:c.qty+1}:c):[...prev,{...mi,qty:1}];
     });
   };
+  const removeFromCart = mi=>{
+    setCart(prev=>prev.map(c=>c.name===mi.name?{...c,qty:c.qty-1}:c).filter(c=>c.qty>0));
+  };
   const total = cart.reduce((s,c)=>s+c.price*c.qty,0);
+
+  const dirUrl = item.lat&&item.lng
+    ? `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address||item.name)}`;
+
+  const placeOrder = ()=>{
+    if(!diningMode) return alert('Please choose Dine-in or Takeaway');
+    if(diningMode==='dinein' && !tableNum) return alert('Please enter your table number');
+    if(diningMode==='takeaway' && !tableNum) return alert('Please enter a contact number for pickup');
+    setOrderCode(genOrderCode(item));
+    setOrderTime(Date.now());
+    setOrdered(true);
+    setCancelled(false);
+  };
+
+  const cancelOrder = ()=>{
+    if(!window.confirm('Cancel this order? The restaurant will be notified.')) return;
+    setCancelled(true);
+  };
+
+  const emailSubject = encodeURIComponent(`Order ${orderCode} – ${item.name}`);
+  const emailBody = encodeURIComponent(
+    `Order code: ${orderCode}\nRestaurant: ${item.name}\nMode: ${diningMode==='dinein'?'Dine-in':'Takeaway'}\n${diningMode==='dinein'?'Table':'Contact'}: ${tableNum}\n\nItems:\n`+
+    cart.map(c=>`- ${c.name} x${c.qty} (E ${c.price*c.qty})`).join('\n')+
+    `\n\nTotal: E ${total}`
+  );
 
   if(ordered) return (
     <div style={styles.app}>
-      <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:32,textAlign:'center'}}>
-        <div style={{fontSize:60,marginBottom:14}}>✅</div>
-        <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:8}}>Order Placed!</div>
-        <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.7,marginBottom:20}}>Your order from {item.name} has been received.<br/>Table: {tableNum} · Est. time: 20-30 min</div>
-        <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:14,padding:16,width:'100%',marginBottom:16}}>
-          {cart.map(c=>(
-            <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}>
-              <span>{c.name} x{c.qty}</span><span style={{color:'#c9a227'}}>E {c.price*c.qty}</span>
+      <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
+        {cancelled ? (
+          <>
+            <div style={{fontSize:60,marginBottom:14}}>🚫</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#e24b4a',marginBottom:8}}>Order Cancelled</div>
+            <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.7,marginBottom:20}}>Your order {orderCode} from {item.name} has been cancelled.<br/>Contact the restaurant if you've already been charged.</div>
+          </>
+        ) : (
+          <>
+            <div style={{fontSize:60,marginBottom:14}}>✅</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Order Placed!</div>
+            <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
+              Your order from {item.name} has been received.<br/>
+              {diningMode==='dinein' ? <>Table: {tableNum}</> : <>Pickup · Contact: {tableNum}</>} · Est. time: 20-30 min<br/>
+              🔥 Your food will be prepared fresh and served hot.
             </div>
-          ))}
-          <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,display:'flex',justifyContent:'space-between',fontWeight:700,color:'#c9a227',fontSize:15}}>
-            <span>Total</span><span>E {total}</span>
-          </div>
-        </div>
+            <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
+              <div style={{fontSize:11,color:'#8fa3c4',marginBottom:4,letterSpacing:0.5}}>SHOW THIS CODE AT THE RESTAURANT AS PROOF OF ORDER</div>
+              <div style={{fontSize:28,fontWeight:800,color:'#c9a227',letterSpacing:2}}>{orderCode}</div>
+            </div>
+            <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:14,padding:16,width:'100%',marginBottom:16}}>
+              {cart.map(c=>(
+                <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}>
+                  <span>{c.name} x{c.qty}</span><span style={{color:'#c9a227'}}>E {c.price*c.qty}</span>
+                </div>
+              ))}
+              <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,display:'flex',justifyContent:'space-between',fontWeight:700,color:'#c9a227',fontSize:15}}>
+                <span>Total</span><span>E {total}</span>
+              </div>
+            </div>
+            <div style={{display:'flex',gap:8,width:'100%',marginBottom:10}}>
+              <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
+              {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+            </div>
+            {item.email && (
+              <a href={`mailto:${item.email}?subject=${emailSubject}&body=${emailBody}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email order to restaurant</a>
+            )}
+            <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelOrder}>Cancel Order</button>
+          </>
+        )}
         <button style={styles.btnPrimary} onClick={onBack}>Back</button>
       </div>
     </div>
@@ -781,19 +852,39 @@ function RestaurantDetail({item,onBack,t}) {
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
+        <div style={{display:'flex',gap:8,marginBottom:14}}>
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+          {item.email && <a href={`mailto:${item.email}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>✉️ Email</a>}
+        </div>
         {showCart&&cart.length>0&&(
           <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:14,padding:14,marginBottom:14}}>
             <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:10}}>🛒 {t.cart}</div>
             {cart.map(c=>(
-              <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:5,fontSize:13,color:'#f0f4ff'}}>
-                <span>{c.name} x{c.qty}</span><span style={{color:'#c9a227'}}>E {c.price*c.qty}</span>
+              <div key={c.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5,fontSize:13,color:'#f0f4ff'}}>
+                <span>{c.name}</span>
+                <div style={{display:'flex',alignItems:'center',gap:8}}>
+                  <button onClick={()=>removeFromCart(c)} style={{width:22,height:22,borderRadius:'50%',border:'0.5px solid rgba(201,162,39,0.4)',background:'transparent',color:'#c9a227',cursor:'pointer',fontSize:13,lineHeight:1}}>−</button>
+                  <span>{c.qty}</span>
+                  <button onClick={()=>addToCart(c)} style={{width:22,height:22,borderRadius:'50%',border:'0.5px solid rgba(201,162,39,0.4)',background:'transparent',color:'#c9a227',cursor:'pointer',fontSize:13,lineHeight:1}}>+</button>
+                  <span style={{color:'#c9a227',minWidth:56,textAlign:'right'}}>E {c.price*c.qty}</span>
+                </div>
               </div>
             ))}
             <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,fontSize:14,fontWeight:700,color:'#c9a227',display:'flex',justifyContent:'space-between'}}>
               <span>Total:</span><span>E {total}</span>
             </div>
-            <input value={tableNum} onChange={e=>setTableNum(e.target.value)} placeholder={t.tableNum} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px',color:'#f0f4ff',fontSize:12,outline:'none',marginTop:10,boxSizing:'border-box'}}/>
-            <button style={{...styles.btnPrimary,marginTop:10}} onClick={()=>{if(!tableNum)return alert('Please enter table number');setOrdered(true);}}>{t.placeOrder}</button>
+
+            <div style={{fontSize:12,color:'#8fa3c4',marginTop:12,marginBottom:6}}>Are you staying or taking away?</div>
+            <div style={{display:'flex',gap:8,marginBottom:10}}>
+              <button onClick={()=>setDiningMode('dinein')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='dinein'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='dinein'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='dinein'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}>🍽️ Dine-in</button>
+              <button onClick={()=>setDiningMode('takeaway')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='takeaway'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='takeaway'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='takeaway'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}>🥡 Takeaway</button>
+            </div>
+
+            {diningMode && (
+              <input value={tableNum} onChange={e=>setTableNum(e.target.value)} placeholder={diningMode==='dinein'?t.tableNum:'Phone number for pickup'} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px',color:'#f0f4ff',fontSize:12,outline:'none',marginTop:2,boxSizing:'border-box'}}/>
+            )}
+            <button style={{...styles.btnPrimary,marginTop:10}} onClick={placeOrder}>{t.placeOrder}</button>
           </div>
         )}
         {item.menu.map(cat=>(
