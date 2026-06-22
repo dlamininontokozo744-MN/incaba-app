@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -7,20 +9,28 @@
 html, body, #root {
   width: 100%;
   min-height: 100vh;
-  background: #0a1628;
-  color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
+  min-height: 100dvh;
+  background: #1A130E;
+  color: #F2E8D5;
+  font-family: 'Inter', -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
 body {
-  background: #0a1628 !important;
+  background: #1A130E !important;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
 }
 
 #root {
-  background: #0a1628;
+  background: #1A130E;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
+}
+
+h1, h2, .display {
+  font-family: 'Fraunces', serif;
 }
 
 ::-webkit-scrollbar {
@@ -28,19 +38,35 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a1628;
+  background: #1A130E;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c9a84c;
+  background: #C97C2C;
   border-radius: 4px;
 }
 
-input, button {
-  font-family: 'Segoe UI', sans-serif;
+input, button, select, textarea {
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 
 a {
-  color: #c9a84c;
+  color: #E8B23D;
   text-decoration: none;
+}
+
+/* Signature motif: a Lihiya-inspired stripe band — referencing the banded
+   ceremonial cloth worn at Incwala & Umhlanga. Used sparingly as a brand mark. */
+.lihiya-stripe {
+  height: 5px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #6E1F1A 0 18px,
+    #1A130E 18px 22px,
+    #E8B23D 22px 40px,
+    #1A130E 40px 44px,
+    #F2E8D5 44px 56px,
+    #1A130E 56px 60px
+  );
 }
