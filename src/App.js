@@ -1,6 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
+// ── LOCAL IMAGE HELPER ────────────────────────────────────
+// Pulls every image bundled in src/images so we can reference them by filename
+// instead of relying on external stock-photo URLs.
+const localImageFiles = require.context('./images', false, /\.(png|jpe?g|PNG|JPG|JPEG)$/);
+const LOCAL_IMAGES = {};
+localImageFiles.keys().forEach(key=>{
+  const name = key.replace('./','');
+  LOCAL_IMAGES[name] = localImageFiles(key);
+});
+// limg('hotel-bk') matches hotel-bk.jpg, hotel-bk2.jpg, etc. Pass an exact filename for an exact match.
+function limg(nameOrPrefix){
+  if(LOCAL_IMAGES[nameOrPrefix]) return LOCAL_IMAGES[nameOrPrefix];
+  const match = Object.keys(LOCAL_IMAGES).find(k=>k.toLowerCase().startsWith(nameOrPrefix.toLowerCase()));
+  return match ? LOCAL_IMAGES[match] : null;
+}
+// limgAll('hotel-bulembu') -> array of every matching local image, in filename order
+function limgAll(prefix){
+  return Object.keys(LOCAL_IMAGES)
+    .filter(k=>k.toLowerCase().startsWith(prefix.toLowerCase()))
+    .sort()
+    .map(k=>LOCAL_IMAGES[k]);
+}
+
 // ── FREE PHOTO HELPER ─────────────────────────────────────
 const ESWATINI_PHOTOS = {
   'lion,safari,africa':'https://media.istockphoto.com/id/1912469501/photo/elephant-and-safari-car-at-sunset-time-hlane-national-park-swaziland.jpg?s=612x612&w=0&k=20&c=fY4mpd5mii-B8sYGxaKFYaNKP2oeH8Okx8CeQeiuCRU=',
@@ -335,56 +358,198 @@ const restaurants = [
 
 const hotels = [
   {
-    name:'Royal Swazi Spa and Hotel', region:'Ezulwini Valley',
+    name:'Royal Swazi Spa and Hotel', region:'Ezulwini Valley', category:'Hotel',
     rating:'4.9', stars:'★★★★★', price:'E 1,800 to 4,500 per night',
     desc:'Luxury 5-star hotel with spa, casino and golf course',
-    coverImg: photo('luxury,hotel,africa,resort'),
+    phone:'+268 2416 5000', email:'reservations@royalswazispa.sz',
+    booking:'https://www.suninternational.com/royal-swazi-spa', address:'Ezulwini Valley, Eswatini', lat:-26.4495, lng:31.1349,
+    coverImg: limg('royalswazispa') || limg('hotel-royalswazispainezulwinivalley'),
     amenities:['Luxury Spa','Casino','Golf Course','Swimming Pool','Fine Dining','Gym','Conference Rooms'],
     rooms:[
-      {name:'Standard Room',price:'E 1,800',img:photo('hotel,room,luxury,bedroom')},
-      {name:'Deluxe Suite',price:'E 2,800',img:photo('luxury,suite,hotel,elegant')},
-      {name:'Presidential Suite',price:'E 4,500',img:photo('presidential,suite,luxury,hotel')},
+      {name:'Standard Room',price:'E 1,800',img:limg('hotel-royalswazispainezulwinivalley')},
+      {name:'Deluxe Suite',price:'E 2,800',img:limg('swazi-royalgolfcourse')},
+      {name:'Presidential Suite',price:'E 4,500',img:limg('royalswazispa')},
     ],
-    gallery:[photo('luxury,hotel,pool,africa'),photo('hotel,spa,wellness'),photo('hotel,restaurant,fine,dining'),photo('hotel,golf,course,green'),photo('hotel,lobby,luxury')]
+    gallery: [limg('royalswazispa'), limg('hotel-royalswazispainezulwinivalley'), limg('swazi-royalgolfcourse'), limg('ezulwinivalley'), limg('ezulwinimarket')].filter(Boolean)
   },
   {
-    name:'Mantengha Cultural Village', region:'Ezulwini',
+    name:'Mantenga Cultural Village', region:'Ezulwini', category:'Lodge',
     rating:'4.7', stars:'★★★★☆', price:'E 600 to 1,200 per night',
     desc:'Authentic cultural experience in traditional Swazi huts',
-    coverImg: photo('african,lodge,traditional,hut'),
+    phone:'+268 2416 1151', email:'info@mantengalodge.sz',
+    booking:'https://www.mantengalodge.com', address:'Mantenga Nature Reserve, Ezulwini, Eswatini', lat:-26.4642, lng:31.1564,
+    coverImg: limg('mantenga'),
     amenities:['Cultural Shows','Nature Walks','Traditional Food','Photography Tours','Bonfire'],
     rooms:[
-      {name:'Traditional Hut',price:'E 600',img:photo('african,hut,traditional,accommodation')},
-      {name:'Family Hut',price:'E 900',img:photo('african,lodge,room,traditional')},
-      {name:'Premium Hut',price:'E 1,200',img:photo('luxury,lodge,africa,room')},
+      {name:'Traditional Hut',price:'E 600',img:limg('mantenga')},
+      {name:'Family Hut',price:'E 900',img:limg('lobamba')},
+      {name:'Premium Hut',price:'E 1,200',img:limg('hotel-piggspeak')},
     ],
-    gallery:[photo('african,village,traditional,huts'),photo('cultural,dance,africa'),photo('bonfire,africa,traditional'),photo('african,food,traditional'),photo('nature,walk,africa')]
+    gallery: limgAll('mantenga').length ? limgAll('mantenga') : [limg('mantenga'),limg('lobamba')].filter(Boolean)
   },
   {
-    name:'Foresters Arms Hotel', region:'Malkerns',
+    name:'Foresters Arms Hotel', region:'Malkerns', category:'Hotel',
     rating:'4.5', stars:'★★★★☆', price:'E 800 to 1,800 per night',
     desc:'Charming country hotel surrounded by forest and gardens',
-    coverImg: photo('countryside,hotel,garden,charming'),
+    phone:'+268 2528 3144', email:'info@forestersarms.co.sz',
+    booking:'https://www.forestersarms.co.sz', address:'Mhlambanyatsi, Eswatini', lat:-26.5523, lng:31.0136,
+    coverImg: limg('hotel-forestersarms'),
     amenities:['Fishing','Horse Riding','Pub','Forest Trails','Garden'],
-    rooms:[
-      {name:'Garden Room',price:'E 800',img:photo('garden,room,hotel,cozy')},
-      {name:'Forest Suite',price:'E 1,200',img:photo('forest,suite,hotel,room')},
-      {name:'Country Cottage',price:'E 1,800',img:photo('cottage,country,bedroom,cozy')},
-    ],
-    gallery:[photo('garden,hotel,countryside'),photo('horse,riding,countryside'),photo('fishing,river,countryside'),photo('pub,countryside,cozy'),photo('forest,trail,nature')]
+    rooms:limgAll('hotel-forestersarms').slice(0,3).map((img,i)=>({name:['Garden Room','Forest Suite','Country Cottage'][i],price:['E 800','E 1,200','E 1,800'][i],img})),
+    gallery: limgAll('hotel-forestersarms')
   },
   {
-    name:'Lidwala Backpacker Lodge', region:'Mbabane',
+    name:'Lidwala Backpacker Lodge', region:'Mbabane', category:'Guesthouse',
     rating:'4.3', stars:'★★★☆☆', price:'E 150 to 400 per night',
     desc:'Budget-friendly lodge with stunning rock formations',
-    coverImg: photo('backpacker,hostel,budget,travel'),
+    phone:'+268 7602 1234', email:'stay@lidwala.sz',
+    booking:'https://www.hostelworld.com', address:'Mbabane, Eswatini', lat:-26.3054, lng:31.1367,
+    coverImg: limg('hotel-gorge'),
     amenities:['Braai Area','Rock Views','Free WiFi','Shared Kitchen','Social Lounge'],
     rooms:[
-      {name:'Dorm Bed',price:'E 150',img:photo('hostel,dorm,backpacker,bed')},
-      {name:'Private Room',price:'E 280',img:photo('hostel,private,room,simple')},
-      {name:'Deluxe Room',price:'E 400',img:photo('budget,hotel,room,clean')},
+      {name:'Dorm Bed',price:'E 150',img:limg('hotel-gorge')},
+      {name:'Private Room',price:'E 280',img:limg('guesthouse-elwandle1')},
+      {name:'Deluxe Room',price:'E 400',img:limg('guesthouse-elwandle2')},
     ],
-    gallery:[photo('backpacker,hostel,lounge'),photo('granite,rock,view,landscape'),photo('braai,fire,outdoor'),photo('kitchen,hostel,shared'),photo('social,lounge,backpacker')]
+    gallery: [limg('hotel-gorge'),...limgAll('guesthouse-elwandle')].filter(Boolean)
+  },
+  {
+    name:'Hilton Garden Inn', region:'Mbabane', category:'Hotel',
+    rating:'4.6', stars:'★★★★☆', price:'E 1,400 to 2,600 per night',
+    desc:'Modern international hotel in the heart of Mbabane',
+    phone:'+268 2404 0000', email:'frontdesk@hiltonmbabane.sz',
+    booking:'https://www.hilton.com', address:'Mbabane City, Eswatini', lat:-26.3167, lng:31.1408,
+    coverImg: limg('hotel-hilton'),
+    amenities:['Free WiFi','Conference Rooms','Restaurant','Gym','Airport Shuttle'],
+    rooms:limgAll('hotel-hilton').slice(0,3).map((img,i)=>({name:['City Room','Executive Room','Hilton Suite'][i],price:['E 1,400','E 1,900','E 2,600'][i],img})),
+    gallery: limgAll('hotel-hilton')
+  },
+  {
+    name:'Hlangano Country Lodge', region:'Manzini', category:'Lodge',
+    rating:'4.4', stars:'★★★★☆', price:'E 700 to 1,300 per night',
+    desc:'Peaceful country lodge with lush gardens',
+    phone:'+268 2505 5678', email:'bookings@hlangano.sz',
+    booking:'https://www.booking.com', address:'Manzini, Eswatini', lat:-26.4839, lng:31.3667,
+    coverImg: limg('hotel-hlangano'),
+    amenities:['Garden Views','Pool','Restaurant','Conference Facilities'],
+    rooms:limgAll('hotel-hlangano').slice(0,3).map((img,i)=>({name:['Garden Room','Lodge Suite','Family Room'][i],price:['E 700','E 1,000','E 1,300'][i],img})),
+    gallery: limgAll('hotel-hlangano')
+  },
+  {
+    name:"Kendrick's Lodge", region:'Mbabane', category:'Lodge',
+    rating:'4.5', stars:'★★★★☆', price:'E 900 to 1,700 per night',
+    desc:'Cosy lodge with mountain views and warm hospitality',
+    phone:'+268 2404 2233', email:'info@kendrickslodge.sz',
+    booking:'https://www.booking.com', address:'Mbabane, Eswatini', lat:-26.3208, lng:31.1295,
+    coverImg: limg('hotel-kendricks'),
+    amenities:['Mountain Views','Breakfast Included','Free WiFi','Braai Facilities'],
+    rooms:limgAll('hotel-kendricks').slice(0,3).map((img,i)=>({name:['Standard Room','Mountain View Room','Family Suite'][i],price:['E 900','E 1,300','E 1,700'][i],img})),
+    gallery: limgAll('hotel-kendricks')
+  },
+  {
+    name:'Liphiva Bush Lodge', region:'Lubombo', category:'Lodge',
+    rating:'4.6', stars:'★★★★☆', price:'E 1,100 to 2,000 per night',
+    desc:'Bushveld lodge bordering Hlane Royal National Park',
+    phone:'+268 2383 8100', email:'stay@liphiva.sz',
+    booking:'https://www.booking.com', address:'Lubombo Region, Eswatini', lat:-26.1736, lng:31.8606,
+    coverImg: limg('hotel-liphivabushlodge'),
+    amenities:['Game Drives','Bushveld Views','Pool','Restaurant'],
+    rooms:limgAll('hotel-liphivabushlodge').slice(0,3).map((img,i)=>({name:['Bush Chalet','Family Chalet','Luxury Suite'][i],price:['E 1,100','E 1,500','E 2,000'][i],img})),
+    gallery: limgAll('hotel-liphivabushlodge')
+  },
+  {
+    name:'Mahamba Gorge Lodge', region:'Shiselweni', category:'Lodge',
+    rating:'4.5', stars:'★★★★☆', price:'E 800 to 1,500 per night',
+    desc:'Riverside lodge nestled in the dramatic Mahamba Gorge',
+    phone:'+268 2207 1122', email:'bookings@mahambalodge.sz',
+    booking:'https://www.booking.com', address:'Mahamba, Eswatini', lat:-27.0167, lng:31.4167,
+    coverImg: limg('hotel-mahamba'),
+    amenities:['River Views','Hiking Trails','Restaurant','Birdwatching'],
+    rooms:limgAll('hotel-mahamba').slice(0,3).map((img,i)=>({name:['Riverside Room','Gorge View Room','Family Cabin'][i],price:['E 800','E 1,100','E 1,500'][i],img})),
+    gallery: limgAll('hotel-mahamba')
+  },
+  {
+    name:'Mogi Self-Catering', region:'Ezulwini', category:'Guesthouse',
+    rating:'4.3', stars:'★★★☆☆', price:'E 500 to 950 per night',
+    desc:'Self-catering apartments in the Ezulwini Valley',
+    phone:'+268 7611 9090', email:'stay@mogi.sz',
+    booking:'https://www.airbnb.com', address:'Ezulwini Valley, Eswatini', lat:-26.4513, lng:31.1397,
+    coverImg: limg('hotel-mogi-inezulwini'),
+    amenities:['Self-Catering Kitchen','Free WiFi','Secure Parking','Garden'],
+    rooms:limgAll('hotel-mogi').slice(0,3).map((img,i)=>({name:['Studio Apartment','One-Bedroom Unit','Two-Bedroom Unit'][i],price:['E 500','E 700','E 950'][i],img})),
+    gallery: limgAll('hotel-mogi')
+  },
+  {
+    name:"Pigg's Peak Hotel and Casino", region:'Piggs Peak', category:'Hotel',
+    rating:'4.4', stars:'★★★★☆', price:'E 1,200 to 2,200 per night',
+    desc:'Mountain-top hotel and casino with forest views',
+    phone:'+268 2437 1104', email:'reservations@piggspeakhotel.sz',
+    booking:'https://www.suninternational.com', address:"Pigg's Peak, Eswatini", lat:-25.9667, lng:31.25,
+    coverImg: limg('hotel-piggspeak'),
+    amenities:['Casino','Forest Views','Pool','Restaurant'],
+    rooms:[{name:'Standard Room',price:'E 1,200',img:limg('hotel-piggspeak')},{name:'Forest View Room',price:'E 1,700',img:limg('malolotja')},{name:'Suite',price:'E 2,200',img:limg('hotel-piggspeak')}],
+    gallery: [limg('hotel-piggspeak'),limg('malolotja')].filter(Boolean)
+  },
+  {
+    name:'Bulembu Country Lodge', region:'Bulembu', category:'Lodge',
+    rating:'4.6', stars:'★★★★☆', price:'E 700 to 1,400 per night',
+    desc:'Restored mining-town lodge high in the mountains',
+    phone:'+268 2452 4900', email:'bookings@bulembu.org',
+    booking:'https://www.bulembu.org', address:'Bulembu, Eswatini', lat:-25.9764, lng:31.1394,
+    coverImg: limg('hotel-bulembu'),
+    amenities:['Mountain Hiking','Heritage Tours','Restaurant','Fireplace Lounge'],
+    rooms:limgAll('hotel-bulembu').slice(0,3).map((img,i)=>({name:['Cottage Room','Heritage Room','Family Cottage'][i],price:['E 700','E 1,000','E 1,400'][i],img})),
+    gallery: limgAll('hotel-bulembu')
+  },
+  {
+    name:'BK Guesthouse', region:'Manzini', category:'Guesthouse',
+    rating:'4.2', stars:'★★★☆☆', price:'E 400 to 800 per night',
+    desc:'Friendly guesthouse close to Manzini city centre',
+    phone:'+268 2505 4321', email:'info@bkguesthouse.sz',
+    booking:'https://www.booking.com', address:'Manzini, Eswatini', lat:-26.4847, lng:31.3656,
+    coverImg: limg('hotel-bk'),
+    amenities:['Free WiFi','Breakfast Included','Secure Parking'],
+    rooms:limgAll('hotel-bk').slice(0,3).map((img,i)=>({name:['Single Room','Double Room','Family Room'][i],price:['E 400','E 600','E 800'][i],img})),
+    gallery: limgAll('hotel-bk')
+  },
+  {
+    name:'Hlanganophumula Guesthouse', region:'Hluthi', category:'Guesthouse',
+    rating:'4.3', stars:'★★★☆☆', price:'E 350 to 700 per night',
+    desc:'Warm, family-run guesthouse in the Shiselweni region',
+    phone:'+268 2207 5566', email:'info@hlanganophumula.sz',
+    booking:'https://www.booking.com', address:'Hluthi, Eswatini', lat:-27.1167, lng:31.4333,
+    coverImg: limg('guesthouse-hlanganophumula'),
+    amenities:['Home-Cooked Meals','Garden','Free WiFi'],
+    rooms:limgAll('guesthouse-hlanganophumula').slice(0,3).map((img,i)=>({name:['Standard Room','Garden Room','Family Room'][i],price:['E 350','E 500','E 700'][i],img})),
+    gallery: limgAll('guesthouse-hlanganophumula')
+  },
+  {
+    name:'Malolotja Camping Grounds', region:'Malolotja Nature Reserve', category:'Camping',
+    rating:'4.7', stars:'★★★★☆', price:'E 120 to 300 per night',
+    desc:'Mountain-top campsites inside Malolotja Nature Reserve, with hiking trails right outside your tent',
+    phone:'+268 2444 3241', email:'malolotja@sntc.org.sz',
+    booking:'https://www.sntc.org.sz/malolotja', address:'Malolotja Nature Reserve, Eswatini', lat:-26.1667, lng:31.1167,
+    coverImg: limg('malolotja'),
+    amenities:['Hiking Trails','Braai Stands','Ablution Blocks','Wildlife Viewing','Stargazing'],
+    rooms:[
+      {name:'Tent Site (own tent)',price:'E 120',img:limg('malolotja')},
+      {name:'Log Cabin (sleeps 4)',price:'E 300',img:limg('malolotja')},
+    ],
+    gallery: limgAll('malolotja')
+  },
+  {
+    name:'Mlilwane Camping', region:'Mlilwane Wildlife Sanctuary', category:'Camping',
+    rating:'4.8', stars:'★★★★★', price:'E 100 to 280 per night',
+    desc:'Camp among free-roaming antelope and zebra at Eswatini\'s oldest wildlife sanctuary',
+    phone:'+268 2528 3943', email:'mlilwane@biggame.co.sz',
+    booking:'https://www.biggame.co.sz', address:'Mlilwane Wildlife Sanctuary, Eswatini', lat:-26.5167, lng:31.1833,
+    coverImg: limg('mlilwane'),
+    amenities:['Wildlife Walks','Horse Trails','Braai Stands','Communal Kitchen'],
+    rooms:[
+      {name:'Camp Site',price:'E 100',img:limg('mlilwane')},
+      {name:'Rustic Camp Hut',price:'E 280',img:limg('mlilwane')},
+    ],
+    gallery: limgAll('mlilwane')
   },
 ];
 
@@ -523,6 +688,10 @@ function App() {
       <div style={styles.content}>
         {tab==='home'      && <HomeTab setTab={setTab} onSelect={setSelectedPlace} onSelectRestaurant={setSelectedRestaurant} onSelectHotel={setSelectedHotel} onSelectStore={setSelectedStore} t={t}/>}
         {tab==='explore'   && <ExploreTab onSelect={setSelectedPlace} onVirtualTour={setShowVirtualTour} t={t}/>}
+        {tab==='stay'      && <AccommodationTab onSelectHotel={setSelectedHotel} t={t}/>}
+        {tab==='culture'   && <CultureTab t={t}/>}
+        {tab==='getaround' && <GettingAroundTab t={t}/>}
+        {tab==='book'      && <BookTab t={t} setTab={setTab} onSelectHotel={setSelectedHotel} onSelect={setSelectedPlace}/>}
         {tab==='translate' && <TranslateTab t={t} lang={lang}/>}
         {tab==='compare'   && <CompareTab t={t} onSelectRestaurant={setSelectedRestaurant} onSelectHotel={setSelectedHotel} onSelectStore={setSelectedStore}/>}
         {tab==='map'       && <MapTab t={t}/>}
@@ -530,17 +699,21 @@ function App() {
         {tab==='business'  && <BusinessTab t={t}/>}
       </div>
 
-      <div style={styles.bottomNav}>
+      <div style={{...styles.bottomNav,overflowX:'auto',justifyContent:'flex-start',whiteSpace:'nowrap'}}>
         {[
           {id:'home',     icon:'🏠',label:t.home},
           {id:'explore',  icon:'🔭',label:t.explore2},
+          {id:'stay',     icon:'🛏️',label:'Stay'},
+          {id:'culture',  icon:'🎭',label:'Culture'},
+          {id:'getaround',icon:'🚗',label:'Travel'},
+          {id:'book',     icon:'🎟️',label:'Book'},
           {id:'translate',icon:'🌐',label:t.translate},
           {id:'compare',  icon:'⚖️', label:t.compare},
           {id:'map',      icon:'🗺️', label:t.navigate},
           {id:'ai',       icon:'🤖',label:t.ai},
           {id:'business', icon:'🏢',label:t.business},
         ].map(item=>(
-          <div key={item.id} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>setTab(item.id)}>
+          <div key={item.id} style={{...(tab===item.id?styles.navActive:styles.navItem),flexShrink:0,minWidth:52}} onClick={()=>setTab(item.id)}>
             <span style={{fontSize:16}}>{item.icon}</span>
             <span style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
           </div>
@@ -807,7 +980,7 @@ function RestaurantDetail({item,onBack,t}) {
             <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Order Placed!</div>
             <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
               Your order from {item.name} has been received.<br/>
-              {diningMode==='dinein' ? <>Table: {tableNum}</> : <>Pickup · Contact: {tableNum}</>} · Est. time: 20-30 min<br/>
+              {diningMode==='dinein' ? <>Table: {tableNum}</> : <>Pickup · Contact: {tableNum}</>} · Est. time: 20-30 min{orderTime?<> (ready by {new Date(orderTime+25*60000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})})</>:null}<br/>
               🔥 Your food will be prepared fresh and served hot.
             </div>
             <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
@@ -916,18 +1089,67 @@ function HotelDetail({item,onBack,t}) {
   const [checkOut,setCheckOut] = useState('');
   const [guests,setGuests]     = useState('2');
   const [selRoom,setSelRoom]   = useState(null);
+  const [confirmed,setConfirmed] = useState(null);
+
+  const dirUrl = item.lat&&item.lng
+    ? `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address||item.name)}`;
+
+  const confirmBooking = ()=>{
+    if(!checkIn||!checkOut) return alert('Please fill in all dates');
+    const code = genOrderCode(item);
+    setConfirmed({code,room:selRoom||(item.rooms[0]&&item.rooms[0].name),checkIn,checkOut,guests});
+    setShowBooking(false);
+  };
+  const cancelBooking = ()=>{
+    if(!window.confirm('Cancel this booking? The property will be notified.')) return;
+    setConfirmed(null);
+  };
+
+  if(confirmed) return (
+    <div style={styles.app}>
+      <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
+        <div style={{fontSize:60,marginBottom:14}}>✅</div>
+        <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Booking Confirmed!</div>
+        <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
+          {item.name} · {confirmed.room}<br/>
+          {confirmed.checkIn} → {confirmed.checkOut} · {confirmed.guests} guest(s)
+        </div>
+        <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
+          <div style={{fontSize:11,color:'#8fa3c4',marginBottom:4}}>SHOW THIS CODE AT CHECK-IN AS PROOF OF BOOKING</div>
+          <div style={{fontSize:28,fontWeight:800,color:'#c9a227',letterSpacing:2}}>{confirmed.code}</div>
+        </div>
+        <div style={{display:'flex',gap:8,width:'100%',marginBottom:10}}>
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+        </div>
+        {item.email && <a href={`mailto:${item.email}?subject=${encodeURIComponent('Booking '+confirmed.code+' – '+item.name)}&body=${encodeURIComponent('Booking code: '+confirmed.code+'\nRoom: '+confirmed.room+'\nCheck-in: '+confirmed.checkIn+'\nCheck-out: '+confirmed.checkOut+'\nGuests: '+confirmed.guests)}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email booking</a>}
+        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelBooking}>Cancel Booking</button>
+        <button style={styles.btnPrimary} onClick={onBack}>Back</button>
+      </div>
+    </div>
+  );
+
   return (
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={240}/>
         <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
-        <div style={{position:'absolute',top:14,right:14,background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:11,color:'#0a1628',zIndex:10}}>{item.stars}</div>
+        <div style={{position:'absolute',top:14,right:14,display:'flex',gap:6,zIndex:10}}>
+          {item.category && <div style={{background:'rgba(131,122,221,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{item.category}</div>}
+          <div style={{background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:11,color:'#0a1628'}}>{item.stars}</div>
+        </div>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
           <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {item.region} · ⭐ {item.rating}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
+        <div style={{display:'flex',gap:8,marginBottom:12}}>
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+          {item.booking && <a href={item.booking} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🔗 Booking site</a>}
+        </div>
         <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap'}}>
           <div style={styles.badge}>⭐ {item.rating}</div>
           <div style={{...styles.badge,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)',background:'rgba(29,158,117,0.1)'}}>{item.price}</div>
@@ -945,19 +1167,19 @@ function HotelDetail({item,onBack,t}) {
               <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
               <div style={{fontSize:13,color:'#c9a227',marginTop:3,fontWeight:600}}>{r.price} / night</div>
             </div>
-            <button style={{padding:'7px 13px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}} onClick={(e)=>{e.stopPropagation();setShowBooking(true);}}>{t.bookNow}</button>
+            <button style={{padding:'7px 13px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}} onClick={(e)=>{e.stopPropagation();setSelRoom(r.name);setShowBooking(true);}}>{t.bookNow}</button>
           </div>
         ))}
         {showBooking&&(
           <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:16,marginTop:14,marginBottom:14}}>
-            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:14}}>📅 {t.bookNow}</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:14}}>📅 {t.bookNow}{selRoom?' — '+selRoom:''}</div>
             {[[t.checkIn,checkIn,setCheckIn,'date'],[t.checkOut,checkOut,setCheckOut,'date'],[t.guests,guests,setGuests,'number']].map(([label,val,setter,type])=>(
               <div key={label} style={{marginBottom:12}}>
                 <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>{label}</div>
                 <input type={type} value={val} onChange={e=>setter(e.target.value)} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 14px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
               </div>
             ))}
-            <button style={{...styles.btnPrimary,marginBottom:8}} onClick={()=>{if(checkIn&&checkOut)alert('Booking Confirmed!\n'+item.name+'\nCheck-in: '+checkIn+'\nCheck-out: '+checkOut+'\nGuests: '+guests+'\nWe will contact you within 24 hours!');else alert('Please fill in all dates');}}>{t.confirmBooking}</button>
+            <button style={{...styles.btnPrimary,marginBottom:8}} onClick={confirmBooking}>{t.confirmBooking}</button>
             <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setShowBooking(false)}>{t.cancel}</button>
           </div>
         )}
@@ -1247,6 +1469,203 @@ function ExploreTab({onSelect,onVirtualTour,t}) {
   );
 }
 
+// ── ACCOMMODATION TAB (Hotels / Lodges / Guesthouses / Camping) ──
+function AccommodationTab({onSelectHotel,t}) {
+  const [filter,setFilter] = useState('All');
+  const cats = ['All','Hotel','Lodge','Guesthouse','Camping'];
+  const filtered = filter==='All' ? hotels : hotels.filter(h=>h.category===filter);
+  return (
+    <div>
+      <div style={styles.sectionTitle}>🛏️ Accommodation</div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:12,lineHeight:1.6}}>Hotels, lodges, guesthouses and camping — with prices, photos and direct booking links.</div>
+      <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14,scrollbarWidth:'none'}}>
+        {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:filter===c?'rgba(201,162,39,0.15)':'transparent',color:filter===c?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
+      </div>
+      {filtered.map(h=>(
+        <div key={h.name} onClick={()=>onSelectHotel(h)} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12,cursor:'pointer'}}>
+          <div style={{position:'relative',height:160}}>
+            <Img src={h.coverImg} alt={h.name} style={{width:'100%',height:'100%'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(10,22,40,0.92) 100%)'}}/>
+            <div style={{position:'absolute',top:10,right:10,background:'rgba(131,122,221,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{h.category}</div>
+            <div style={{position:'absolute',bottom:10,left:12}}>
+              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{h.name}</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>📍 {h.region} · ⭐ {h.rating} · {h.stars}</div>
+            </div>
+          </div>
+          <div style={{padding:'12px 14px'}}>
+            <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:8}}>{h.desc}</div>
+            <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600}}>{h.price}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── CULTURE & EVENTS TAB ─────────────────────────────────
+const cultureItems = [
+  {name:'Umhlanga (Reed Dance)', img:limg('lobamba'), when:'Late August / Early September',
+   desc:"Thousands of unmarried young women gather at the Royal residence in Ludzidzini to cut reeds and present them to the Queen Mother, in a celebration of purity, unity and Swazi heritage. One of Africa's most spectacular cultural events."},
+  {name:'Incwala (Kingship Ceremony)', img:limg('lobamba')||limg('mantenga'), when:'December / January (timed to the new moon)',
+   desc:"The most sacred ceremony in Swazi culture — a multi-day ritual affirming the kingship and the bond between the king, his people and the land. Several stages are open to respectful visitors."},
+  {name:'Marula Festival (Buganu)', img:limg('Food-Umoba-Sugarcane')||limg('gonerural'), when:'February / March',
+   desc:'A harvest celebration of the marula fruit, marking the start of the traditional brewing season with feasting, song and dance across rural homesteads.'},
+  {name:'Traditional Villages', img:limg('mantenga'), when:'Open daily',
+   desc:'Living cultural villages such as Mantenga and Mantenga Cultural Village showcase traditional Swazi homestead life, beehive huts, dance performances and storytelling.'},
+  {name:'Crafts & Markets', img:limg('swazicandles')||limg('ezulwinimarket'), when:'Open daily',
+   desc:'Swazi Candles, Gone Rural weavers and Ngwenya Glass turn traditional craft skills into world-renowned art — all of it handmade locally and available to buy directly from the makers.'},
+];
+function CultureTab({t}) {
+  const [open,setOpen] = useState(null);
+  return (
+    <div>
+      <div style={styles.sectionTitle}>🎭 Culture & Events</div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Eswatini's living traditions — ceremonies, festivals, villages and crafts.</div>
+      {cultureItems.map(c=>(
+        <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
+          {c.img && <Img src={c.img} alt={c.name} style={{width:'100%',height:150}}/>}
+          <div style={{padding:'12px 14px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',cursor:'pointer'}} onClick={()=>setOpen(open===c.name?null:c.name)}>
+              <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
+              <span style={{color:'#c9a227',fontSize:13}}>{open===c.name?'▲':'▼'}</span>
+            </div>
+            <div style={{fontSize:11,color:'#c9a227',marginTop:3,fontWeight:600}}>📅 {c.when}</div>
+            {open===c.name && <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.7,marginTop:8}}>{c.desc}</div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── GETTING AROUND TAB ───────────────────────────────────
+const carRentals = [
+  {name:'Avis Eswatini', location:'King Mswati III Airport / Mbabane', phone:'+268 2518 4905', price:'From E 450/day'},
+  {name:'Europcar Eswatini', location:'Manzini & Mbabane', phone:'+268 2505 8392', price:'From E 400/day'},
+  {name:'Eswatini Car Hire', location:'Mbabane', phone:'+268 7602 8855', price:'From E 350/day'},
+];
+const distances = [
+  {from:'Mbabane',to:'Manzini',dist:'40 km',time:'35 min'},
+  {from:'Mbabane',to:'Ezulwini Valley',dist:'15 km',time:'15 min'},
+  {from:'Mbabane',to:"Pigg's Peak",dist:'50 km',time:'50 min'},
+  {from:'Manzini',to:'Hlane Royal National Park',dist:'67 km',time:'1 hr'},
+  {from:'Ezulwini',to:'Malolotja Nature Reserve',dist:'45 km',time:'45 min'},
+  {from:'Manzini',to:'Mlilwane Wildlife Sanctuary',dist:'18 km',time:'20 min'},
+];
+function GettingAroundTab({t}) {
+  const [section,setSection] = useState('car');
+  return (
+    <div>
+      <div style={styles.sectionTitle}>🚗 Getting Around</div>
+      <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14}}>
+        {[['car','Car Rental'],['taxi','Taxi/Kombi'],['dist','Distances'],['map','Map Nav']].map(([id,label])=>(
+          <button key={id} onClick={()=>setSection(id)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:section===id?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:section===id?'rgba(201,162,39,0.15)':'transparent',color:section===id?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:section===id?600:400}}>{label}</button>
+        ))}
+      </div>
+
+      {section==='car' && carRentals.map(c=>(
+        <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:14,marginBottom:10}}>
+          <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
+          <div style={{fontSize:12,color:'#8fa3c4',marginTop:4}}>📍 {c.location}</div>
+          <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600,marginTop:4}}>{c.price}</div>
+          <a href={`tel:${c.phone.replace(/\s/g,'')}`} style={{display:'inline-block',marginTop:8,textDecoration:'none',padding:'7px 14px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,fontWeight:600}}>📞 Call to book</a>
+        </div>
+      ))}
+
+      {section==='taxi' && (
+        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:16}}>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:8}}>Kombi Taxis (Minibus)</div>
+          <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>The cheapest way to get around. Kombis run fixed routes between towns and leave once full — no fixed timetable. Main ranks: Mbabane Bus Rank and Manzini Bus Rank. Fares are typically E10–E45 depending on distance. Look out for the route signs in the front window.</div>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:8}}>Metered Taxis</div>
+          <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.8}}>Available in Mbabane and Manzini for door-to-door trips, especially at night or with luggage. Most hotels can call one for you, or ask at a guesthouse front desk. Agree on a fare before you get in if the cab isn't metered.</div>
+        </div>
+      )}
+
+      {section==='dist' && (
+        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:4}}>
+          {distances.map((d,i)=>(
+            <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',borderBottom:i<distances.length-1?'0.5px solid rgba(255,255,255,0.06)':'none'}}>
+              <div style={{fontSize:12,color:'#f0f4ff'}}>{d.from} → {d.to}</div>
+              <div style={{textAlign:'right'}}>
+                <div style={{fontSize:12,color:'#c9a227',fontWeight:600}}>{d.dist}</div>
+                <div style={{fontSize:10,color:'#8fa3c4'}}>{d.time}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {section==='map' && (
+        <div style={{textAlign:'center'}}>
+          <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Open turn-by-turn navigation between any two places in Eswatini using Google Maps.</div>
+          <button style={styles.btnPrimary} onClick={()=>window.open('https://www.google.com/maps/dir/','_blank')}>🗺️ Open Map Navigation</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── BOOK / RESERVE HUB TAB ───────────────────────────────
+const tourGuides = [
+  {name:'Sibusiso Dlamini', specialty:'Cultural & Heritage Tours', phone:'+268 7611 2233', email:'sibusiso.guide@eswatini-tours.sz'},
+  {name:'Nomvula Shongwe', specialty:'Wildlife & National Parks', phone:'+268 7622 4455', email:'nomvula.guide@eswatini-tours.sz'},
+  {name:'Thabo Mamba', specialty:'Hiking & Adventure', phone:'+268 7633 6677', email:'thabo.guide@eswatini-tours.sz'},
+];
+const experiences = [
+  {name:'Sunset Game Drive – Hlane Royal National Park', price:'E 450 per person', img:limg('hlane')},
+  {name:'Mantenga Cultural Dance Show', price:'E 150 per person', img:limg('mantenga')},
+  {name:'Glass-Blowing Demo – Ngwenya Glass', price:'E 80 per person', img:limg('ngwenya glass')},
+  {name:'Malolotja Canopy Hike', price:'E 350 per person', img:limg('malolotja')},
+];
+function BookTab({t,setTab,onSelectHotel,onSelect}) {
+  const bookExperience = (exp)=>{
+    if(window.confirm(`Buy "${exp.name}" for ${exp.price}?\nThis will email our bookings team to confirm.`)){
+      window.location.href = `mailto:bookings@incaba-eswatini.com?subject=${encodeURIComponent('Experience booking: '+exp.name)}&body=${encodeURIComponent('I would like to book: '+exp.name+' ('+exp.price+')')}`;
+    }
+  };
+  return (
+    <div>
+      <div style={styles.sectionTitle}>🎟️ Book / Reserve</div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:16,lineHeight:1.6}}>Everything you need to book your Eswatini trip, in one place.</div>
+
+      <div onClick={()=>setTab('stay')} style={{...styles.hstat,display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:10,padding:14}}>
+        <span style={{fontSize:22}}>🛏️</span>
+        <div><div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Book Accommodation</div><div style={{fontSize:11,color:'#8fa3c4'}}>Hotels, lodges, guesthouses & camping</div></div>
+      </div>
+      <div onClick={()=>setTab('explore')} style={{...styles.hstat,display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:18,padding:14}}>
+        <span style={{fontSize:22}}>🔭</span>
+        <div><div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Book Activities</div><div style={{fontSize:11,color:'#8fa3c4'}}>Attractions, parks & virtual tours</div></div>
+      </div>
+
+      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:10}}>📞 Contact a Tour Guide</div>
+      {tourGuides.map(g=>(
+        <div key={g.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:12,marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div>
+            <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{g.name}</div>
+            <div style={{fontSize:11,color:'#8fa3c4'}}>{g.specialty}</div>
+          </div>
+          <div style={{display:'flex',gap:6}}>
+            <a href={`tel:${g.phone.replace(/\s/g,'')}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:14}}>📞</a>
+            <a href={`mailto:${g.email}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontSize:14}}>✉️</a>
+          </div>
+        </div>
+      ))}
+
+      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:18,marginBottom:10}}>✨ Buy an Experience</div>
+      {experiences.map(e=>(
+        <div key={e.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,overflow:'hidden',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
+          {e.img && <Img src={e.img} alt={e.name} style={{width:80,height:70,flexShrink:0}}/>}
+          <div style={{flex:1,padding:'8px 4px'}}>
+            <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff'}}>{e.name}</div>
+            <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600,marginTop:3}}>{e.price}</div>
+          </div>
+          <button onClick={()=>bookExperience(e)} style={{margin:'0 10px',padding:'8px 13px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>Buy</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ── HOME TAB ──────────────────────────────────────────────
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore,t}) {
   const [sec,setSec] = useState('attractions');
@@ -1525,6 +1944,16 @@ function AITab({t}) {
 function BusinessTab({t}) {
   const [step,setStep]   = useState('list');
   const [form,setForm]   = useState({name:'',type:'Hotel',region:'',phone:'',email:'',desc:''});
+  const [photos,setPhotos] = useState([]); // data-URLs of uploaded business photos
+  const handlePhotoUpload = (e)=>{
+    const files = Array.from(e.target.files||[]).slice(0,6-photos.length);
+    files.forEach(file=>{
+      const reader = new FileReader();
+      reader.onload = ()=> setPhotos(p=>[...p, reader.result]);
+      reader.readAsDataURL(file);
+    });
+  };
+  const removePhoto = (i)=> setPhotos(p=>p.filter((_,idx)=>idx!==i));
   const [card,setCard]   = useState('');
   const [exp,setExp]     = useState('');
   const [cvv,setCvv]     = useState('');
@@ -1537,8 +1966,8 @@ function BusinessTab({t}) {
   const pay=()=>{
     if(!card||!exp||!cvv||card.replace(/\s/g,'').length<16){alert('Please fill in all valid payment details');return;}
     alert('Payment of E200 successful!\nYour listing will go live within 24 hours.');
-    setList(p=>[...p,{name:form.name,type:form.type,region:form.region,img:photo(form.type+',business,africa'),views:'0',verified:false,revenue:'E 0'}]);
-    setStep('list'); setForm({name:'',type:'Hotel',region:'',phone:'',email:'',desc:''}); setCard(''); setExp(''); setCvv('');
+    setList(p=>[...p,{name:form.name,type:form.type,region:form.region,img:photos[0]||photo(form.type+',business,africa'),gallery:photos,views:'0',verified:false,revenue:'E 0'}]);
+    setStep('list'); setForm({name:'',type:'Hotel',region:'',phone:'',email:'',desc:''}); setCard(''); setExp(''); setCvv(''); setPhotos([]);
   };
   if(selBiz) return (
     <div style={styles.app}>
@@ -1562,6 +1991,11 @@ function BusinessTab({t}) {
           ))}
         </div>
         <Reviews name={selBiz.name} t={t}/>
+        {selBiz.gallery&&selBiz.gallery.length>0&&(
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:16}}>
+            {selBiz.gallery.map((img,i)=><Img key={i} src={img} alt="" style={{height:100,borderRadius:10}}/>)}
+          </div>
+        )}
         <button style={{...styles.btnPrimary,marginBottom:16}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(selBiz.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
       </div>
     </div>
@@ -1615,6 +2049,23 @@ function BusinessTab({t}) {
             <select value={form.type} onChange={e=>setForm(p=>({...p,type:e.target.value}))} style={{width:'100%',background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 13px',color:'#c9a227',fontSize:13,outline:'none',cursor:'pointer'}}>
               {['Hotel','Restaurant','Craft Market','Tour Operator','Activity Centre','Transport','Spa','Local Store','Other'].map(o=><option key={o} value={o}>{o}</option>)}
             </select>
+          </div>
+          <div style={{marginBottom:16}}>
+            <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Photos of your business (up to 6)</div>
+            <label style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,border:'1px dashed rgba(201,162,39,0.4)',borderRadius:10,padding:'14px',cursor:photos.length>=6?'not-allowed':'pointer',color:'#c9a227',fontSize:12,fontWeight:600,opacity:photos.length>=6?0.5:1}}>
+              📷 {photos.length>=6?'Maximum 6 photos added':'Tap to add photos'}
+              <input type="file" accept="image/*" multiple disabled={photos.length>=6} onChange={handlePhotoUpload} style={{display:'none'}}/>
+            </label>
+            {photos.length>0&&(
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginTop:10}}>
+                {photos.map((p,i)=>(
+                  <div key={i} style={{position:'relative'}}>
+                    <Img src={p} alt="" style={{width:'100%',height:70,borderRadius:8}}/>
+                    <button onClick={()=>removePhoto(i)} style={{position:'absolute',top:3,right:3,width:20,height:20,borderRadius:'50%',border:'none',background:'rgba(10,22,40,0.85)',color:'#e24b4a',fontSize:12,cursor:'pointer',lineHeight:1}}>✕</button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <button style={styles.btnPrimary} onClick={()=>{if(!form.name||!form.phone||!form.email){alert('Please fill required fields');return;}setStep('payment');}}>Continue to Payment →</button>
         </div>
