@@ -699,25 +699,52 @@ function App() {
         {tab==='business'  && <BusinessTab t={t}/>}
       </div>
 
-      <div style={{...styles.bottomNav,overflowX:'auto',justifyContent:'flex-start',whiteSpace:'nowrap'}}>
-        {[
-          {id:'home',     icon:'🏠',label:t.home},
-          {id:'explore',  icon:'🔭',label:t.explore2},
-          {id:'stay',     icon:'🛏️',label:'Stay'},
-          {id:'culture',  icon:'🎭',label:'Culture'},
-          {id:'getaround',icon:'🚗',label:'Travel'},
-          {id:'book',     icon:'🎟️',label:'Book'},
-          {id:'translate',icon:'🌐',label:t.translate},
-          {id:'compare',  icon:'⚖️', label:t.compare},
-          {id:'map',      icon:'🗺️', label:t.navigate},
-          {id:'ai',       icon:'🤖',label:t.ai},
-          {id:'business', icon:'🏢',label:t.business},
-        ].map(item=>(
-          <div key={item.id} style={{...(tab===item.id?styles.navActive:styles.navItem),flexShrink:0,minWidth:52}} onClick={()=>setTab(item.id)}>
+      <BottomNav tab={tab} setTab={setTab} t={t}/>
+    </div>
+  );
+}
+
+function BottomNav({tab,setTab,t}){
+  const [showMore,setShowMore]=useState(false);
+  const primary=[
+    {id:'home',    icon:'🏠',label:t.home},
+    {id:'explore', icon:'🔭',label:t.explore2},
+    {id:'stay',    icon:'🛏️',label:'Stay'},
+    {id:'book',    icon:'🎟️',label:'Book'},
+    {id:'map',     icon:'🗺️',label:t.navigate},
+  ];
+  const more=[
+    {id:'culture',  icon:'🎭',label:'Culture'},
+    {id:'getaround',icon:'🚗',label:'Travel'},
+    {id:'translate',icon:'🌐',label:t.translate},
+    {id:'compare',  icon:'⚖️',label:t.compare},
+    {id:'ai',       icon:'🤖',label:t.ai},
+    {id:'business', icon:'🏢',label:t.business},
+  ];
+  const moreActive = more.some(m=>m.id===tab);
+  return (
+    <div style={{position:'relative'}}>
+      {showMore&&(
+        <div style={{position:'absolute',bottom:'100%',right:8,marginBottom:6,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,boxShadow:'0 8px 24px rgba(0,0,0,0.5)',overflow:'hidden',zIndex:50,minWidth:170}}>
+          {more.map(item=>(
+            <div key={item.id} onClick={()=>{setTab(item.id);setShowMore(false);}}
+              style={{display:'flex',alignItems:'center',gap:10,padding:'11px 14px',cursor:'pointer',background:tab===item.id?'rgba(201,162,39,0.12)':'transparent',color:tab===item.id?'#c9a227':'#f0f4ff',fontSize:13,borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
+              <span style={{fontSize:16}}>{item.icon}</span><span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      <div style={styles.bottomNav}>
+        {primary.map(item=>(
+          <div key={item.id} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>{setTab(item.id);setShowMore(false);}}>
             <span style={{fontSize:16}}>{item.icon}</span>
             <span style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
           </div>
         ))}
+        <div style={moreActive?styles.navActive:styles.navItem} onClick={()=>setShowMore(s=>!s)}>
+          <span style={{fontSize:16}}>{showMore?'✕':'⋯'}</span>
+          <span style={{fontSize:8,color:moreActive?'#c9a227':'#8fa3c4',fontWeight:500}}>More</span>
+        </div>
       </div>
     </div>
   );
@@ -1840,22 +1867,21 @@ function MapTab({t}) {
           <button style={{...styles.btnPrimary,marginBottom:14}} onClick={startTracking}>📍 Show My Live Location</button>
         </>
       )}
-      <div style={{background:'#0d2540',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:16,height:190,overflow:'hidden',marginBottom:14}}>
-        <svg width="100%" height="100%" viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg">
-          <rect width="340" height="190" fill="#0d2540"/>
-          <rect x="8" y="8" width="324" height="174" rx="10" fill="#0f2a4a" stroke="rgba(201,162,39,0.2)" strokeWidth="0.5"/>
-          <path d="M55 160 Q115 130 168 97 Q218 65 272 42" stroke="#c9a227" strokeWidth="3" fill="none" strokeDasharray="6,4" opacity="0.9"/>
-          <circle cx="55" cy="160" r="8" fill="#e24b4a"/>
-          <text x="55" y="164" textAnchor="middle" fill="white" fontSize="9" fontWeight="700">{loc?'📍':'YOU'}</text>
-          <circle cx="168" cy="97" r="9" fill="#c9a227"/>
-          <text x="168" y="101" textAnchor="middle" fill="#0a1628" fontSize="9" fontWeight="700">★</text>
-          <circle cx="272" cy="42" r="7" fill="#5dcaa5"/>
-          <text x="272" y="46" textAnchor="middle" fill="white" fontSize="8" fontWeight="700">B</text>
-          <rect x="106" y="82" width="72" height="15" rx="4" fill="rgba(201,162,39,0.25)" stroke="rgba(201,162,39,0.5)" strokeWidth="0.5"/>
-          <text x="142" y="93" textAnchor="middle" fill="#c9a227" fontSize="8">Mantenga Falls</text>
-          <rect x="237" y="29" width="62" height="14" rx="4" fill="rgba(93,202,165,0.2)" stroke="rgba(93,202,165,0.4)" strokeWidth="0.5"/>
-          <text x="268" y="40" textAnchor="middle" fill="#5dcaa5" fontSize="8">Hlane Reserve</text>
-        </svg>
+      <div style={{background:'#0d2540',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:16,height:280,overflow:'hidden',marginBottom:14}}>
+        <iframe
+          title="Eswatini Map"
+          width="100%"
+          height="100%"
+          style={{border:0,filter:'invert(0.92) hue-rotate(180deg) brightness(1.05) contrast(0.95)'}}
+          src={
+            loc
+              ? `https://www.openstreetmap.org/export/embed.html?bbox=${loc.lng-0.08}%2C${loc.lat-0.06}%2C${loc.lng+0.08}%2C${loc.lat+0.06}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`
+              : `https://www.openstreetmap.org/export/embed.html?bbox=30.7%2C-27.4%2C32.2%2C-25.7&layer=mapnik`
+          }
+        />
+      </div>
+      <div style={{textAlign:'right',marginTop:-12,marginBottom:14}}>
+        <a href={loc?`https://www.openstreetmap.org/?mlat=${loc.lat}&mlon=${loc.lng}#map=14/${loc.lat}/${loc.lng}`:'https://www.openstreetmap.org/#map=9/-26.5/31.4'} target="_blank" rel="noreferrer" style={{fontSize:10,color:'#8fa3c4'}}>View larger map →</a>
       </div>
       <div style={styles.sectionTitle}>Smart Routes</div>
       {routes.map(r=>(
