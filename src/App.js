@@ -665,6 +665,7 @@ const requireAuth = (callback)=>{
   const [selectedStore,setSelectedStore]           = useState(null);
   const [showVirtualTour,setShowVirtualTour]       = useState(null);
   const t = T[lang];
+  if(showAuth) return <AuthModal mode={authMode} setMode={setAuthMode} onClose={()=>setShowAuth(false)} onSuccess={(u)=>{setUser(u);setShowAuth(false);if(authCallback){authCallback();setAuthCallback(null);}}} />;
 
   if(screen==='splash') return (
     <div style={styles.splash}>
