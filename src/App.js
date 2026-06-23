@@ -612,8 +612,8 @@ function Img({src, alt, style, fallback='https://media.istockphoto.com/id/105159
   const [loaded,setLoaded] = useState(false);
   const [error,setError]   = useState(false);
   return (
-    <div style={{...style,position:'relative',overflow:'hidden',background:'#2E2014'}}>
-      {!loaded&&!error&&<div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',color:'#B8A892',fontSize:12}}>Loading...</div>}
+    <div style={{...style,position:'relative',overflow:'hidden',background:'#0f2040'}}>
+      {!loaded&&!error&&<div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',color:'#8fa3c4',fontSize:12}}>Loading...</div>}
       <img
         src={error?fallback:src}
         alt={alt||''}
@@ -641,14 +641,13 @@ function App() {
   if(screen==='splash') return (
     <div style={styles.splash}>
       <div style={styles.splashGlow}/>
-      <div style={{fontSize:64,marginBottom:10}}>🛡️</div>
-      <h1 className="display" style={styles.splashTitle}>Inc<span style={styles.gold}>aba</span></h1>
-      <div className="lihiya-stripe" style={{maxWidth:160,borderRadius:3,marginBottom:14}}/>
-      <div style={{fontSize:14,color:'#C97C2C',fontWeight:600,marginBottom:6}}>{t.tagline}</div>
-      <p style={{color:'#B8A892',fontSize:12,margin:'0 0 16px',lineHeight:1.6}}>{t.sub}</p>
+      <div style={{fontSize:72,marginBottom:12}}>💎</div>
+      <h1 style={styles.splashTitle}>Inc<span style={styles.gold}>aba</span></h1>
+      <div style={{fontSize:14,color:'#c9a227',fontWeight:600,marginBottom:6}}>{t.tagline}</div>
+      <p style={{color:'#8fa3c4',fontSize:12,margin:'0 0 16px',lineHeight:1.6}}>{t.sub}</p>
       <div style={{display:'flex',gap:6,justifyContent:'center',marginBottom:16,flexWrap:'wrap',maxWidth:340}}>
         {Object.entries(T).map(([code,data])=>(
-          <button key={code} onClick={()=>setLang(code)} style={{padding:'5px 10px',borderRadius:20,border:lang===code?'1.5px solid #C97C2C':'0.5px solid rgba(201,124,44,0.3)',background:lang===code?'rgba(201,124,44,0.2)':'transparent',color:lang===code?'#C97C2C':'#B8A892',fontSize:12,cursor:'pointer',display:'flex',alignItems:'center',gap:4}}>
+          <button key={code} onClick={()=>setLang(code)} style={{padding:'5px 10px',borderRadius:20,border:lang===code?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:lang===code?'rgba(201,162,39,0.2)':'transparent',color:lang===code?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',display:'flex',alignItems:'center',gap:4}}>
             {data.flag} {code.toUpperCase()}
           </button>
         ))}
@@ -666,18 +665,17 @@ function App() {
 
   return (
     <div style={styles.app}>
-      <div className="lihiya-stripe"/>
       <div style={styles.topbar}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <div style={{fontSize:18,width:30,height:30,borderRadius:8,background:'linear-gradient(135deg,#C97C2C,#E8B23D)',display:'flex',alignItems:'center',justifyContent:'center'}}>🛡️</div>
-          <span style={{fontSize:17,fontWeight:700,color:'#F2E8D5'}}>Inc<span style={styles.gold}>aba</span></span>
+          <div style={{fontSize:18,width:30,height:30,borderRadius:8,background:'linear-gradient(135deg,#c9a227,#e8b93a)',display:'flex',alignItems:'center',justifyContent:'center'}}>💎</div>
+          <span style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Inc<span style={styles.gold}>aba</span></span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8,position:'relative'}}>
-          <button onClick={()=>setShowLangPicker(!showLangPicker)} style={{padding:'4px 10px',borderRadius:20,border:'0.5px solid rgba(201,124,44,0.3)',background:'rgba(201,124,44,0.08)',color:'#C97C2C',fontSize:11,cursor:'pointer'}}>{T[lang].flag} {lang.toUpperCase()} ▾</button>
+          <button onClick={()=>setShowLangPicker(!showLangPicker)} style={{padding:'4px 10px',borderRadius:20,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontSize:11,cursor:'pointer'}}>{T[lang].flag} {lang.toUpperCase()} ▾</button>
           {showLangPicker&&(
-            <div style={{position:'absolute',top:34,right:0,background:'#241A12',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:12,padding:8,zIndex:300,minWidth:160,boxShadow:'0 8px 32px rgba(0,0,0,0.5)',maxHeight:300,overflowY:'auto'}}>
+            <div style={{position:'absolute',top:34,right:0,background:'#0d1f3c',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,padding:8,zIndex:300,minWidth:160,boxShadow:'0 8px 32px rgba(0,0,0,0.5)',maxHeight:300,overflowY:'auto'}}>
               {Object.entries(T).map(([code,data])=>(
-                <div key={code} onClick={()=>{setLang(code);setShowLangPicker(false);}} style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',color:lang===code?'#C97C2C':'#F2E8D5',background:lang===code?'rgba(201,124,44,0.12)':'transparent',fontSize:13,display:'flex',alignItems:'center',gap:8}}>
+                <div key={code} onClick={()=>{setLang(code);setShowLangPicker(false);}} style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',color:lang===code?'#c9a227':'#f0f4ff',background:lang===code?'rgba(201,162,39,0.12)':'transparent',fontSize:13,display:'flex',alignItems:'center',gap:8}}>
                   {data.flag} {data.name}
                 </div>
               ))}
@@ -727,10 +725,10 @@ function BottomNav({tab,setTab,t}){
   return (
     <div style={{position:'relative'}}>
       {showMore&&(
-        <div style={{position:'absolute',bottom:'100%',right:8,marginBottom:6,background:'#2E2014',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:12,boxShadow:'0 8px 24px rgba(0,0,0,0.5)',overflow:'hidden',zIndex:50,minWidth:170}}>
+        <div style={{position:'absolute',bottom:'100%',right:8,marginBottom:6,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,boxShadow:'0 8px 24px rgba(0,0,0,0.5)',overflow:'hidden',zIndex:50,minWidth:170}}>
           {more.map(item=>(
             <div key={item.id} onClick={()=>{setTab(item.id);setShowMore(false);}}
-              style={{display:'flex',alignItems:'center',gap:10,padding:'11px 14px',cursor:'pointer',background:tab===item.id?'rgba(201,124,44,0.12)':'transparent',color:tab===item.id?'#C97C2C':'#F2E8D5',fontSize:13,borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
+              style={{display:'flex',alignItems:'center',gap:10,padding:'11px 14px',cursor:'pointer',background:tab===item.id?'rgba(201,162,39,0.12)':'transparent',color:tab===item.id?'#c9a227':'#f0f4ff',fontSize:13,borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
               <span style={{fontSize:16}}>{item.icon}</span><span>{item.label}</span>
             </div>
           ))}
@@ -740,12 +738,12 @@ function BottomNav({tab,setTab,t}){
         {primary.map(item=>(
           <div key={item.id} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>{setTab(item.id);setShowMore(false);}}>
             <span style={{fontSize:16}}>{item.icon}</span>
-            <span style={{fontSize:8,color:tab===item.id?'#C97C2C':'#B8A892',fontWeight:500}}>{item.label}</span>
+            <span style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
           </div>
         ))}
         <div style={moreActive?styles.navActive:styles.navItem} onClick={()=>setShowMore(s=>!s)}>
           <span style={{fontSize:16}}>{showMore?'✕':'⋯'}</span>
-          <span style={{fontSize:8,color:moreActive?'#C97C2C':'#B8A892',fontWeight:500}}>More</span>
+          <span style={{fontSize:8,color:moreActive?'#c9a227':'#8fa3c4',fontWeight:500}}>More</span>
         </div>
       </div>
     </div>
@@ -773,32 +771,32 @@ function VirtualTourScreen({place,onBack,t}) {
   };
   return (
     <div style={styles.app}>
-      <div style={{background:'linear-gradient(135deg,#1A130E,#3A2A1C)',padding:'12px 16px',display:'flex',alignItems:'center',gap:12,borderBottom:'0.5px solid rgba(201,124,44,0.25)',flexShrink:0}}>
-        <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#F2E8D5',fontSize:12,cursor:'pointer'}}>← Back</button>
-        <div><div style={{fontSize:13,fontWeight:700,color:'#C97C2C'}}>{t.virtualTour}</div><div style={{fontSize:11,color:'#B8A892'}}>{place.name}</div></div>
+      <div style={{background:'linear-gradient(135deg,#0a1628,#1a3a5c)',padding:'12px 16px',display:'flex',alignItems:'center',gap:12,borderBottom:'0.5px solid rgba(201,162,39,0.25)',flexShrink:0}}>
+        <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}>← Back</button>
+        <div><div style={{fontSize:13,fontWeight:700,color:'#c9a227'}}>{t.virtualTour}</div><div style={{fontSize:11,color:'#8fa3c4'}}>{place.name}</div></div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         {!showVideo?(
           <>
             <Img src={place.gallery[step%place.gallery.length]} alt={place.name} style={{width:'100%',height:200,borderRadius:14,marginBottom:14}}/>
-            <div style={{background:'rgba(124,90,158,0.15)',border:'0.5px solid rgba(155,123,184,0.3)',borderRadius:16,padding:18,marginBottom:14,textAlign:'center'}}>
+            <div style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.3)',borderRadius:16,padding:18,marginBottom:14,textAlign:'center'}}>
               <div style={{fontSize:40,marginBottom:10}}>{steps[step].icon}</div>
-              <div style={{fontSize:17,fontWeight:700,color:'#C97C2C',marginBottom:10}}>{steps[step].title}</div>
+              <div style={{fontSize:17,fontWeight:700,color:'#c9a227',marginBottom:10}}>{steps[step].title}</div>
               <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{steps[step].desc}</div>
-              <button onClick={()=>speak(steps[step].desc)} style={{padding:'9px 20px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:speaking?'rgba(155,123,184,0.3)':'rgba(155,123,184,0.15)',color:'#C7B4E0',cursor:'pointer',fontSize:12}}>
+              <button onClick={()=>speak(steps[step].desc)} style={{padding:'9px 20px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:12}}>
                 {speaking?'🔊 Speaking...':'🔊 Listen'}
               </button>
             </div>
             <div style={{display:'flex',gap:6,justifyContent:'center',marginBottom:14}}>
-              {steps.map((_,i)=><div key={i} onClick={()=>setStep(i)} style={{width:i===step?22:7,height:7,borderRadius:4,background:i===step?'#C97C2C':'rgba(201,124,44,0.3)',cursor:'pointer',transition:'all 0.3s'}}/>)}
+              {steps.map((_,i)=><div key={i} onClick={()=>setStep(i)} style={{width:i===step?22:7,height:7,borderRadius:4,background:i===step?'#c9a227':'rgba(201,162,39,0.3)',cursor:'pointer',transition:'all 0.3s'}}/>)}
             </div>
             <div style={{display:'flex',gap:10,marginBottom:14}}>
-              <button onClick={()=>setStep(p=>Math.max(0,p-1))} disabled={step===0} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:'transparent',color:step===0?'#4a5568':'#C97C2C',cursor:step===0?'not-allowed':'pointer',fontSize:13}}>← Prev</button>
-              <button onClick={()=>setStep(p=>Math.min(steps.length-1,p+1))} disabled={step===steps.length-1} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:step===steps.length-1?'transparent':'rgba(201,124,44,0.15)',color:step===steps.length-1?'#4a5568':'#C97C2C',cursor:step===steps.length-1?'not-allowed':'pointer',fontSize:13}}>Next →</button>
+              <button onClick={()=>setStep(p=>Math.max(0,p-1))} disabled={step===0} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:step===0?'#4a5568':'#c9a227',cursor:step===0?'not-allowed':'pointer',fontSize:13}}>← Prev</button>
+              <button onClick={()=>setStep(p=>Math.min(steps.length-1,p+1))} disabled={step===steps.length-1} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:step===steps.length-1?'transparent':'rgba(201,162,39,0.15)',color:step===steps.length-1?'#4a5568':'#c9a227',cursor:step===steps.length-1?'not-allowed':'pointer',fontSize:13}}>Next →</button>
             </div>
-            <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:14,padding:'12px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
-              <div><div style={{fontSize:13,fontWeight:600,color:'#F2E8D5',marginBottom:3}}>{place.videoTitle}</div><div style={{fontSize:11,color:'#B8A892'}}>Real YouTube video</div></div>
-              <button onClick={()=>setShowVideo(true)} style={{padding:'9px 16px',borderRadius:50,background:'linear-gradient(135deg,#C97C2C,#E8B23D)',border:'none',color:'#1A130E',fontSize:12,fontWeight:700,cursor:'pointer'}}>▶ Watch</button>
+            <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,padding:'12px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
+              <div><div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:3}}>{place.videoTitle}</div><div style={{fontSize:11,color:'#8fa3c4'}}>Real YouTube video</div></div>
+              <button onClick={()=>setShowVideo(true)} style={{padding:'9px 16px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer'}}>▶ Watch</button>
             </div>
             <div style={styles.sectionTitle}>{t.photos}</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
@@ -807,11 +805,11 @@ function VirtualTourScreen({place,onBack,t}) {
           </>
         ):(
           <div>
-            <button onClick={()=>setShowVideo(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#F2E8D5',fontSize:12,cursor:'pointer',marginBottom:12}}>← Back</button>
+            <button onClick={()=>setShowVideo(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer',marginBottom:12}}>← Back</button>
             <div style={{borderRadius:14,overflow:'hidden',marginBottom:12}}>
               <iframe width="100%" height="210" src={'https://www.youtube.com/embed/'+place.videoId+'?autoplay=1'} title={place.videoTitle} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{display:'block'}}/>
             </div>
-            <div style={{fontSize:12,color:'#B8A892',textAlign:'center'}}>{place.videoTitle}</div>
+            <div style={{fontSize:12,color:'#8fa3c4',textAlign:'center'}}>{place.videoTitle}</div>
           </div>
         )}
       </div>
@@ -829,17 +827,17 @@ function Slideshow({images,height=260}) {
     return ()=>clearInterval(t);
   },[play,images.length]);
   return (
-    <div style={{position:'relative',height,overflow:'hidden',background:'#2A1D14',flexShrink:0}}>
+    <div style={{position:'relative',height,overflow:'hidden',background:'#0d2540',flexShrink:0}}>
       {images.map((img,i)=>(
         <div key={i} style={{position:'absolute',inset:0,opacity:i===cur?1:0,transition:'opacity 0.9s ease'}}>
           <Img src={img} alt="" style={{width:'100%',height:'100%'}}/>
         </div>
       ))}
       <div style={{position:'absolute',bottom:10,left:'50%',transform:'translateX(-50%)',display:'flex',gap:5}}>
-        {images.map((_,i)=><div key={i} onClick={()=>{setCur(i);setPlay(false);}} style={{width:i===cur?18:6,height:6,borderRadius:3,background:i===cur?'#C97C2C':'rgba(255,255,255,0.5)',cursor:'pointer',transition:'all 0.3s'}}/>)}
+        {images.map((_,i)=><div key={i} onClick={()=>{setCur(i);setPlay(false);}} style={{width:i===cur?18:6,height:6,borderRadius:3,background:i===cur?'#c9a227':'rgba(255,255,255,0.5)',cursor:'pointer',transition:'all 0.3s'}}/>)}
       </div>
-      <button onClick={()=>{setCur(p=>(p-1+images.length)%images.length);setPlay(false);}} style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',background:'rgba(26,19,14,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>‹</button>
-      <button onClick={()=>{setCur(p=>(p+1)%images.length);setPlay(false);}} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'rgba(26,19,14,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>›</button>
+      <button onClick={()=>{setCur(p=>(p-1+images.length)%images.length);setPlay(false);}} style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>‹</button>
+      <button onClick={()=>{setCur(p=>(p+1)%images.length);setPlay(false);}} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>›</button>
     </div>
   );
 }
@@ -857,24 +855,24 @@ function Reviews({name,t}) {
     <div style={{marginBottom:16}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
         <div style={styles.sectionTitle}>{t.reviews}</div>
-        <button style={{fontSize:11,color:'#C97C2C',background:'rgba(201,124,44,0.1)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:20,padding:'4px 12px',cursor:'pointer'}} onClick={()=>setShow(!show)}>+ {t.writeReview}</button>
+        <button style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 12px',cursor:'pointer'}} onClick={()=>setShow(!show)}>+ {t.writeReview}</button>
       </div>
       {show&&(
-        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:12,padding:14,marginBottom:12}}>
+        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:14,marginBottom:12}}>
           <div style={{display:'flex',gap:5,marginBottom:10}}>{[1,2,3,4,5].map(s=><span key={s} onClick={()=>setNStars(s)} style={{fontSize:22,cursor:'pointer',opacity:s<=nStars?1:0.3}}>⭐</span>)}</div>
-          <input value={nName} onChange={e=>setNName(e.target.value)} placeholder="Your name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:8,padding:'9px 12px',color:'#F2E8D5',fontSize:13,outline:'none',marginBottom:8,boxSizing:'border-box'}}/>
-          <textarea value={nText} onChange={e=>setNText(e.target.value)} placeholder="Share your experience..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:8,padding:'9px 12px',color:'#F2E8D5',fontSize:13,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box'}}/>
+          <input value={nName} onChange={e=>setNName(e.target.value)} placeholder="Your name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'9px 12px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:8,boxSizing:'border-box'}}/>
+          <textarea value={nText} onChange={e=>setNText(e.target.value)} placeholder="Share your experience..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'9px 12px',color:'#f0f4ff',fontSize:13,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box'}}/>
           <div style={{display:'flex',gap:8,marginTop:8}}>
             <button style={{...styles.btnPrimary,flex:1,padding:'9px',fontSize:13}} onClick={()=>{if(!nName||!nText)return;setList(p=>[{name:nName,flag:'🌍',stars:nStars,text:nText,date:'Just now'},...p]);setNName('');setNText('');setShow(false);}}>{t.submit}</button>
-            <button style={{flex:1,padding:'9px',fontSize:13,borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:'transparent',color:'#B8A892',cursor:'pointer'}} onClick={()=>setShow(false)}>{t.cancel}</button>
+            <button style={{flex:1,padding:'9px',fontSize:13,borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer'}} onClick={()=>setShow(false)}>{t.cancel}</button>
           </div>
         </div>
       )}
       {list.map((r,i)=>(
-        <div key={i} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.15)',borderRadius:12,padding:12,marginBottom:8}}>
+        <div key={i} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.15)',borderRadius:12,padding:12,marginBottom:8}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5}}>
-            <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:18}}>{r.flag}</span><span style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{r.name}</span></div>
-            <span style={{fontSize:10,color:'#B8A892'}}>{r.date}</span>
+            <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:18}}>{r.flag}</span><span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</span></div>
+            <span style={{fontSize:10,color:'#8fa3c4'}}>{r.date}</span>
           </div>
           <div style={{marginBottom:5}}>{'⭐'.repeat(r.stars)}</div>
           <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.6}}>{r.text}</div>
@@ -891,8 +889,8 @@ function DetailScreen({place,onBack,t,onVirtualTour}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={place.gallery} height={260}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(26,19,14,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#F2E8D5',fontSize:12,cursor:'pointer',zIndex:10}}>← {t.cancel}</button>
-        <div style={{position:'absolute',top:14,right:14,background:'rgba(201,124,44,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#1A130E',zIndex:10}}>{place.category}</div>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← {t.cancel}</button>
+        <div style={{position:'absolute',top:14,right:14,background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#0a1628',zIndex:10}}>{place.category}</div>
         <div style={{position:'absolute',bottom:30,left:14,zIndex:10}}>
           <div style={{fontSize:19,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{place.name}</div>
           <div style={{fontSize:12,color:'rgba(255,255,255,0.85)',textShadow:'0 1px 4px rgba(0,0,0,0.8)'}}>📍 {place.region}</div>
@@ -902,38 +900,38 @@ function DetailScreen({place,onBack,t,onVirtualTour}) {
         <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap'}}>
           <div style={styles.badge}>⭐ {place.rating}</div>
           <div style={styles.badge}>{place.price}</div>
-          <div style={{...styles.badge,color:'#8FAE6B',borderColor:'rgba(124,148,86,0.3)',background:'rgba(124,148,86,0.1)'}}>{place.hours}</div>
+          <div style={{...styles.badge,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)',background:'rgba(29,158,117,0.1)'}}>{place.hours}</div>
         </div>
-        <button style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:'rgba(155,123,184,0.15)',color:'#C7B4E0',cursor:'pointer',fontWeight:600,fontSize:13,marginBottom:14}} onClick={onVirtualTour}>🥽 {t.virtualTour} — {place.name}</button>
-        <div style={{fontSize:13,color:'#C97C2C',fontWeight:600,marginBottom:6}}>{t.about}</div>
+        <button style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontWeight:600,fontSize:13,marginBottom:14}} onClick={onVirtualTour}>🥽 {t.virtualTour} — {place.name}</button>
+        <div style={{fontSize:13,color:'#c9a227',fontWeight:600,marginBottom:6}}>{t.about}</div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{place.fullDesc}</div>
-        <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:12,marginBottom:12}}>
-          <div style={{fontSize:12,color:'#C97C2C',fontWeight:600,marginBottom:4}}>{t.location}</div>
-          <div style={{fontSize:12,color:'#B8A892'}}>{place.location}</div>
+        <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:12,marginBottom:12}}>
+          <div style={{fontSize:12,color:'#c9a227',fontWeight:600,marginBottom:4}}>{t.location}</div>
+          <div style={{fontSize:12,color:'#8fa3c4'}}>{place.location}</div>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:12}}>
-          <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:12}}>
-            <div style={{fontSize:11,color:'#C97C2C',fontWeight:600,marginBottom:3}}>{t.hours}</div>
-            <div style={{fontSize:11,color:'#B8A892'}}>{place.hours}</div>
+          <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:12}}>
+            <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginBottom:3}}>{t.hours}</div>
+            <div style={{fontSize:11,color:'#8fa3c4'}}>{place.hours}</div>
           </div>
-          <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:12}}>
-            <div style={{fontSize:11,color:'#C97C2C',fontWeight:600,marginBottom:3}}>{t.price}</div>
-            <div style={{fontSize:11,color:'#B8A892'}}>{place.price}</div>
+          <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:12}}>
+            <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginBottom:3}}>{t.price}</div>
+            <div style={{fontSize:11,color:'#8fa3c4'}}>{place.price}</div>
           </div>
         </div>
-        <div style={{fontSize:13,color:'#C97C2C',fontWeight:600,marginBottom:8}}>{t.tips}</div>
+        <div style={{fontSize:13,color:'#c9a227',fontWeight:600,marginBottom:8}}>{t.tips}</div>
         {place.tips.map((tip,i)=>(
           <div key={i} style={{display:'flex',gap:8,alignItems:'flex-start',marginBottom:7}}>
-            <div style={{width:5,height:5,borderRadius:'50%',background:'#C97C2C',flexShrink:0,marginTop:5}}/>
-            <div style={{fontSize:12,color:'#B8A892',lineHeight:1.6}}>{tip}</div>
+            <div style={{width:5,height:5,borderRadius:'50%',background:'#c9a227',flexShrink:0,marginTop:5}}/>
+            <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6}}>{tip}</div>
           </div>
         ))}
         <Reviews name={place.name} t={t}/>
         <div style={{display:'flex',gap:10,marginTop:8,marginBottom:8}}>
           <button style={{...styles.btnPrimary,flex:1,padding:'11px',fontSize:13}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(place.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
-          <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(124,148,86,0.6)':'0.5px solid rgba(201,124,44,0.4)',background:saved?'rgba(124,148,86,0.15)':'transparent',color:saved?'#8FAE6B':'#C97C2C',cursor:'pointer',fontWeight:600}} onClick={()=>setSaved(true)}>{saved?'✅ Saved':t.savePlace}</button>
+          <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(29,158,117,0.6)':'0.5px solid rgba(201,162,39,0.4)',background:saved?'rgba(29,158,117,0.15)':'transparent',color:saved?'#5dcaa5':'#c9a227',cursor:'pointer',fontWeight:600}} onClick={()=>setSaved(true)}>{saved?'✅ Saved':t.savePlace}</button>
         </div>
-        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(176,65,58,0.4)',background:'rgba(176,65,58,0.1)',color:'#B0413A',cursor:'pointer',fontWeight:600,marginBottom:16}} onClick={()=>{if(window.confirm('Call Eswatini Emergency Services 999?'))window.location.href='tel:999';}}>🆘 {t.sos}</button>
+        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.1)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:16}} onClick={()=>{if(window.confirm('Call Eswatini Emergency Services 999?'))window.location.href='tel:999';}}>🆘 {t.sos}</button>
       </div>
     </div>
   );
@@ -1000,40 +998,40 @@ function RestaurantDetail({item,onBack,t}) {
         {cancelled ? (
           <>
             <div style={{fontSize:60,marginBottom:14}}>🚫</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#B0413A',marginBottom:8}}>Order Cancelled</div>
-            <div style={{fontSize:13,color:'#B8A892',lineHeight:1.7,marginBottom:20}}>Your order {orderCode} from {item.name} has been cancelled.<br/>Contact the restaurant if you've already been charged.</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#e24b4a',marginBottom:8}}>Order Cancelled</div>
+            <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.7,marginBottom:20}}>Your order {orderCode} from {item.name} has been cancelled.<br/>Contact the restaurant if you've already been charged.</div>
           </>
         ) : (
           <>
             <div style={{fontSize:60,marginBottom:14}}>✅</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#8FAE6B',marginBottom:6}}>Order Placed!</div>
-            <div style={{fontSize:13,color:'#B8A892',lineHeight:1.6,marginBottom:16}}>
+            <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Order Placed!</div>
+            <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
               Your order from {item.name} has been received.<br/>
               {diningMode==='dinein' ? <>Table: {tableNum}</> : <>Pickup · Contact: {tableNum}</>} · Est. time: 20-30 min{orderTime?<> (ready by {new Date(orderTime+25*60000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})})</>:null}<br/>
               🔥 Your food will be prepared fresh and served hot.
             </div>
-            <div style={{background:'rgba(201,124,44,0.12)',border:'1px solid rgba(201,124,44,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
-              <div style={{fontSize:11,color:'#B8A892',marginBottom:4,letterSpacing:0.5}}>SHOW THIS CODE AT THE RESTAURANT AS PROOF OF ORDER</div>
-              <div style={{fontSize:28,fontWeight:800,color:'#C97C2C',letterSpacing:2}}>{orderCode}</div>
+            <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
+              <div style={{fontSize:11,color:'#8fa3c4',marginBottom:4,letterSpacing:0.5}}>SHOW THIS CODE AT THE RESTAURANT AS PROOF OF ORDER</div>
+              <div style={{fontSize:28,fontWeight:800,color:'#c9a227',letterSpacing:2}}>{orderCode}</div>
             </div>
-            <div style={{background:'rgba(124,148,86,0.1)',border:'0.5px solid rgba(124,148,86,0.3)',borderRadius:14,padding:16,width:'100%',marginBottom:16}}>
+            <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:14,padding:16,width:'100%',marginBottom:16}}>
               {cart.map(c=>(
-                <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#F2E8D5'}}>
-                  <span>{c.name} x{c.qty}</span><span style={{color:'#C97C2C'}}>E {c.price*c.qty}</span>
+                <div key={c.name} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:13,color:'#f0f4ff'}}>
+                  <span>{c.name} x{c.qty}</span><span style={{color:'#c9a227'}}>E {c.price*c.qty}</span>
                 </div>
               ))}
-              <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,display:'flex',justifyContent:'space-between',fontWeight:700,color:'#C97C2C',fontSize:15}}>
+              <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,display:'flex',justifyContent:'space-between',fontWeight:700,color:'#c9a227',fontSize:15}}>
                 <span>Total</span><span>E {total}</span>
               </div>
             </div>
             <div style={{display:'flex',gap:8,width:'100%',marginBottom:10}}>
               <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-              {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:'rgba(155,123,184,0.15)',color:'#C7B4E0',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+              {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
             </div>
             {item.email && (
-              <a href={`mailto:${item.email}?subject=${emailSubject}&body=${emailBody}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:'transparent',color:'#C97C2C',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email order to restaurant</a>
+              <a href={`mailto:${item.email}?subject=${emailSubject}&body=${emailBody}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email order to restaurant</a>
             )}
-            <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(176,65,58,0.4)',background:'rgba(176,65,58,0.08)',color:'#B0413A',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelOrder}>Cancel Order</button>
+            <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelOrder}>Cancel Order</button>
           </>
         )}
         <button style={styles.btnPrimary} onClick={onBack}>Back</button>
@@ -1045,9 +1043,9 @@ function RestaurantDetail({item,onBack,t}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Img src={item.coverImg} alt={item.name} style={{width:'100%',height:200}}/>
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,transparent 50%,rgba(26,19,14,0.9) 100%)'}}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(26,19,14,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#F2E8D5',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
-        {cart.length>0&&<button onClick={()=>setShowCart(!showCart)} style={{position:'absolute',top:14,right:14,background:'rgba(201,124,44,0.9)',border:'none',borderRadius:50,padding:'7px 13px',color:'#1A130E',fontSize:12,fontWeight:700,cursor:'pointer',zIndex:10}}>🛒 {cart.length} · E{total}</button>}
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,transparent 50%,rgba(10,22,40,0.9) 100%)'}}/>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        {cart.length>0&&<button onClick={()=>setShowCart(!showCart)} style={{position:'absolute',top:14,right:14,background:'rgba(201,162,39,0.9)',border:'none',borderRadius:50,padding:'7px 13px',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer',zIndex:10}}>🛒 {cart.length} · E{total}</button>}
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
           <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {item.region} · ⭐ {item.rating} · {item.hours}</div>
@@ -1055,52 +1053,52 @@ function RestaurantDetail({item,onBack,t}) {
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <div style={{display:'flex',gap:8,marginBottom:14}}>
-          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.35)',background:'rgba(201,124,44,0.08)',color:'#C97C2C',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.35)',background:'rgba(155,123,184,0.1)',color:'#C7B4E0',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
-          {item.email && <a href={`mailto:${item.email}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(143,174,107,0.35)',background:'rgba(143,174,107,0.1)',color:'#8FAE6B',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>✉️ Email</a>}
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+          {item.email && <a href={`mailto:${item.email}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>✉️ Email</a>}
         </div>
         {showCart&&cart.length>0&&(
-          <div style={{background:'rgba(201,124,44,0.08)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:14,padding:14,marginBottom:14}}>
-            <div style={{fontSize:14,fontWeight:600,color:'#C97C2C',marginBottom:10}}>🛒 {t.cart}</div>
+          <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:14,padding:14,marginBottom:14}}>
+            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:10}}>🛒 {t.cart}</div>
             {cart.map(c=>(
-              <div key={c.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5,fontSize:13,color:'#F2E8D5'}}>
+              <div key={c.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5,fontSize:13,color:'#f0f4ff'}}>
                 <span>{c.name}</span>
                 <div style={{display:'flex',alignItems:'center',gap:8}}>
-                  <button onClick={()=>removeFromCart(c)} style={{width:22,height:22,borderRadius:'50%',border:'0.5px solid rgba(201,124,44,0.4)',background:'transparent',color:'#C97C2C',cursor:'pointer',fontSize:13,lineHeight:1}}>−</button>
+                  <button onClick={()=>removeFromCart(c)} style={{width:22,height:22,borderRadius:'50%',border:'0.5px solid rgba(201,162,39,0.4)',background:'transparent',color:'#c9a227',cursor:'pointer',fontSize:13,lineHeight:1}}>−</button>
                   <span>{c.qty}</span>
-                  <button onClick={()=>addToCart(c)} style={{width:22,height:22,borderRadius:'50%',border:'0.5px solid rgba(201,124,44,0.4)',background:'transparent',color:'#C97C2C',cursor:'pointer',fontSize:13,lineHeight:1}}>+</button>
-                  <span style={{color:'#C97C2C',minWidth:56,textAlign:'right'}}>E {c.price*c.qty}</span>
+                  <button onClick={()=>addToCart(c)} style={{width:22,height:22,borderRadius:'50%',border:'0.5px solid rgba(201,162,39,0.4)',background:'transparent',color:'#c9a227',cursor:'pointer',fontSize:13,lineHeight:1}}>+</button>
+                  <span style={{color:'#c9a227',minWidth:56,textAlign:'right'}}>E {c.price*c.qty}</span>
                 </div>
               </div>
             ))}
-            <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,fontSize:14,fontWeight:700,color:'#C97C2C',display:'flex',justifyContent:'space-between'}}>
+            <div style={{borderTop:'0.5px solid rgba(255,255,255,0.1)',marginTop:8,paddingTop:8,fontSize:14,fontWeight:700,color:'#c9a227',display:'flex',justifyContent:'space-between'}}>
               <span>Total:</span><span>E {total}</span>
             </div>
 
-            <div style={{fontSize:12,color:'#B8A892',marginTop:12,marginBottom:6}}>Are you staying or taking away?</div>
+            <div style={{fontSize:12,color:'#8fa3c4',marginTop:12,marginBottom:6}}>Are you staying or taking away?</div>
             <div style={{display:'flex',gap:8,marginBottom:10}}>
-              <button onClick={()=>setDiningMode('dinein')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='dinein'?'1.5px solid #C97C2C':'0.5px solid rgba(201,124,44,0.3)',background:diningMode==='dinein'?'rgba(201,124,44,0.18)':'transparent',color:diningMode==='dinein'?'#C97C2C':'#B8A892',fontSize:12,fontWeight:600,cursor:'pointer'}}>🍽️ Dine-in</button>
-              <button onClick={()=>setDiningMode('takeaway')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='takeaway'?'1.5px solid #C97C2C':'0.5px solid rgba(201,124,44,0.3)',background:diningMode==='takeaway'?'rgba(201,124,44,0.18)':'transparent',color:diningMode==='takeaway'?'#C97C2C':'#B8A892',fontSize:12,fontWeight:600,cursor:'pointer'}}>🥡 Takeaway</button>
+              <button onClick={()=>setDiningMode('dinein')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='dinein'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='dinein'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='dinein'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}>🍽️ Dine-in</button>
+              <button onClick={()=>setDiningMode('takeaway')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='takeaway'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='takeaway'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='takeaway'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}>🥡 Takeaway</button>
             </div>
 
             {diningMode && (
-              <input value={tableNum} onChange={e=>setTableNum(e.target.value)} placeholder={diningMode==='dinein'?t.tableNum:'Phone number for pickup'} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'9px',color:'#F2E8D5',fontSize:12,outline:'none',marginTop:2,boxSizing:'border-box'}}/>
+              <input value={tableNum} onChange={e=>setTableNum(e.target.value)} placeholder={diningMode==='dinein'?t.tableNum:'Phone number for pickup'} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px',color:'#f0f4ff',fontSize:12,outline:'none',marginTop:2,boxSizing:'border-box'}}/>
             )}
             <button style={{...styles.btnPrimary,marginTop:10}} onClick={placeOrder}>{t.placeOrder}</button>
           </div>
         )}
         {item.menu.map(cat=>(
           <div key={cat.category} style={{marginBottom:18}}>
-            <div style={{fontSize:14,fontWeight:700,color:'#C97C2C',marginBottom:10,borderBottom:'0.5px solid rgba(201,124,44,0.2)',paddingBottom:6}}>{cat.category}</div>
+            <div style={{fontSize:14,fontWeight:700,color:'#c9a227',marginBottom:10,borderBottom:'0.5px solid rgba(201,162,39,0.2)',paddingBottom:6}}>{cat.category}</div>
             {cat.items.map(mi=>(
               <div key={mi.name} style={{display:'flex',gap:12,padding:'10px 0',borderBottom:'0.5px solid rgba(255,255,255,0.04)',alignItems:'center'}}>
                 <Img src={mi.img} alt={mi.name} style={{width:70,height:60,borderRadius:10,flexShrink:0}}/>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{mi.name}</div>
-                  <div style={{fontSize:11,color:'#B8A892',marginTop:2,lineHeight:1.4}}>{mi.desc}</div>
-                  <div style={{fontSize:13,color:'#C97C2C',marginTop:4,fontWeight:600}}>E {mi.price}</div>
+                  <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{mi.name}</div>
+                  <div style={{fontSize:11,color:'#8fa3c4',marginTop:2,lineHeight:1.4}}>{mi.desc}</div>
+                  <div style={{fontSize:13,color:'#c9a227',marginTop:4,fontWeight:600}}>E {mi.price}</div>
                 </div>
-                <button onClick={()=>addToCart(mi)} style={{padding:'7px 13px',borderRadius:50,background:'linear-gradient(135deg,#C97C2C,#E8B23D)',border:'none',color:'#1A130E',fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>+ {t.addToCart}</button>
+                <button onClick={()=>addToCart(mi)} style={{padding:'7px 13px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>+ {t.addToCart}</button>
               </div>
             ))}
           </div>
@@ -1139,21 +1137,21 @@ function HotelDetail({item,onBack,t}) {
     <div style={styles.app}>
       <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
         <div style={{fontSize:60,marginBottom:14}}>✅</div>
-        <div style={{fontSize:20,fontWeight:700,color:'#8FAE6B',marginBottom:6}}>Booking Confirmed!</div>
-        <div style={{fontSize:13,color:'#B8A892',lineHeight:1.6,marginBottom:16}}>
+        <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Booking Confirmed!</div>
+        <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
           {item.name} · {confirmed.room}<br/>
           {confirmed.checkIn} → {confirmed.checkOut} · {confirmed.guests} guest(s)
         </div>
-        <div style={{background:'rgba(201,124,44,0.12)',border:'1px solid rgba(201,124,44,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
-          <div style={{fontSize:11,color:'#B8A892',marginBottom:4}}>SHOW THIS CODE AT CHECK-IN AS PROOF OF BOOKING</div>
-          <div style={{fontSize:28,fontWeight:800,color:'#C97C2C',letterSpacing:2}}>{confirmed.code}</div>
+        <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
+          <div style={{fontSize:11,color:'#8fa3c4',marginBottom:4}}>SHOW THIS CODE AT CHECK-IN AS PROOF OF BOOKING</div>
+          <div style={{fontSize:28,fontWeight:800,color:'#c9a227',letterSpacing:2}}>{confirmed.code}</div>
         </div>
         <div style={{display:'flex',gap:8,width:'100%',marginBottom:10}}>
           <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:'rgba(155,123,184,0.15)',color:'#C7B4E0',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
         </div>
-        {item.email && <a href={`mailto:${item.email}?subject=${encodeURIComponent('Booking '+confirmed.code+' – '+item.name)}&body=${encodeURIComponent('Booking code: '+confirmed.code+'\nRoom: '+confirmed.room+'\nCheck-in: '+confirmed.checkIn+'\nCheck-out: '+confirmed.checkOut+'\nGuests: '+confirmed.guests)}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:'transparent',color:'#C97C2C',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email booking</a>}
-        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(176,65,58,0.4)',background:'rgba(176,65,58,0.08)',color:'#B0413A',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelBooking}>Cancel Booking</button>
+        {item.email && <a href={`mailto:${item.email}?subject=${encodeURIComponent('Booking '+confirmed.code+' – '+item.name)}&body=${encodeURIComponent('Booking code: '+confirmed.code+'\nRoom: '+confirmed.room+'\nCheck-in: '+confirmed.checkIn+'\nCheck-out: '+confirmed.checkOut+'\nGuests: '+confirmed.guests)}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email booking</a>}
+        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelBooking}>Cancel Booking</button>
         <button style={styles.btnPrimary} onClick={onBack}>Back</button>
       </div>
     </div>
@@ -1163,10 +1161,10 @@ function HotelDetail({item,onBack,t}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={240}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(26,19,14,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#F2E8D5',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
         <div style={{position:'absolute',top:14,right:14,display:'flex',gap:6,zIndex:10}}>
-          {item.category && <div style={{background:'rgba(155,123,184,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{item.category}</div>}
-          <div style={{background:'rgba(201,124,44,0.9)',borderRadius:20,padding:'3px 10px',fontSize:11,color:'#1A130E'}}>{item.stars}</div>
+          {item.category && <div style={{background:'rgba(131,122,221,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{item.category}</div>}
+          <div style={{background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:11,color:'#0a1628'}}>{item.stars}</div>
         </div>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
@@ -1175,41 +1173,41 @@ function HotelDetail({item,onBack,t}) {
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <div style={{display:'flex',gap:8,marginBottom:12}}>
-          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.35)',background:'rgba(201,124,44,0.08)',color:'#C97C2C',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.35)',background:'rgba(155,123,184,0.1)',color:'#C7B4E0',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
-          {item.booking && <a href={item.booking} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(143,174,107,0.35)',background:'rgba(143,174,107,0.1)',color:'#8FAE6B',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🔗 Booking site</a>}
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+          {item.booking && <a href={item.booking} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🔗 Booking site</a>}
         </div>
         <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap'}}>
           <div style={styles.badge}>⭐ {item.rating}</div>
-          <div style={{...styles.badge,color:'#8FAE6B',borderColor:'rgba(124,148,86,0.3)',background:'rgba(124,148,86,0.1)'}}>{item.price}</div>
+          <div style={{...styles.badge,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)',background:'rgba(29,158,117,0.1)'}}>{item.price}</div>
         </div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{item.desc}</div>
-        <div style={{fontSize:13,color:'#C97C2C',fontWeight:600,marginBottom:10}}>{t.amenities}</div>
+        <div style={{fontSize:13,color:'#c9a227',fontWeight:600,marginBottom:10}}>{t.amenities}</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:16}}>
           {item.amenities.map(a=><span key={a} style={styles.tag}>{a}</span>)}
         </div>
-        <div style={{fontSize:13,color:'#C97C2C',fontWeight:600,marginBottom:10}}>{t.rooms}</div>
+        <div style={{fontSize:13,color:'#c9a227',fontWeight:600,marginBottom:10}}>{t.rooms}</div>
         {item.rooms.map(r=>(
           <div key={r.name} onClick={()=>setSelRoom(selRoom===r.name?null:r.name)} style={{display:'flex',gap:12,alignItems:'center',padding:'10px 0',borderBottom:'0.5px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
             <Img src={r.img} alt={r.name} style={{width:80,height:65,borderRadius:10,flexShrink:0}}/>
             <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{r.name}</div>
-              <div style={{fontSize:13,color:'#C97C2C',marginTop:3,fontWeight:600}}>{r.price} / night</div>
+              <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
+              <div style={{fontSize:13,color:'#c9a227',marginTop:3,fontWeight:600}}>{r.price} / night</div>
             </div>
-            <button style={{padding:'7px 13px',borderRadius:50,background:'linear-gradient(135deg,#C97C2C,#E8B23D)',border:'none',color:'#1A130E',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}} onClick={(e)=>{e.stopPropagation();setSelRoom(r.name);setShowBooking(true);}}>{t.bookNow}</button>
+            <button style={{padding:'7px 13px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}} onClick={(e)=>{e.stopPropagation();setSelRoom(r.name);setShowBooking(true);}}>{t.bookNow}</button>
           </div>
         ))}
         {showBooking&&(
-          <div style={{background:'rgba(201,124,44,0.06)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:14,padding:16,marginTop:14,marginBottom:14}}>
-            <div style={{fontSize:14,fontWeight:600,color:'#C97C2C',marginBottom:14}}>📅 {t.bookNow}{selRoom?' — '+selRoom:''}</div>
+          <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:16,marginTop:14,marginBottom:14}}>
+            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:14}}>📅 {t.bookNow}{selRoom?' — '+selRoom:''}</div>
             {[[t.checkIn,checkIn,setCheckIn,'date'],[t.checkOut,checkOut,setCheckOut,'date'],[t.guests,guests,setGuests,'number']].map(([label,val,setter,type])=>(
               <div key={label} style={{marginBottom:12}}>
-                <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>{label}</div>
-                <input type={type} value={val} onChange={e=>setter(e.target.value)} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'10px 14px',color:'#F2E8D5',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
+                <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>{label}</div>
+                <input type={type} value={val} onChange={e=>setter(e.target.value)} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 14px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
               </div>
             ))}
             <button style={{...styles.btnPrimary,marginBottom:8}} onClick={confirmBooking}>{t.confirmBooking}</button>
-            <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:'transparent',color:'#B8A892',cursor:'pointer',fontSize:13}} onClick={()=>setShowBooking(false)}>{t.cancel}</button>
+            <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setShowBooking(false)}>{t.cancel}</button>
           </div>
         )}
         <Reviews name={item.name} t={t}/>
@@ -1224,7 +1222,7 @@ function StoreDetail({item,onBack,t}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={220}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(26,19,14,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#F2E8D5',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
           <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {item.region} · ⭐ {item.rating}</div>
@@ -1233,7 +1231,7 @@ function StoreDetail({item,onBack,t}) {
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap'}}>
           <div style={styles.badge}>{item.type}</div>
-          <div style={{...styles.badge,color:'#8FAE6B',borderColor:'rgba(124,148,86,0.3)',background:'rgba(124,148,86,0.1)'}}>{item.price}</div>
+          <div style={{...styles.badge,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)',background:'rgba(29,158,117,0.1)'}}>{item.price}</div>
         </div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:16}}>{item.desc}</div>
         <div style={styles.sectionTitle}>{t.photos}</div>
@@ -1257,27 +1255,27 @@ function WeatherWidget({t}) {
     <div style={{marginBottom:16}}>
       <div style={styles.sectionTitle}>{t.weather}</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:10,scrollbarWidth:'none'}}>
-        {days.map(d=><button key={d} onClick={()=>{setDay(d);setSel(null);}} style={{flexShrink:0,padding:'5px 13px',borderRadius:20,border:d===day?'1px solid #C97C2C':'0.5px solid rgba(201,124,44,0.2)',background:d===day?'rgba(201,124,44,0.15)':'transparent',color:d===day?'#C97C2C':'#B8A892',fontSize:11,cursor:'pointer',fontWeight:d===day?600:400}}>{d}</button>)}
+        {days.map(d=><button key={d} onClick={()=>{setDay(d);setSel(null);}} style={{flexShrink:0,padding:'5px 13px',borderRadius:20,border:d===day?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:d===day?'rgba(201,162,39,0.15)':'transparent',color:d===day?'#c9a227':'#8fa3c4',fontSize:11,cursor:'pointer',fontWeight:d===day?600:400}}>{d}</button>)}
       </div>
       <div style={{display:'flex',gap:10}}>
         {cities.map(c=>(
           <div key={c.name} onClick={()=>setSel(sel&&sel.name===c.name?null:c)} style={{flex:1,background:sel&&sel.name===c.name?'rgba(24,95,165,0.25)':'rgba(24,95,165,0.12)',border:sel&&sel.name===c.name?'0.5px solid rgba(24,95,165,0.6)':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 6px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
             <div style={{fontSize:22}}>{c.icon}</div>
-            <div style={{fontSize:17,fontWeight:700,color:'#F2E8D5',marginTop:4}}>{c.temp}°C</div>
-            <div style={{fontSize:10,color:'#C97C2C',fontWeight:600,marginTop:2}}>{c.name}</div>
-            <div style={{fontSize:9,color:'#B8A892',marginTop:1}}>{c.desc}</div>
+            <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{c.temp}°C</div>
+            <div style={{fontSize:10,color:'#c9a227',fontWeight:600,marginTop:2}}>{c.name}</div>
+            <div style={{fontSize:9,color:'#8fa3c4',marginTop:1}}>{c.desc}</div>
           </div>
         ))}
       </div>
       {sel&&(
         <div style={{background:'rgba(24,95,165,0.12)',border:'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:12,marginTop:10}}>
-          <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5',marginBottom:8}}>{sel.icon} {sel.name} — {day}</div>
+          <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:8}}>{sel.icon} {sel.name} — {day}</div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
             {[['💧',sel.humidity,'Humidity'],['💨',sel.wind,'Wind'],['☀️',sel.uv,'UV']].map(([ic,val,lbl])=>(
               <div key={lbl} style={{background:'rgba(255,255,255,0.05)',borderRadius:8,padding:'9px 6px',textAlign:'center'}}>
                 <div style={{fontSize:16}}>{ic}</div>
-                <div style={{fontSize:12,fontWeight:600,color:'#C97C2C',marginTop:3}}>{val}</div>
-                <div style={{fontSize:9,color:'#B8A892',marginTop:2}}>{lbl}</div>
+                <div style={{fontSize:12,fontWeight:600,color:'#c9a227',marginTop:3}}>{val}</div>
+                <div style={{fontSize:9,color:'#8fa3c4',marginTop:2}}>{lbl}</div>
               </div>
             ))}
           </div>
@@ -1293,20 +1291,20 @@ function CurrencyWidget({t}) {
   const [from,setFrom]     = useState('USD');
   const result = amount?(parseFloat(amount)*RATES[from]).toFixed(2):'0.00';
   return (
-    <div style={{background:'rgba(201,124,44,0.06)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:14,padding:14,marginBottom:16}}>
+    <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:14,marginBottom:16}}>
       <div style={styles.sectionTitle}>{t.currency}</div>
-      <div style={{fontSize:11,color:'#B8A892',marginBottom:10}}>Any Currency → Eswatini Lilangeni (SZL / Emalangeni)</div>
+      <div style={{fontSize:11,color:'#8fa3c4',marginBottom:10}}>Any Currency → Eswatini Lilangeni (SZL / Emalangeni)</div>
       <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:12}}>
-        <input type="number" value={amount} onChange={e=>setAmount(e.target.value)} style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'10px 12px',color:'#F2E8D5',fontSize:16,fontWeight:700,outline:'none'}} placeholder="Amount"/>
-        <select value={from} onChange={e=>setFrom(e.target.value)} style={{background:'#2E2014',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'10px 10px',color:'#C97C2C',fontSize:13,fontWeight:600,outline:'none',cursor:'pointer'}}>
+        <input type="number" value={amount} onChange={e=>setAmount(e.target.value)} style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 12px',color:'#f0f4ff',fontSize:16,fontWeight:700,outline:'none'}} placeholder="Amount"/>
+        <select value={from} onChange={e=>setFrom(e.target.value)} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 10px',color:'#c9a227',fontSize:13,fontWeight:600,outline:'none',cursor:'pointer'}}>
           {Object.keys(RATES).map(k=><option key={k} value={k}>{k}</option>)}
         </select>
       </div>
-      <div style={{background:'rgba(201,124,44,0.1)',borderRadius:10,padding:'12px 14px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:12,color:'#B8A892'}}>{amount||'0'} {from} =</span>
-        <span style={{fontSize:21,fontWeight:700,color:'#C97C2C'}}>E {result} SZL</span>
+      <div style={{background:'rgba(201,162,39,0.1)',borderRadius:10,padding:'12px 14px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <span style={{fontSize:12,color:'#8fa3c4'}}>{amount||'0'} {from} =</span>
+        <span style={{fontSize:21,fontWeight:700,color:'#c9a227'}}>E {result} SZL</span>
       </div>
-      <div style={{fontSize:9,color:'#B8A892',marginTop:6,textAlign:'center'}}>SZL = Emalangeni · Official currency of Eswatini</div>
+      <div style={{fontSize:9,color:'#8fa3c4',marginTop:6,textAlign:'center'}}>SZL = Emalangeni · Official currency of Eswatini</div>
     </div>
   );
 }
@@ -1353,21 +1351,21 @@ function TranslateTab({t,lang}) {
   return (
     <div>
       <div style={styles.sectionTitle}>{t.translate} 🌐</div>
-      <div style={{fontSize:11,color:'#B8A892',marginBottom:14}}>Translate words and phrases for your Eswatini journey</div>
+      <div style={{fontSize:11,color:'#8fa3c4',marginBottom:14}}>Translate words and phrases for your Eswatini journey</div>
       <div style={{display:'flex',gap:10,marginBottom:12,alignItems:'center'}}>
-        <div style={{flex:1,padding:'10px 12px',borderRadius:10,border:'0.5px solid rgba(201,124,44,0.3)',background:'rgba(255,255,255,0.04)',color:'#B8A892',fontSize:12}}>{T[lang].flag} {T[lang].name}</div>
-        <span style={{color:'#C97C2C',fontSize:18,fontWeight:700}}>→</span>
-        <select value={toLang} onChange={e=>setToLang(e.target.value)} style={{flex:1,background:'#2E2014',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'10px',color:'#C97C2C',fontSize:12,outline:'none',cursor:'pointer'}}>
+        <div style={{flex:1,padding:'10px 12px',borderRadius:10,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(255,255,255,0.04)',color:'#8fa3c4',fontSize:12}}>{T[lang].flag} {T[lang].name}</div>
+        <span style={{color:'#c9a227',fontSize:18,fontWeight:700}}>→</span>
+        <select value={toLang} onChange={e=>setToLang(e.target.value)} style={{flex:1,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#c9a227',fontSize:12,outline:'none',cursor:'pointer'}}>
           {Object.entries(T).map(([code,data])=><option key={code} value={code}>{data.flag} {data.name}</option>)}
         </select>
       </div>
-      <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Type a word or phrase..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:12,padding:'12px 14px',color:'#F2E8D5',fontSize:14,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box',marginBottom:10}}/>
+      <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Type a word or phrase..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box',marginBottom:10}}/>
       <button style={{...styles.btnPrimary,marginBottom:14}} onClick={translate}>Translate →</button>
       {result&&(
-        <div style={{background:'rgba(124,90,158,0.15)',border:'0.5px solid rgba(155,123,184,0.3)',borderRadius:12,padding:16,marginBottom:16}}>
-          <div style={{fontSize:10,color:'#B8A892',marginBottom:5}}>{T[toLang].flag} {T[toLang].name}:</div>
-          <div style={{fontSize:22,fontWeight:600,color:'#F2E8D5',marginBottom:12}}>{result}</div>
-          <button onClick={()=>speak(result)} style={{padding:'7px 16px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:speaking?'rgba(155,123,184,0.3)':'rgba(155,123,184,0.15)',color:'#C7B4E0',cursor:'pointer',fontSize:11}}>
+        <div style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.3)',borderRadius:12,padding:16,marginBottom:16}}>
+          <div style={{fontSize:10,color:'#8fa3c4',marginBottom:5}}>{T[toLang].flag} {T[toLang].name}:</div>
+          <div style={{fontSize:22,fontWeight:600,color:'#f0f4ff',marginBottom:12}}>{result}</div>
+          <button onClick={()=>speak(result)} style={{padding:'7px 16px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>
             {speaking?'🔊 Speaking...':'🔊 Hear Pronunciation'}
           </button>
         </div>
@@ -1375,18 +1373,18 @@ function TranslateTab({t,lang}) {
       <div style={styles.sectionTitle}>Common Phrases</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:16}}>
         {Object.entries(PHRASES).map(([phrase,trans])=>(
-          <div key={phrase} onClick={()=>{setInput(phrase);setResult(trans[toLang]||trans['ss']||phrase);}} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:10,padding:'9px 11px',cursor:'pointer'}}>
-            <div style={{fontSize:12,fontWeight:600,color:'#F2E8D5',marginBottom:2}}>{phrase}</div>
-            <div style={{fontSize:11,color:'#C97C2C'}}>{trans['ss']}</div>
+          <div key={phrase} onClick={()=>{setInput(phrase);setResult(trans[toLang]||trans['ss']||phrase);}} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'9px 11px',cursor:'pointer'}}>
+            <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{phrase}</div>
+            <div style={{fontSize:11,color:'#c9a227'}}>{trans['ss']}</div>
           </div>
         ))}
       </div>
       <div style={styles.sectionTitle}>siSwati Essentials 🇸🇿</div>
       {[['Sawubona','Hello / I see you'],['Ngiyabonga','Thank you'],['Yebo','Yes'],['Cha','No'],['Sala kahle','Goodbye — stay well'],['Hamba kahle','Go well'],['Siyabonga','We thank you'],['Ngiyakuthanda','I love you'],['Incaba','Fortress / Hidden treasure'],['Eswatini','The Kingdom of Eswatini']].map(([ss,en])=>(
         <div key={ss} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 0',borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
-          <div style={{fontSize:14,fontWeight:600,color:'#C97C2C'}}>{ss}</div>
-          <div style={{fontSize:11,color:'#B8A892',flex:1,marginLeft:12}}>{en}</div>
-          <button onClick={()=>speak(ss)} style={{padding:'3px 10px',borderRadius:20,border:'0.5px solid rgba(155,123,184,0.3)',background:'rgba(155,123,184,0.1)',color:'#C7B4E0',cursor:'pointer',fontSize:11}}>🔊</button>
+          <div style={{fontSize:14,fontWeight:600,color:'#c9a227'}}>{ss}</div>
+          <div style={{fontSize:11,color:'#8fa3c4',flex:1,marginLeft:12}}>{en}</div>
+          <button onClick={()=>speak(ss)} style={{padding:'3px 10px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.3)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>🔊</button>
         </div>
       ))}
     </div>
@@ -1428,10 +1426,10 @@ function CompareTab({t,onSelectRestaurant,onSelectHotel,onSelectStore}) {
   return (
     <div>
       <div style={styles.sectionTitle}>{t.comparePrice}</div>
-      <div style={{fontSize:11,color:'#B8A892',marginBottom:14}}>Compare prices across Eswatini — tap any item to browse</div>
+      <div style={{fontSize:11,color:'#8fa3c4',marginBottom:14}}>Compare prices across Eswatini — tap any item to browse</div>
       <div style={{display:'flex',gap:7,marginBottom:16,overflowX:'auto',scrollbarWidth:'none'}}>
         {[['attractions','Attractions'],['hotels','Hotels'],['restaurants','Restaurants'],['stores','Stores']].map(([c,l])=>(
-          <button key={c} onClick={()=>setCat(c)} style={{flexShrink:0,padding:'7px 14px',borderRadius:20,border:cat===c?'1px solid #C97C2C':'0.5px solid rgba(201,124,44,0.2)',background:cat===c?'rgba(201,124,44,0.15)':'transparent',color:cat===c?'#C97C2C':'#B8A892',fontSize:12,cursor:'pointer',fontWeight:cat===c?600:400}}>{l}</button>
+          <button key={c} onClick={()=>setCat(c)} style={{flexShrink:0,padding:'7px 14px',borderRadius:20,border:cat===c?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:cat===c?'rgba(201,162,39,0.15)':'transparent',color:cat===c?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:cat===c?600:400}}>{l}</button>
         ))}
       </div>
       {items.map((item,i)=>(
@@ -1439,25 +1437,25 @@ function CompareTab({t,onSelectRestaurant,onSelectHotel,onSelectStore}) {
           if(cat==='restaurants'&&onSelectRestaurant) onSelectRestaurant(item.obj);
           else if(cat==='hotels'&&onSelectHotel) onSelectHotel(item.obj);
           else if(cat==='stores'&&onSelectStore) onSelectStore(item.obj);
-        }} style={{display:'flex',gap:12,alignItems:'center',padding:'12px',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,marginBottom:8,cursor:cat!=='attractions'?'pointer':'default'}}>
+        }} style={{display:'flex',gap:12,alignItems:'center',padding:'12px',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,marginBottom:8,cursor:cat!=='attractions'?'pointer':'default'}}>
           <Img src={cat==='hotels'?item.obj.coverImg:cat==='restaurants'?item.obj.coverImg:item.obj.coverImg||item.obj.img} alt={item.name} style={{width:70,height:60,borderRadius:10,flexShrink:0}}/>
           <div style={{flex:1}}>
-            <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{item.name}</div>
-            <div style={{fontSize:11,color:'#B8A892',marginTop:2}}>{item.type} · {item.best}</div>
+            <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{item.name}</div>
+            <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>{item.type} · {item.best}</div>
             <div style={{display:'flex',gap:10,marginTop:5}}>
-              <span style={{fontSize:11,color:'#8FAE6B'}}>{item.price}</span>
-              <span style={{fontSize:11,color:'#C97C2C'}}>⭐ {item.rating}</span>
+              <span style={{fontSize:11,color:'#5dcaa5'}}>{item.price}</span>
+              <span style={{fontSize:11,color:'#c9a227'}}>⭐ {item.rating}</span>
             </div>
           </div>
-          {cat!=='attractions'&&<span style={{color:'#C97C2C',fontSize:16,flexShrink:0}}>›</span>}
+          {cat!=='attractions'&&<span style={{color:'#c9a227',fontSize:16,flexShrink:0}}>›</span>}
         </div>
       ))}
-      <div style={{background:'rgba(124,148,86,0.08)',border:'0.5px solid rgba(124,148,86,0.2)',borderRadius:12,padding:14,marginTop:8}}>
-        <div style={{fontSize:12,fontWeight:600,color:'#8FAE6B',marginBottom:6}}>Best Value in Eswatini 💎</div>
-        {cat==='attractions'&&<div style={{fontSize:11,color:'#B8A892',lineHeight:1.8}}>Best Overall: Hlane — Big 5 for E150{'\n'}Best Free: Swazi Candles{'\n'}Best Hidden: Malolotja — Zipline E120</div>}
-        {cat==='hotels'&&<div style={{fontSize:11,color:'#B8A892',lineHeight:1.8}}>Best Luxury: Royal Swazi Spa{'\n'}Best Budget: Lidwala from E150{'\n'}Best Experience: Mantengha Cultural Village</div>}
-        {cat==='restaurants'&&<div style={{fontSize:11,color:'#B8A892',lineHeight:1.8}}>Best Traditional: Malandela's{'\n'}Best Budget: Gables from E40{'\n'}Best Special Occasion: Tum's George</div>}
-        {cat==='stores'&&<div style={{fontSize:11,color:'#B8A892',lineHeight:1.8}}>Most Unique: Swazi Candles{'\n'}Best Budget: Manzini Market from E10{'\n'}Best Quality: Gone Rural</div>}
+      <div style={{background:'rgba(29,158,117,0.08)',border:'0.5px solid rgba(29,158,117,0.2)',borderRadius:12,padding:14,marginTop:8}}>
+        <div style={{fontSize:12,fontWeight:600,color:'#5dcaa5',marginBottom:6}}>Best Value in Eswatini 💎</div>
+        {cat==='attractions'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Best Overall: Hlane — Big 5 for E150{'\n'}Best Free: Swazi Candles{'\n'}Best Hidden: Malolotja — Zipline E120</div>}
+        {cat==='hotels'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Best Luxury: Royal Swazi Spa{'\n'}Best Budget: Lidwala from E150{'\n'}Best Experience: Mantengha Cultural Village</div>}
+        {cat==='restaurants'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Best Traditional: Malandela's{'\n'}Best Budget: Gables from E40{'\n'}Best Special Occasion: Tum's George</div>}
+        {cat==='stores'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Most Unique: Swazi Candles{'\n'}Best Budget: Manzini Market from E10{'\n'}Best Quality: Gone Rural</div>}
       </div>
     </div>
   );
@@ -1472,24 +1470,24 @@ function ExploreTab({onSelect,onVirtualTour,t}) {
     <div>
       <div style={styles.sectionTitle}>{t.explore2} Eswatini 🇸🇿</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14,scrollbarWidth:'none'}}>
-        {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #C97C2C':'0.5px solid rgba(201,124,44,0.2)',background:filter===c?'rgba(201,124,44,0.15)':'transparent',color:filter===c?'#C97C2C':'#B8A892',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
+        {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:filter===c?'rgba(201,162,39,0.15)':'transparent',color:filter===c?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
       </div>
       {filtered.map(p=>(
-        <div key={p.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
+        <div key={p.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
           <div style={{position:'relative',height:170}}>
             <Img src={p.img} alt={p.name} style={{width:'100%',height:'100%'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(26,19,14,0.92) 100%)'}}/>
-            <div style={{position:'absolute',top:10,right:10,background:'rgba(201,124,44,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#1A130E'}}>{p.category}</div>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(10,22,40,0.92) 100%)'}}/>
+            <div style={{position:'absolute',top:10,right:10,background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#0a1628'}}>{p.category}</div>
             <div style={{position:'absolute',bottom:10,left:12}}>
-              <div style={{fontSize:16,fontWeight:700,color:'#F2E8D5'}}>{p.name}</div>
+              <div style={{fontSize:16,fontWeight:700,color:'#f0f4ff'}}>{p.name}</div>
               <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>📍 {p.region} · ⭐ {p.rating}</div>
             </div>
           </div>
           <div style={{padding:'12px 14px'}}>
-            <div style={{fontSize:12,color:'#B8A892',lineHeight:1.6,marginBottom:10}}>{p.desc}</div>
+            <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:10}}>{p.desc}</div>
             <div style={{display:'flex',gap:8}}>
-              <button style={{flex:1,padding:'10px',borderRadius:50,background:'linear-gradient(135deg,#C97C2C,#E8B23D)',border:'none',color:'#1A130E',fontSize:12,fontWeight:700,cursor:'pointer'}} onClick={()=>onSelect(p)}>View Details</button>
-              <button style={{flex:1,padding:'10px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:'rgba(155,123,184,0.15)',color:'#C7B4E0',fontSize:12,cursor:'pointer'}} onClick={()=>onVirtualTour(p)}>🥽 {t.virtualTour}</button>
+              <button style={{flex:1,padding:'10px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer'}} onClick={()=>onSelect(p)}>View Details</button>
+              <button style={{flex:1,padding:'10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,cursor:'pointer'}} onClick={()=>onVirtualTour(p)}>🥽 {t.virtualTour}</button>
             </div>
           </div>
         </div>
@@ -1506,24 +1504,24 @@ function AccommodationTab({onSelectHotel,t}) {
   return (
     <div>
       <div style={styles.sectionTitle}>🛏️ Accommodation</div>
-      <div style={{fontSize:12,color:'#B8A892',marginBottom:12,lineHeight:1.6}}>Hotels, lodges, guesthouses and camping — with prices, photos and direct booking links.</div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:12,lineHeight:1.6}}>Hotels, lodges, guesthouses and camping — with prices, photos and direct booking links.</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14,scrollbarWidth:'none'}}>
-        {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #C97C2C':'0.5px solid rgba(201,124,44,0.2)',background:filter===c?'rgba(201,124,44,0.15)':'transparent',color:filter===c?'#C97C2C':'#B8A892',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
+        {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:filter===c?'rgba(201,162,39,0.15)':'transparent',color:filter===c?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
       </div>
       {filtered.map(h=>(
-        <div key={h.name} onClick={()=>onSelectHotel(h)} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12,cursor:'pointer'}}>
+        <div key={h.name} onClick={()=>onSelectHotel(h)} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12,cursor:'pointer'}}>
           <div style={{position:'relative',height:160}}>
             <Img src={h.coverImg} alt={h.name} style={{width:'100%',height:'100%'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(26,19,14,0.92) 100%)'}}/>
-            <div style={{position:'absolute',top:10,right:10,background:'rgba(155,123,184,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{h.category}</div>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(10,22,40,0.92) 100%)'}}/>
+            <div style={{position:'absolute',top:10,right:10,background:'rgba(131,122,221,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{h.category}</div>
             <div style={{position:'absolute',bottom:10,left:12}}>
-              <div style={{fontSize:15,fontWeight:700,color:'#F2E8D5'}}>{h.name}</div>
+              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{h.name}</div>
               <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>📍 {h.region} · ⭐ {h.rating} · {h.stars}</div>
             </div>
           </div>
           <div style={{padding:'12px 14px'}}>
-            <div style={{fontSize:12,color:'#B8A892',lineHeight:1.6,marginBottom:8}}>{h.desc}</div>
-            <div style={{fontSize:12,color:'#8FAE6B',fontWeight:600}}>{h.price}</div>
+            <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:8}}>{h.desc}</div>
+            <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600}}>{h.price}</div>
           </div>
         </div>
       ))}
@@ -1549,16 +1547,16 @@ function CultureTab({t}) {
   return (
     <div>
       <div style={styles.sectionTitle}>🎭 Culture & Events</div>
-      <div style={{fontSize:12,color:'#B8A892',marginBottom:14,lineHeight:1.6}}>Eswatini's living traditions — ceremonies, festivals, villages and crafts.</div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Eswatini's living traditions — ceremonies, festivals, villages and crafts.</div>
       {cultureItems.map(c=>(
-        <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
+        <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
           {c.img && <Img src={c.img} alt={c.name} style={{width:'100%',height:150}}/>}
           <div style={{padding:'12px 14px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',cursor:'pointer'}} onClick={()=>setOpen(open===c.name?null:c.name)}>
-              <div style={{fontSize:14,fontWeight:700,color:'#F2E8D5'}}>{c.name}</div>
-              <span style={{color:'#C97C2C',fontSize:13}}>{open===c.name?'▲':'▼'}</span>
+              <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
+              <span style={{color:'#c9a227',fontSize:13}}>{open===c.name?'▲':'▼'}</span>
             </div>
-            <div style={{fontSize:11,color:'#C97C2C',marginTop:3,fontWeight:600}}>📅 {c.when}</div>
+            <div style={{fontSize:11,color:'#c9a227',marginTop:3,fontWeight:600}}>📅 {c.when}</div>
             {open===c.name && <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.7,marginTop:8}}>{c.desc}</div>}
           </div>
         </div>
@@ -1588,36 +1586,36 @@ function GettingAroundTab({t}) {
       <div style={styles.sectionTitle}>🚗 Getting Around</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14}}>
         {[['car','Car Rental'],['taxi','Taxi/Kombi'],['dist','Distances'],['map','Map Nav']].map(([id,label])=>(
-          <button key={id} onClick={()=>setSection(id)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:section===id?'1px solid #C97C2C':'0.5px solid rgba(201,124,44,0.2)',background:section===id?'rgba(201,124,44,0.15)':'transparent',color:section===id?'#C97C2C':'#B8A892',fontSize:12,cursor:'pointer',fontWeight:section===id?600:400}}>{label}</button>
+          <button key={id} onClick={()=>setSection(id)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:section===id?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:section===id?'rgba(201,162,39,0.15)':'transparent',color:section===id?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:section===id?600:400}}>{label}</button>
         ))}
       </div>
 
       {section==='car' && carRentals.map(c=>(
-        <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:14,marginBottom:10}}>
-          <div style={{fontSize:14,fontWeight:700,color:'#F2E8D5'}}>{c.name}</div>
-          <div style={{fontSize:12,color:'#B8A892',marginTop:4}}>📍 {c.location}</div>
-          <div style={{fontSize:12,color:'#8FAE6B',fontWeight:600,marginTop:4}}>{c.price}</div>
-          <a href={`tel:${c.phone.replace(/\s/g,'')}`} style={{display:'inline-block',marginTop:8,textDecoration:'none',padding:'7px 14px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:'rgba(155,123,184,0.15)',color:'#C7B4E0',fontSize:12,fontWeight:600}}>📞 Call to book</a>
+        <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:14,marginBottom:10}}>
+          <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
+          <div style={{fontSize:12,color:'#8fa3c4',marginTop:4}}>📍 {c.location}</div>
+          <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600,marginTop:4}}>{c.price}</div>
+          <a href={`tel:${c.phone.replace(/\s/g,'')}`} style={{display:'inline-block',marginTop:8,textDecoration:'none',padding:'7px 14px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,fontWeight:600}}>📞 Call to book</a>
         </div>
       ))}
 
       {section==='taxi' && (
-        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:16}}>
-          <div style={{fontSize:13,fontWeight:700,color:'#C97C2C',marginBottom:8}}>Kombi Taxis (Minibus)</div>
+        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:16}}>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:8}}>Kombi Taxis (Minibus)</div>
           <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>The cheapest way to get around. Kombis run fixed routes between towns and leave once full — no fixed timetable. Main ranks: Mbabane Bus Rank and Manzini Bus Rank. Fares are typically E10–E45 depending on distance. Look out for the route signs in the front window.</div>
-          <div style={{fontSize:13,fontWeight:700,color:'#C97C2C',marginBottom:8}}>Metered Taxis</div>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:8}}>Metered Taxis</div>
           <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.8}}>Available in Mbabane and Manzini for door-to-door trips, especially at night or with luggage. Most hotels can call one for you, or ask at a guesthouse front desk. Agree on a fare before you get in if the cab isn't metered.</div>
         </div>
       )}
 
       {section==='dist' && (
-        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:4}}>
+        <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:4}}>
           {distances.map((d,i)=>(
             <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',borderBottom:i<distances.length-1?'0.5px solid rgba(255,255,255,0.06)':'none'}}>
-              <div style={{fontSize:12,color:'#F2E8D5'}}>{d.from} → {d.to}</div>
+              <div style={{fontSize:12,color:'#f0f4ff'}}>{d.from} → {d.to}</div>
               <div style={{textAlign:'right'}}>
-                <div style={{fontSize:12,color:'#C97C2C',fontWeight:600}}>{d.dist}</div>
-                <div style={{fontSize:10,color:'#B8A892'}}>{d.time}</div>
+                <div style={{fontSize:12,color:'#c9a227',fontWeight:600}}>{d.dist}</div>
+                <div style={{fontSize:10,color:'#8fa3c4'}}>{d.time}</div>
               </div>
             </div>
           ))}
@@ -1626,7 +1624,7 @@ function GettingAroundTab({t}) {
 
       {section==='map' && (
         <div style={{textAlign:'center'}}>
-          <div style={{fontSize:12,color:'#B8A892',marginBottom:14,lineHeight:1.6}}>Open turn-by-turn navigation between any two places in Eswatini using Google Maps.</div>
+          <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Open turn-by-turn navigation between any two places in Eswatini using Google Maps.</div>
           <button style={styles.btnPrimary} onClick={()=>window.open('https://www.google.com/maps/dir/','_blank')}>🗺️ Open Map Navigation</button>
         </div>
       )}
@@ -1655,40 +1653,40 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
   return (
     <div>
       <div style={styles.sectionTitle}>🎟️ Book / Reserve</div>
-      <div style={{fontSize:12,color:'#B8A892',marginBottom:16,lineHeight:1.6}}>Everything you need to book your Eswatini trip, in one place.</div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:16,lineHeight:1.6}}>Everything you need to book your Eswatini trip, in one place.</div>
 
       <div onClick={()=>setTab('stay')} style={{...styles.hstat,display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:10,padding:14}}>
         <span style={{fontSize:22}}>🛏️</span>
-        <div><div style={{fontSize:13,fontWeight:700,color:'#F2E8D5'}}>Book Accommodation</div><div style={{fontSize:11,color:'#B8A892'}}>Hotels, lodges, guesthouses & camping</div></div>
+        <div><div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Book Accommodation</div><div style={{fontSize:11,color:'#8fa3c4'}}>Hotels, lodges, guesthouses & camping</div></div>
       </div>
       <div onClick={()=>setTab('explore')} style={{...styles.hstat,display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:18,padding:14}}>
         <span style={{fontSize:22}}>🔭</span>
-        <div><div style={{fontSize:13,fontWeight:700,color:'#F2E8D5'}}>Book Activities</div><div style={{fontSize:11,color:'#B8A892'}}>Attractions, parks & virtual tours</div></div>
+        <div><div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Book Activities</div><div style={{fontSize:11,color:'#8fa3c4'}}>Attractions, parks & virtual tours</div></div>
       </div>
 
-      <div style={{fontSize:13,fontWeight:700,color:'#C97C2C',marginBottom:10}}>📞 Contact a Tour Guide</div>
+      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:10}}>📞 Contact a Tour Guide</div>
       {tourGuides.map(g=>(
-        <div key={g.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,padding:12,marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <div key={g.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:12,marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
           <div>
-            <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{g.name}</div>
-            <div style={{fontSize:11,color:'#B8A892'}}>{g.specialty}</div>
+            <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{g.name}</div>
+            <div style={{fontSize:11,color:'#8fa3c4'}}>{g.specialty}</div>
           </div>
           <div style={{display:'flex',gap:6}}>
-            <a href={`tel:${g.phone.replace(/\s/g,'')}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(155,123,184,0.4)',background:'rgba(155,123,184,0.15)',color:'#C7B4E0',fontSize:14}}>📞</a>
-            <a href={`mailto:${g.email}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(143,174,107,0.35)',background:'rgba(143,174,107,0.1)',color:'#8FAE6B',fontSize:14}}>✉️</a>
+            <a href={`tel:${g.phone.replace(/\s/g,'')}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:14}}>📞</a>
+            <a href={`mailto:${g.email}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontSize:14}}>✉️</a>
           </div>
         </div>
       ))}
 
-      <div style={{fontSize:13,fontWeight:700,color:'#C97C2C',marginTop:18,marginBottom:10}}>✨ Buy an Experience</div>
+      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:18,marginBottom:10}}>✨ Buy an Experience</div>
       {experiences.map(e=>(
-        <div key={e.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,overflow:'hidden',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
+        <div key={e.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,overflow:'hidden',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
           {e.img && <Img src={e.img} alt={e.name} style={{width:80,height:70,flexShrink:0}}/>}
           <div style={{flex:1,padding:'8px 4px'}}>
-            <div style={{fontSize:12,fontWeight:600,color:'#F2E8D5'}}>{e.name}</div>
-            <div style={{fontSize:12,color:'#8FAE6B',fontWeight:600,marginTop:3}}>{e.price}</div>
+            <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff'}}>{e.name}</div>
+            <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600,marginTop:3}}>{e.price}</div>
           </div>
-          <button onClick={()=>bookExperience(e)} style={{margin:'0 10px',padding:'8px 13px',borderRadius:50,background:'linear-gradient(135deg,#C97C2C,#E8B23D)',border:'none',color:'#1A130E',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>Buy</button>
+          <button onClick={()=>bookExperience(e)} style={{margin:'0 10px',padding:'8px 13px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>Buy</button>
         </div>
       ))}
     </div>
@@ -1703,31 +1701,31 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
     <div>
       <div style={styles.sosBtn} onClick={handleSOS}>
         <span style={{fontSize:18}}>🆘</span>
-        <div><div style={{fontSize:12,fontWeight:600,color:'#B0413A'}}>{t.sos}</div><div style={{fontSize:10,color:'#B8A892'}}>{t.sosSub}</div></div>
-        <span style={{color:'#B8A892',marginLeft:'auto'}}>›</span>
+        <div><div style={{fontSize:12,fontWeight:600,color:'#e24b4a'}}>{t.sos}</div><div style={{fontSize:10,color:'#8fa3c4'}}>{t.sosSub}</div></div>
+        <span style={{color:'#8fa3c4',marginLeft:'auto'}}>›</span>
       </div>
       <WeatherWidget t={t}/>
       <div style={styles.heroBanner}>
         <div style={styles.heroBadge}>✦ Kingdom of Eswatini</div>
-        <h2 style={{fontSize:20,fontWeight:700,color:'#F2E8D5',marginBottom:7}}>{t.welcome}</h2>
-        <p style={{fontSize:12,color:'#B8A892',lineHeight:1.5,marginBottom:12}}>{t.welcomeSub}</p>
+        <h2 style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:7}}>{t.welcome}</h2>
+        <p style={{fontSize:12,color:'#8fa3c4',lineHeight:1.5,marginBottom:12}}>{t.welcomeSub}</p>
         <div style={{display:'flex',gap:10}}>
           {[['120+',t.attractions,'attractions'],['48',t.restaurants,'restaurants'],['35',t.hotels,'hotels']].map(([n,l,s])=>(
-            <div key={l} onClick={()=>setSec(s)} style={{...styles.hstat,cursor:'pointer',border:sec===s?'1.5px solid #C97C2C':'0.5px solid rgba(201,124,44,0.2)'}}>
-              <div style={{fontSize:17,fontWeight:700,color:'#C97C2C'}}>{n}</div>
-              <div style={{fontSize:9,color:sec===s?'#C97C2C':'#B8A892',marginTop:2}}>{l}</div>
+            <div key={l} onClick={()=>setSec(s)} style={{...styles.hstat,cursor:'pointer',border:sec===s?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)'}}>
+              <div style={{fontSize:17,fontWeight:700,color:'#c9a227'}}>{n}</div>
+              <div style={{fontSize:9,color:sec===s?'#c9a227':'#8fa3c4',marginTop:2}}>{l}</div>
             </div>
           ))}
         </div>
       </div>
       <CurrencyWidget t={t}/>
       <div style={styles.aiCard} onClick={()=>setTab('ai')}>
-        <div style={{width:44,height:44,borderRadius:12,background:'rgba(124,90,158,0.25)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>🤖</div>
+        <div style={{width:44,height:44,borderRadius:12,background:'rgba(83,74,183,0.25)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>🤖</div>
         <div style={{flex:1}}>
-          <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5',marginBottom:2}}>{t.aiTitle}</div>
-          <div style={{fontSize:11,color:'#B8A892',lineHeight:1.4}}>{t.aiSub}</div>
+          <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{t.aiTitle}</div>
+          <div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.4}}>{t.aiSub}</div>
         </div>
-        <span style={{color:'#C97C2C',fontSize:18}}>›</span>
+        <span style={{color:'#c9a227',fontSize:18}}>›</span>
       </div>
 
       {sec==='attractions'&&(
@@ -1737,12 +1735,12 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
             {places.map(p=>(
               <div key={p.name} style={styles.card} onClick={()=>onSelect(p)}>
                 <Img src={p.img} alt={p.name} style={{width:'100%',height:110}}/>
-                <div style={{position:'absolute',top:8,right:8,background:'rgba(201,124,44,0.9)',borderRadius:6,padding:'2px 7px',fontSize:9,fontWeight:700,color:'#1A130E'}}>{p.category}</div>
+                <div style={{position:'absolute',top:8,right:8,background:'rgba(201,162,39,0.9)',borderRadius:6,padding:'2px 7px',fontSize:9,fontWeight:700,color:'#0a1628'}}>{p.category}</div>
                 <div style={{padding:'9px 11px'}}>
-                  <div style={{fontSize:12,fontWeight:600,color:'#F2E8D5',marginBottom:2}}>{p.name}</div>
-                  <div style={{fontSize:10,color:'#B8A892',marginBottom:3}}>📍 {p.region}</div>
+                  <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{p.name}</div>
+                  <div style={{fontSize:10,color:'#8fa3c4',marginBottom:3}}>📍 {p.region}</div>
                   <div style={{fontSize:10,color:'#6a85a8',lineHeight:1.4,marginBottom:4}}>{p.desc}</div>
-                  <div style={{fontSize:10,color:'#C97C2C'}}>⭐ {p.rating}</div>
+                  <div style={{fontSize:10,color:'#c9a227'}}>⭐ {p.rating}</div>
                 </div>
               </div>
             ))}
@@ -1757,13 +1755,13 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
             <div key={r.name} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>onSelectRestaurant(r)}>
               <Img src={r.coverImg} alt={r.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{r.name}</div>
-                <div style={{fontSize:11,color:'#B8A892',marginTop:2}}>📍 {r.region} · {r.hours}</div>
+                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {r.region} · {r.hours}</div>
                 <div style={{fontSize:11,color:'#6a85a8',marginTop:2,lineHeight:1.4}}>{r.desc}</div>
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#C97C2C'}}>⭐ {r.rating}</div>
-                <div style={{fontSize:10,color:'#8FAE6B',marginTop:4}}>Tap to order →</div>
+                <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>⭐ {r.rating}</div>
+                <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Tap to order →</div>
               </div>
             </div>
           ))}
@@ -1777,13 +1775,13 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
             <div key={h.name} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>onSelectHotel(h)}>
               <Img src={h.coverImg} alt={h.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{h.name}</div>
-                <div style={{fontSize:11,color:'#B8A892',marginTop:2}}>📍 {h.region}</div>
-                <div style={{fontSize:11,color:'#C97C2C',marginTop:2}}>{h.stars}</div>
+                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{h.name}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {h.region}</div>
+                <div style={{fontSize:11,color:'#c9a227',marginTop:2}}>{h.stars}</div>
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:11,color:'#8FAE6B'}}>{h.price}</div>
-                <div style={{fontSize:10,color:'#B8A892',marginTop:4}}>Tap to book →</div>
+                <div style={{fontSize:11,color:'#5dcaa5'}}>{h.price}</div>
+                <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Tap to book →</div>
               </div>
             </div>
           ))}
@@ -1791,11 +1789,11 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
       )}
 
       <div style={styles.sectionTitle}>{t.hiddenGem} 💎</div>
-      <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16,cursor:'pointer'}} onClick={()=>onSelect(places[6])}>
+      <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16,cursor:'pointer'}} onClick={()=>onSelect(places[6])}>
         <Img src={places[6].img} alt="Shiselweni" style={{width:'100%',height:140}}/>
         <div style={{padding:12}}>
-          <div style={{fontSize:14,fontWeight:700,color:'#F2E8D5',marginBottom:5}}>Shiselweni Region 🌿</div>
-          <div style={{fontSize:11,color:'#B8A892',lineHeight:1.6,marginBottom:8}}>Eswatini's southern paradise — untouched forests, rivers and traditional villages. Only 5% of tourists visit.</div>
+          <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff',marginBottom:5}}>Shiselweni Region 🌿</div>
+          <div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.6,marginBottom:8}}>Eswatini's southern paradise — untouched forests, rivers and traditional villages. Only 5% of tourists visit.</div>
           <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
             {['🌿 Nature','📍 South Eswatini','🆓 Uncrowded'].map(tag=><span key={tag} style={styles.tag}>{tag}</span>)}
           </div>
@@ -1805,12 +1803,12 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
       <div style={styles.sectionTitle}>Local Stores 🛍️</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
         {localStores.map(s=>(
-          <div key={s.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:12,overflow:'hidden',cursor:'pointer'}} onClick={()=>onSelectStore(s)}>
+          <div key={s.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,overflow:'hidden',cursor:'pointer'}} onClick={()=>onSelectStore(s)}>
             <Img src={s.coverImg} alt={s.name} style={{width:'100%',height:90}}/>
             <div style={{padding:'8px 10px'}}>
-              <div style={{fontSize:12,fontWeight:600,color:'#F2E8D5',marginBottom:2}}>{s.name}</div>
-              <div style={{fontSize:10,color:'#B8A892'}}>{s.type}</div>
-              <div style={{fontSize:10,color:'#C97C2C',marginTop:3}}>⭐ {s.rating}</div>
+              <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{s.name}</div>
+              <div style={{fontSize:10,color:'#8fa3c4'}}>{s.type}</div>
+              <div style={{fontSize:10,color:'#c9a227',marginTop:3}}>⭐ {s.rating}</div>
             </div>
           </div>
         ))}
@@ -1820,6 +1818,57 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
 }
 
 // ── MAP TAB ───────────────────────────────────────────────
+// Real interactive map using Leaflet + OpenStreetMap raster tiles.
+// Raster tiles render with plain <img> elements — no WebGL required,
+// so it works on every browser/device, including older or locked-down ones.
+function RealMap({loc,t}){
+  const elRef = useRef(null);
+  const mapRef = useRef(null);
+  const markerRef = useRef(null);
+
+  useEffect(()=>{
+    if(!window.L || !elRef.current || mapRef.current) return;
+    const L = window.L;
+    const start = loc ? [loc.lat,loc.lng] : [-26.5, 31.4]; // Eswatini centre
+    const map = L.map(elRef.current,{zoomControl:true,attributionControl:true}).setView(start, loc?13:9);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:19,
+      attribution:'© OpenStreetMap contributors'
+    }).addTo(map);
+
+    const spots = [
+      {name:'Mantenga Falls',lat:-26.4546,lng:31.1844},
+      {name:'Hlane Royal Reserve',lat:-26.1667,lng:31.85},
+      {name:'Mbabane',lat:-26.3054,lng:31.1367},
+      {name:'Manzini',lat:-26.4886,lng:31.3719},
+    ];
+    spots.forEach(s=>{
+      L.circleMarker([s.lat,s.lng],{radius:7,color:'#c9a227',fillColor:'#c9a227',fillOpacity:0.9,weight:2})
+        .addTo(map).bindPopup(`<b>${s.name}</b>`);
+    });
+
+    mapRef.current = map;
+    setTimeout(()=>map.invalidateSize(), 200);
+  },[]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(()=>{
+    if(!window.L || !mapRef.current || !loc) return;
+    const L = window.L;
+    const map = mapRef.current;
+    if(markerRef.current) markerRef.current.remove();
+    markerRef.current = L.marker([loc.lat,loc.lng],{
+      icon: L.divIcon({className:'',html:'<div style="width:16px;height:16px;border-radius:50%;background:#e24b4a;border:3px solid white;box-shadow:0 0 0 4px rgba(226,75,74,0.3)"></div>'})
+    }).addTo(map).bindPopup('You are here');
+    map.setView([loc.lat,loc.lng], 13);
+  },[loc]);
+
+  return (
+    <div style={{borderRadius:16,overflow:'hidden',marginBottom:14,border:'0.5px solid rgba(201,162,39,0.2)'}}>
+      <div ref={elRef} style={{height:220,width:'100%',background:'#0d2540'}}/>
+    </div>
+  );
+}
+
 function MapTab({t}) {
   const [loc,setLoc]     = useState(null);
   const [active,setActive] = useState(null);
@@ -1840,59 +1889,44 @@ function MapTab({t}) {
     );
   };
   const routes=[
-    {name:'🌿 Scenic Route',time:'2h 15m',dist:'87 km',type:'Recommended',color:'#8FAE6B',desc:'Ezulwini Valley, Mantenga Falls, Lobamba.',stops:['Mantenga Falls','Lobamba','Swazi Candles'],url:'https://www.google.com/maps/dir/Mbabane/Mantenga+Falls+Eswatini/Lobamba+Eswatini'},
-    {name:'⚡ Fastest Route',time:'1h 20m',dist:'62 km',type:'Quick',color:'#C97C2C',desc:'Direct highway via MR3.',stops:['Manzini Highway','Mbabane Bypass'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Eswatini'},
-    {name:'💰 Budget Route',time:'2h 45m',dist:'E45',type:'Affordable',color:'#7C5A9E',desc:'Kombi taxis — travel like a local.',stops:['Manzini Bus Rank','Mbabane Market'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Bus+Rank+Eswatini'},
+    {name:'🌿 Scenic Route',time:'2h 15m',dist:'87 km',type:'Recommended',color:'#5dcaa5',desc:'Ezulwini Valley, Mantenga Falls, Lobamba.',stops:['Mantenga Falls','Lobamba','Swazi Candles'],url:'https://www.google.com/maps/dir/Mbabane/Mantenga+Falls+Eswatini/Lobamba+Eswatini'},
+    {name:'⚡ Fastest Route',time:'1h 20m',dist:'62 km',type:'Quick',color:'#c9a227',desc:'Direct highway via MR3.',stops:['Manzini Highway','Mbabane Bypass'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Eswatini'},
+    {name:'💰 Budget Route',time:'2h 45m',dist:'E45',type:'Affordable',color:'#534ab7',desc:'Kombi taxis — travel like a local.',stops:['Manzini Bus Rank','Mbabane Market'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Bus+Rank+Eswatini'},
   ];
   return (
     <div>
       <div style={styles.sectionTitle}>{t.navigate}</div>
       {loc?(
-        <div style={{background:'rgba(124,148,86,0.12)',border:'0.5px solid rgba(124,148,86,0.3)',borderRadius:12,padding:14,marginBottom:14}}>
-          <div style={{fontSize:12,fontWeight:600,color:'#8FAE6B',marginBottom:6}}>📍 Your Live Location</div>
+        <div style={{background:'rgba(29,158,117,0.12)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:12,padding:14,marginBottom:14}}>
+          <div style={{fontSize:12,fontWeight:600,color:'#5dcaa5',marginBottom:6}}>📍 Your Live Location</div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}}>
             <div style={{background:'rgba(255,255,255,0.05)',borderRadius:8,padding:9}}>
-              <div style={{fontSize:9,color:'#B8A892',marginBottom:2}}>Latitude</div>
-              <div style={{fontSize:12,fontWeight:600,color:'#F2E8D5'}}>{loc.lat.toFixed(6)}</div>
+              <div style={{fontSize:9,color:'#8fa3c4',marginBottom:2}}>Latitude</div>
+              <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff'}}>{loc.lat.toFixed(6)}</div>
             </div>
             <div style={{background:'rgba(255,255,255,0.05)',borderRadius:8,padding:9}}>
-              <div style={{fontSize:9,color:'#B8A892',marginBottom:2}}>Longitude</div>
-              <div style={{fontSize:12,fontWeight:600,color:'#F2E8D5'}}>{loc.lng.toFixed(6)}</div>
+              <div style={{fontSize:9,color:'#8fa3c4',marginBottom:2}}>Longitude</div>
+              <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff'}}>{loc.lng.toFixed(6)}</div>
             </div>
           </div>
-          <div style={{fontSize:11,color:'#8FAE6B',marginBottom:10}}>🟢 Updating live · ±{loc.acc}m accuracy</div>
+          <div style={{fontSize:11,color:'#5dcaa5',marginBottom:10}}>🟢 Updating live · ±{loc.acc}m accuracy</div>
           <button style={{...styles.btnPrimary,padding:'9px',fontSize:12}} onClick={()=>window.open('https://www.google.com/maps?q='+loc.lat+','+loc.lng,'_blank')}>Open in Google Maps</button>
         </div>
       ):(
         <>
-          {err&&<div style={{background:'rgba(176,65,58,0.1)',border:'0.5px solid rgba(176,65,58,0.3)',borderRadius:10,padding:10,marginBottom:10,fontSize:12,color:'#B0413A'}}>{err}</div>}
+          {err&&<div style={{background:'rgba(226,75,74,0.1)',border:'0.5px solid rgba(226,75,74,0.3)',borderRadius:10,padding:10,marginBottom:10,fontSize:12,color:'#e24b4a'}}>{err}</div>}
           <button style={{...styles.btnPrimary,marginBottom:14}} onClick={startTracking}>📍 Show My Live Location</button>
         </>
       )}
-      <div style={{background:'#2A1D14',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:16,height:280,overflow:'hidden',marginBottom:14}}>
-        <iframe
-          title="Eswatini Map"
-          width="100%"
-          height="100%"
-          style={{border:0,filter:'invert(0.92) hue-rotate(180deg) brightness(1.05) contrast(0.95)'}}
-          src={
-            loc
-              ? `https://www.openstreetmap.org/export/embed.html?bbox=${loc.lng-0.08}%2C${loc.lat-0.06}%2C${loc.lng+0.08}%2C${loc.lat+0.06}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`
-              : `https://www.openstreetmap.org/export/embed.html?bbox=30.7%2C-27.4%2C32.2%2C-25.7&layer=mapnik`
-          }
-        />
-      </div>
-      <div style={{textAlign:'right',marginTop:-12,marginBottom:14}}>
-        <a href={loc?`https://www.openstreetmap.org/?mlat=${loc.lat}&mlon=${loc.lng}#map=14/${loc.lat}/${loc.lng}`:'https://www.openstreetmap.org/#map=9/-26.5/31.4'} target="_blank" rel="noreferrer" style={{fontSize:10,color:'#B8A892'}}>View larger map →</a>
-      </div>
+      <RealMap loc={loc} t={t}/>
       <div style={styles.sectionTitle}>Smart Routes</div>
       {routes.map(r=>(
         <div key={r.name}>
-          <div onClick={()=>setActive(active===r.name?null:r.name)} style={{background:'rgba(255,255,255,0.05)',border:active===r.name?'0.5px solid '+r.color:'0.5px solid rgba(201,124,44,0.2)',borderRadius:active===r.name?'12px 12px 0 0':12,padding:'11px 13px',marginBottom:active===r.name?0:8,cursor:'pointer'}}>
+          <div onClick={()=>setActive(active===r.name?null:r.name)} style={{background:'rgba(255,255,255,0.05)',border:active===r.name?'0.5px solid '+r.color:'0.5px solid rgba(201,162,39,0.2)',borderRadius:active===r.name?'12px 12px 0 0':12,padding:'11px 13px',marginBottom:active===r.name?0:8,cursor:'pointer'}}>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
-                <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{r.name}</div>
-                <div style={{fontSize:11,color:'#B8A892',marginTop:2}}>{r.time} · {r.dist}</div>
+                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>{r.time} · {r.dist}</div>
               </div>
               <span style={{fontSize:10,padding:'3px 10px',borderRadius:20,border:'0.5px solid '+r.color,color:r.color}}>{r.type}</span>
             </div>
@@ -1900,7 +1934,7 @@ function MapTab({t}) {
           {active===r.name&&(
             <div style={{background:'rgba(255,255,255,0.03)',border:'0.5px solid '+r.color,borderTop:'none',borderRadius:'0 0 12px 12px',padding:12,marginBottom:8}}>
               <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.6,marginBottom:8}}>{r.desc}</div>
-              {r.stops.map((s,i)=><div key={i} style={{display:'flex',gap:7,alignItems:'center',marginBottom:5}}><div style={{width:5,height:5,borderRadius:'50%',background:r.color,flexShrink:0}}/><div style={{fontSize:11,color:'#B8A892'}}>{s}</div></div>)}
+              {r.stops.map((s,i)=><div key={i} style={{display:'flex',gap:7,alignItems:'center',marginBottom:5}}><div style={{width:5,height:5,borderRadius:'50%',background:r.color,flexShrink:0}}/><div style={{fontSize:11,color:'#8fa3c4'}}>{s}</div></div>)}
               <button style={{...styles.btnPrimary,marginTop:10,padding:'10px',fontSize:12}} onClick={()=>window.open(r.url,'_blank')}>🗺️ Open in Google Maps</button>
             </div>
           )}
@@ -1947,13 +1981,13 @@ function AITab({t}) {
     <div style={{display:'flex',flexDirection:'column',height:'75vh'}}>
       <div style={{textAlign:'center',padding:'10px 0 6px'}}>
         <div style={{fontSize:36}}>🤖</div>
-        <div style={{fontSize:15,fontWeight:700,color:'#F2E8D5'}}>{t.aiTitle}</div>
-        <div style={{fontSize:10,color:'#B8A892'}}>{t.aiSub}</div>
-        {lastAI&&<button onClick={()=>speak(lastAI.text)} style={{marginTop:5,padding:'4px 12px',borderRadius:20,border:'0.5px solid rgba(155,123,184,0.4)',background:speaking?'rgba(155,123,184,0.3)':'rgba(155,123,184,0.15)',color:'#C7B4E0',cursor:'pointer',fontSize:10}}>{speaking?'🔊 Speaking...':'🔊 Read Aloud'}</button>}
+        <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{t.aiTitle}</div>
+        <div style={{fontSize:10,color:'#8fa3c4'}}>{t.aiSub}</div>
+        {lastAI&&<button onClick={()=>speak(lastAI.text)} style={{marginTop:5,padding:'4px 12px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:10}}>{speaking?'🔊 Speaking...':'🔊 Read Aloud'}</button>}
       </div>
       <div ref={chatRef} style={{flex:1,overflowY:'auto',paddingBottom:10}}>
         {msgs.map((m,i)=><div key={i} style={m.role==='ai'?styles.bubbleAI:styles.bubbleUser}>{m.text}</div>)}
-        {typing&&<div style={{...styles.bubbleAI,display:'flex',gap:5,alignItems:'center',padding:'14px'}}><div style={{width:7,height:7,borderRadius:'50%',background:'#B8A892'}}/><div style={{width:7,height:7,borderRadius:'50%',background:'#B8A892'}}/><div style={{width:7,height:7,borderRadius:'50%',background:'#B8A892'}}/></div>}
+        {typing&&<div style={{...styles.bubbleAI,display:'flex',gap:5,alignItems:'center',padding:'14px'}}><div style={{width:7,height:7,borderRadius:'50%',background:'#8fa3c4'}}/><div style={{width:7,height:7,borderRadius:'50%',background:'#8fa3c4'}}/><div style={{width:7,height:7,borderRadius:'50%',background:'#8fa3c4'}}/></div>}
       </div>
       <div style={{display:'flex',flexWrap:'wrap',gap:5,marginBottom:8}}>
         {['Plan my trip','Wildlife','Local food','Culture','Hotels','Weather','Currency','Emergency'].map(s=>(
@@ -2001,20 +2035,20 @@ function BusinessTab({t}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Img src={selBiz.img} alt={selBiz.name} style={{width:'100%',height:200}}/>
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,transparent 40%,rgba(26,19,14,0.9) 100%)'}}/>
-        <button onClick={()=>setSelBiz(null)} style={{position:'absolute',top:14,left:14,background:'rgba(26,19,14,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#F2E8D5',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,transparent 40%,rgba(10,22,40,0.9) 100%)'}}/>
+        <button onClick={()=>setSelBiz(null)} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{selBiz.name}</div>
           <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {selBiz.region} · {selBiz.type}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
-        {selBiz.verified&&<div style={{display:'inline-block',fontSize:11,padding:'3px 10px',borderRadius:20,background:'rgba(124,148,86,0.15)',color:'#8FAE6B',border:'0.5px solid rgba(124,148,86,0.3)',marginBottom:14}}>✓ Verified Business</div>}
+        {selBiz.verified&&<div style={{display:'inline-block',fontSize:11,padding:'3px 10px',borderRadius:20,background:'rgba(29,158,117,0.15)',color:'#5dcaa5',border:'0.5px solid rgba(29,158,117,0.3)',marginBottom:14}}>✓ Verified Business</div>}
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:16}}>
           {[['Views',selBiz.views+'/week'],['Revenue',selBiz.revenue],['Rating','4.7 ⭐']].map(([l,v])=>(
-            <div key={l} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:10,padding:'11px 8px',textAlign:'center'}}>
-              <div style={{fontSize:9,color:'#B8A892',marginBottom:3}}>{l}</div>
-              <div style={{fontSize:12,fontWeight:600,color:'#C97C2C'}}>{v}</div>
+            <div key={l} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'11px 8px',textAlign:'center'}}>
+              <div style={{fontSize:9,color:'#8fa3c4',marginBottom:3}}>{l}</div>
+              <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>{v}</div>
             </div>
           ))}
         </div>
@@ -2032,13 +2066,13 @@ function BusinessTab({t}) {
     <div>
       {step==='list'&&(
         <>
-          <div style={{background:'rgba(124,148,86,0.1)',border:'0.5px solid rgba(124,148,86,0.3)',borderRadius:16,padding:18,marginBottom:14}}>
-            <div style={{fontSize:10,color:'#8FAE6B',fontWeight:600,letterSpacing:1,marginBottom:5}}>BUSINESS PORTAL</div>
-            <div style={{fontSize:19,fontWeight:700,color:'#F2E8D5',marginBottom:5}}>Grow With Tourism 🌱</div>
-            <div style={{fontSize:12,color:'#B8A892',lineHeight:1.6,marginBottom:10}}>List your business and reach thousands of tourists from around the world.</div>
-            <div style={{display:'flex',alignItems:'center',gap:8,background:'rgba(201,124,44,0.08)',borderRadius:10,padding:'9px 12px',marginBottom:12}}>
+          <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:16,padding:18,marginBottom:14}}>
+            <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600,letterSpacing:1,marginBottom:5}}>BUSINESS PORTAL</div>
+            <div style={{fontSize:19,fontWeight:700,color:'#f0f4ff',marginBottom:5}}>Grow With Tourism 🌱</div>
+            <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:10}}>List your business and reach thousands of tourists from around the world.</div>
+            <div style={{display:'flex',alignItems:'center',gap:8,background:'rgba(201,162,39,0.08)',borderRadius:10,padding:'9px 12px',marginBottom:12}}>
               <span>💰</span>
-              <div><div style={{fontSize:12,fontWeight:600,color:'#C97C2C'}}>E200 per month listing fee</div><div style={{fontSize:10,color:'#B8A892'}}>Pay upfront — listing goes live within 24 hours</div></div>
+              <div><div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>E200 per month listing fee</div><div style={{fontSize:10,color:'#8fa3c4'}}>Pay upfront — listing goes live within 24 hours</div></div>
             </div>
             <button style={{...styles.btnPrimary,padding:'11px 24px',fontSize:14}} onClick={()=>setStep('register')}>+ Register Your Business</button>
           </div>
@@ -2047,14 +2081,14 @@ function BusinessTab({t}) {
             <div key={i} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>setSelBiz(b)}>
               <Img src={b.img} alt={b.name} style={{width:65,height:58,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:600,color:'#F2E8D5'}}>{b.name}</div>
-                <div style={{fontSize:11,color:'#B8A892',marginTop:2}}>{b.type} · {b.region}</div>
-                {b.verified&&<span style={{fontSize:9,padding:'2px 7px',borderRadius:6,background:'rgba(124,148,86,0.15)',color:'#8FAE6B',border:'0.5px solid rgba(124,148,86,0.3)',marginTop:4,display:'inline-block'}}>✓ Verified</span>}
+                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{b.name}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>{b.type} · {b.region}</div>
+                {b.verified&&<span style={{fontSize:9,padding:'2px 7px',borderRadius:6,background:'rgba(29,158,117,0.15)',color:'#5dcaa5',border:'0.5px solid rgba(29,158,117,0.3)',marginTop:4,display:'inline-block'}}>✓ Verified</span>}
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#C97C2C'}}>{b.views}</div>
-                <div style={{fontSize:9,color:'#B8A892'}}>views/week</div>
-                <div style={{fontSize:9,color:'#C97C2C',marginTop:3}}>Tap →</div>
+                <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>{b.views}</div>
+                <div style={{fontSize:9,color:'#8fa3c4'}}>views/week</div>
+                <div style={{fontSize:9,color:'#c9a227',marginTop:3}}>Tap →</div>
               </div>
             </div>
           ))}
@@ -2063,24 +2097,24 @@ function BusinessTab({t}) {
       {step==='register'&&(
         <div>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:18}}>
-            <button onClick={()=>setStep('list')} style={{background:'transparent',border:'none',color:'#C97C2C',fontSize:20,cursor:'pointer'}}>←</button>
-            <div style={{fontSize:17,fontWeight:700,color:'#F2E8D5'}}>Register Business</div>
+            <button onClick={()=>setStep('list')} style={{background:'transparent',border:'none',color:'#c9a227',fontSize:20,cursor:'pointer'}}>←</button>
+            <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Register Business</div>
           </div>
           {[{l:'Business Name *',k:'name',tp:'text',ph:'My Eswatini Lodge'},{l:'Phone *',k:'phone',tp:'tel',ph:'+268 2XXX XXXX'},{l:'Email *',k:'email',tp:'email',ph:'info@mybusiness.com'},{l:'Region',k:'region',tp:'text',ph:'Ezulwini Valley'},{l:'Description',k:'desc',tp:'text',ph:'Tell tourists about your business'}].map(f=>(
             <div key={f.k} style={{marginBottom:11}}>
-              <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>{f.l}</div>
-              <input type={f.tp} value={form[f.k]} onChange={e=>setForm(p=>({...p,[f.k]:e.target.value}))} placeholder={f.ph} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'10px 13px',color:'#F2E8D5',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
+              <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>{f.l}</div>
+              <input type={f.tp} value={form[f.k]} onChange={e=>setForm(p=>({...p,[f.k]:e.target.value}))} placeholder={f.ph} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 13px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
             </div>
           ))}
           <div style={{marginBottom:14}}>
-            <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>Business Type</div>
-            <select value={form.type} onChange={e=>setForm(p=>({...p,type:e.target.value}))} style={{width:'100%',background:'#2E2014',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'10px 13px',color:'#C97C2C',fontSize:13,outline:'none',cursor:'pointer'}}>
+            <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Business Type</div>
+            <select value={form.type} onChange={e=>setForm(p=>({...p,type:e.target.value}))} style={{width:'100%',background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 13px',color:'#c9a227',fontSize:13,outline:'none',cursor:'pointer'}}>
               {['Hotel','Restaurant','Craft Market','Tour Operator','Activity Centre','Transport','Spa','Local Store','Other'].map(o=><option key={o} value={o}>{o}</option>)}
             </select>
           </div>
           <div style={{marginBottom:16}}>
-            <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>Photos of your business (up to 6)</div>
-            <label style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,border:'1px dashed rgba(201,124,44,0.4)',borderRadius:10,padding:'14px',cursor:photos.length>=6?'not-allowed':'pointer',color:'#C97C2C',fontSize:12,fontWeight:600,opacity:photos.length>=6?0.5:1}}>
+            <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Photos of your business (up to 6)</div>
+            <label style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,border:'1px dashed rgba(201,162,39,0.4)',borderRadius:10,padding:'14px',cursor:photos.length>=6?'not-allowed':'pointer',color:'#c9a227',fontSize:12,fontWeight:600,opacity:photos.length>=6?0.5:1}}>
               📷 {photos.length>=6?'Maximum 6 photos added':'Tap to add photos'}
               <input type="file" accept="image/*" multiple disabled={photos.length>=6} onChange={handlePhotoUpload} style={{display:'none'}}/>
             </label>
@@ -2089,7 +2123,7 @@ function BusinessTab({t}) {
                 {photos.map((p,i)=>(
                   <div key={i} style={{position:'relative'}}>
                     <Img src={p} alt="" style={{width:'100%',height:70,borderRadius:8}}/>
-                    <button onClick={()=>removePhoto(i)} style={{position:'absolute',top:3,right:3,width:20,height:20,borderRadius:'50%',border:'none',background:'rgba(26,19,14,0.85)',color:'#B0413A',fontSize:12,cursor:'pointer',lineHeight:1}}>✕</button>
+                    <button onClick={()=>removePhoto(i)} style={{position:'absolute',top:3,right:3,width:20,height:20,borderRadius:'50%',border:'none',background:'rgba(10,22,40,0.85)',color:'#e24b4a',fontSize:12,cursor:'pointer',lineHeight:1}}>✕</button>
                   </div>
                 ))}
               </div>
@@ -2101,33 +2135,33 @@ function BusinessTab({t}) {
       {step==='payment'&&(
         <div>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:18}}>
-            <button onClick={()=>setStep('register')} style={{background:'transparent',border:'none',color:'#C97C2C',fontSize:20,cursor:'pointer'}}>←</button>
-            <div style={{fontSize:17,fontWeight:700,color:'#F2E8D5'}}>Payment</div>
+            <button onClick={()=>setStep('register')} style={{background:'transparent',border:'none',color:'#c9a227',fontSize:20,cursor:'pointer'}}>←</button>
+            <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Payment</div>
           </div>
-          <div style={{background:'rgba(201,124,44,0.08)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:14,padding:14,marginBottom:18}}>
-            <div style={{fontSize:12,color:'#B8A892',marginBottom:3}}>Listing for: <span style={{color:'#F2E8D5',fontWeight:600}}>{form.name}</span></div>
-            <div style={{fontSize:24,fontWeight:700,color:'#C97C2C'}}>E200.00</div>
-            <div style={{fontSize:11,color:'#B8A892'}}>Monthly listing fee — first month</div>
+          <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:14,marginBottom:18}}>
+            <div style={{fontSize:12,color:'#8fa3c4',marginBottom:3}}>Listing for: <span style={{color:'#f0f4ff',fontWeight:600}}>{form.name}</span></div>
+            <div style={{fontSize:24,fontWeight:700,color:'#c9a227'}}>E200.00</div>
+            <div style={{fontSize:11,color:'#8fa3c4'}}>Monthly listing fee — first month</div>
           </div>
           <div style={{marginBottom:11}}>
-            <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>Card Number</div>
-            <input value={card} onChange={e=>setCard(e.target.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim().slice(0,19))} placeholder="1234 5678 9012 3456" maxLength={19} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'11px 13px',color:'#F2E8D5',fontSize:16,outline:'none',boxSizing:'border-box',letterSpacing:2}}/>
+            <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Card Number</div>
+            <input value={card} onChange={e=>setCard(e.target.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim().slice(0,19))} placeholder="1234 5678 9012 3456" maxLength={19} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:16,outline:'none',boxSizing:'border-box',letterSpacing:2}}/>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:18}}>
             <div>
-              <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>Expiry</div>
-              <input value={exp} onChange={e=>setExp(e.target.value)} placeholder="MM/YY" maxLength={5} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'11px 13px',color:'#F2E8D5',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
+              <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Expiry</div>
+              <input value={exp} onChange={e=>setExp(e.target.value)} placeholder="MM/YY" maxLength={5} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
             </div>
             <div>
-              <div style={{fontSize:11,color:'#B8A892',marginBottom:5}}>CVV</div>
-              <input value={cvv} onChange={e=>setCvv(e.target.value.replace(/\D/g,''))} placeholder="123" maxLength={3} type="password" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'11px 13px',color:'#F2E8D5',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
+              <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>CVV</div>
+              <input value={cvv} onChange={e=>setCvv(e.target.value.replace(/\D/g,''))} placeholder="123" maxLength={3} type="password" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
             </div>
           </div>
-          <div style={{background:'rgba(124,148,86,0.08)',border:'0.5px solid rgba(124,148,86,0.2)',borderRadius:10,padding:10,marginBottom:14,display:'flex',gap:7,alignItems:'center'}}>
-            <span>🔒</span><div style={{fontSize:11,color:'#8FAE6B'}}>Secured with 256-bit SSL encryption</div>
+          <div style={{background:'rgba(29,158,117,0.08)',border:'0.5px solid rgba(29,158,117,0.2)',borderRadius:10,padding:10,marginBottom:14,display:'flex',gap:7,alignItems:'center'}}>
+            <span>🔒</span><div style={{fontSize:11,color:'#5dcaa5'}}>Secured with 256-bit SSL encryption</div>
           </div>
           <button style={{...styles.btnPrimary,marginBottom:8}} onClick={pay}>Pay E200 and Submit Listing</button>
-          <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.3)',background:'transparent',color:'#B8A892',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}>← Back</button>
+          <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}>← Back</button>
         </div>
       )}
     </div>
@@ -2136,34 +2170,34 @@ function BusinessTab({t}) {
 
 // ── STYLES ────────────────────────────────────────────────
 const styles = {
-  splash:{minHeight:'100vh',background:'linear-gradient(160deg,#1A130E 0%,#241A12 40%,#1A130E 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'2rem',position:'relative',overflow:'hidden'},
-  splashGlow:{position:'absolute',top:'20%',left:'50%',transform:'translateX(-50%)',width:300,height:300,background:'radial-gradient(circle,rgba(201,124,44,0.14) 0%,transparent 70%)',borderRadius:'50%',pointerEvents:'none'},
-  splashTitle:{fontFamily:"'Fraunces',serif",fontSize:50,fontWeight:600,color:'#F2E8D5',margin:'0 0 6px',letterSpacing:-1},
-  gold:{color:'#C97C2C'},
-  btnPrimary:{background:'linear-gradient(135deg,#C97C2C,#E8B23D)',color:'#1A130E',border:'none',padding:'13px 36px',borderRadius:50,fontSize:15,fontWeight:700,cursor:'pointer',width:'100%',maxWidth:480},
-  authInput:{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:10,padding:'11px 13px',color:'#F2E8D5',fontSize:14,outline:'none',marginBottom:11,boxSizing:'border-box',fontFamily:'inherit'},
-  app:{minHeight:'100vh',height:'100dvh',background:'#1A130E',display:'flex',flexDirection:'column',maxWidth:480,margin:'0 auto',overflow:'hidden'},
-  topbar:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'calc(11px + env(safe-area-inset-top)) 15px 11px',borderBottom:'0.5px solid rgba(201,124,44,0.25)',background:'rgba(26,19,14,0.98)',position:'sticky',top:0,zIndex:100,flexShrink:0},
+  splash:{minHeight:'100vh',background:'linear-gradient(160deg,#0a1628 0%,#0d1f3c 40%,#0a1628 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'2rem',position:'relative',overflow:'hidden'},
+  splashGlow:{position:'absolute',top:'20%',left:'50%',transform:'translateX(-50%)',width:300,height:300,background:'radial-gradient(circle,rgba(201,162,39,0.14) 0%,transparent 70%)',borderRadius:'50%',pointerEvents:'none'},
+  splashTitle:{fontSize:48,fontWeight:700,color:'#f0f4ff',margin:'0 0 6px',letterSpacing:-1},
+  gold:{color:'#c9a227'},
+  btnPrimary:{background:'linear-gradient(135deg,#c9a227,#e8b93a)',color:'#0a1628',border:'none',padding:'13px 36px',borderRadius:50,fontSize:15,fontWeight:700,cursor:'pointer',width:'100%',maxWidth:480},
+  authInput:{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:11,boxSizing:'border-box',fontFamily:'inherit'},
+  app:{minHeight:'100vh',background:'#0a1628',display:'flex',flexDirection:'column',maxWidth:480,margin:'0 auto'},
+  topbar:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'calc(11px + env(safe-area-inset-top)) 15px 11px',borderBottom:'0.5px solid rgba(201,162,39,0.25)',background:'rgba(10,22,40,0.98)',position:'sticky',top:0,zIndex:100,flexShrink:0},
   content:{flex:1,overflowY:'auto',padding:14},
-  bottomNav:{display:'flex',justifyContent:'space-around',padding:'7px 0 calc(11px + env(safe-area-inset-bottom))',borderTop:'0.5px solid rgba(201,124,44,0.25)',background:'rgba(26,19,14,0.98)',position:'sticky',bottom:0,flexShrink:0},
+  bottomNav:{display:'flex',justifyContent:'space-around',padding:'7px 0 calc(11px + env(safe-area-inset-bottom))',borderTop:'0.5px solid rgba(201,162,39,0.25)',background:'rgba(10,22,40,0.98)',position:'sticky',bottom:0,flexShrink:0},
   navItem:{display:'flex',flexDirection:'column',alignItems:'center',gap:2,cursor:'pointer',padding:'2px 3px',borderRadius:9},
-  navActive:{display:'flex',flexDirection:'column',alignItems:'center',gap:2,cursor:'pointer',padding:'2px 3px',borderRadius:9,background:'rgba(201,124,44,0.1)'},
-  sosBtn:{display:'flex',alignItems:'center',gap:9,background:'rgba(176,65,58,0.1)',border:'1px solid rgba(176,65,58,0.3)',borderRadius:12,padding:'10px 13px',marginBottom:13,cursor:'pointer'},
-  heroBanner:{background:'linear-gradient(135deg,#3A2A1C,#2A1D14)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:16,padding:18,marginBottom:13},
-  heroBadge:{fontSize:10,color:'#f5d87a',background:'rgba(201,124,44,0.15)',border:'0.5px solid rgba(201,124,44,0.4)',padding:'3px 9px',borderRadius:20,display:'inline-block',marginBottom:9,fontWeight:600},
-  hstat:{flex:1,background:'rgba(201,124,44,0.08)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:10,padding:'9px 7px',textAlign:'center'},
-  aiCard:{background:'rgba(124,90,158,0.15)',border:'0.5px solid rgba(155,123,184,0.35)',borderRadius:14,padding:'12px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:10,cursor:'pointer'},
-  sectionTitle:{fontSize:14,fontWeight:600,color:'#F2E8D5',marginBottom:11,marginTop:3},
+  navActive:{display:'flex',flexDirection:'column',alignItems:'center',gap:2,cursor:'pointer',padding:'2px 3px',borderRadius:9,background:'rgba(201,162,39,0.1)'},
+  sosBtn:{display:'flex',alignItems:'center',gap:9,background:'rgba(226,75,74,0.1)',border:'1px solid rgba(226,75,74,0.3)',borderRadius:12,padding:'10px 13px',marginBottom:13,cursor:'pointer'},
+  heroBanner:{background:'linear-gradient(135deg,#1a3a5c,#0d2540)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:16,padding:18,marginBottom:13},
+  heroBadge:{fontSize:10,color:'#f5d87a',background:'rgba(201,162,39,0.15)',border:'0.5px solid rgba(201,162,39,0.4)',padding:'3px 9px',borderRadius:20,display:'inline-block',marginBottom:9,fontWeight:600},
+  hstat:{flex:1,background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'9px 7px',textAlign:'center'},
+  aiCard:{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.35)',borderRadius:14,padding:'12px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:10,cursor:'pointer'},
+  sectionTitle:{fontSize:14,fontWeight:600,color:'#f0f4ff',marginBottom:11,marginTop:3},
   grid:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14},
-  card:{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:13,overflow:'hidden',cursor:'pointer',position:'relative'},
-  listCard:{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,124,44,0.2)',borderRadius:13,padding:'11px 12px',marginBottom:9,display:'flex',alignItems:'center',gap:11},
-  tag:{fontSize:10,padding:'2px 7px',borderRadius:20,border:'0.5px solid rgba(201,124,44,0.3)',color:'#C97C2C',background:'rgba(201,124,44,0.08)'},
-  badge:{fontSize:10,padding:'4px 9px',borderRadius:20,border:'0.5px solid rgba(201,124,44,0.3)',color:'#C97C2C',background:'rgba(201,124,44,0.08)'},
-  bubbleAI:{background:'rgba(124,90,158,0.15)',border:'0.5px solid rgba(155,123,184,0.25)',borderRadius:13,padding:'11px 13px',marginBottom:9,fontSize:12,color:'#F2E8D5',lineHeight:1.7,whiteSpace:'pre-line',maxWidth:'85%'},
-  bubbleUser:{background:'rgba(201,124,44,0.12)',border:'0.5px solid rgba(201,124,44,0.3)',borderRadius:13,padding:'11px 13px',marginBottom:9,fontSize:12,color:'#F2E8D5',lineHeight:1.7,whiteSpace:'pre-line',maxWidth:'85%',marginLeft:'auto'},
-  chatInput:{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,124,44,0.25)',borderRadius:24,padding:'10px 15px',color:'#F2E8D5',fontSize:13,outline:'none',fontFamily:'inherit'},
-  sendBtn:{width:42,height:42,borderRadius:'50%',background:'linear-gradient(135deg,#C97C2C,#E8B23D)',border:'none',cursor:'pointer',fontSize:15,color:'#1A130E',fontWeight:700,flexShrink:0},
-  pill:{padding:'5px 11px',borderRadius:50,border:'0.5px solid rgba(201,124,44,0.25)',fontSize:10,cursor:'pointer',background:'rgba(255,255,255,0.04)',color:'#F2E8D5',fontFamily:'inherit'},
+  card:{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:13,overflow:'hidden',cursor:'pointer',position:'relative'},
+  listCard:{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:13,padding:'11px 12px',marginBottom:9,display:'flex',alignItems:'center',gap:11},
+  tag:{fontSize:10,padding:'2px 7px',borderRadius:20,border:'0.5px solid rgba(201,162,39,0.3)',color:'#c9a227',background:'rgba(201,162,39,0.08)'},
+  badge:{fontSize:10,padding:'4px 9px',borderRadius:20,border:'0.5px solid rgba(201,162,39,0.3)',color:'#c9a227',background:'rgba(201,162,39,0.08)'},
+  bubbleAI:{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.25)',borderRadius:13,padding:'11px 13px',marginBottom:9,fontSize:12,color:'#f0f4ff',lineHeight:1.7,whiteSpace:'pre-line',maxWidth:'85%'},
+  bubbleUser:{background:'rgba(201,162,39,0.12)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:13,padding:'11px 13px',marginBottom:9,fontSize:12,color:'#f0f4ff',lineHeight:1.7,whiteSpace:'pre-line',maxWidth:'85%',marginLeft:'auto'},
+  chatInput:{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:24,padding:'10px 15px',color:'#f0f4ff',fontSize:13,outline:'none',fontFamily:'inherit'},
+  sendBtn:{width:42,height:42,borderRadius:'50%',background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',cursor:'pointer',fontSize:15,color:'#0a1628',fontWeight:700,flexShrink:0},
+  pill:{padding:'5px 11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.25)',fontSize:10,cursor:'pointer',background:'rgba(255,255,255,0.04)',color:'#f0f4ff',fontFamily:'inherit'},
 };
 
 export default App;
