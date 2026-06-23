@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { supabase } from './supabaseClient';
 import './App.css';
 
 // ── LOCAL IMAGE HELPER ────────────────────────────────────
@@ -974,15 +975,26 @@ function RestaurantDetail({item,onBack,t}) {
     if(!diningMode) return alert('Please choose Dine-in or Takeaway');
     if(diningMode==='dinein' && !tableNum) return alert('Please enter your table number');
     if(diningMode==='takeaway' && !tableNum) return alert('Please enter a contact number for pickup');
-    setOrderCode(genOrderCode(item));
+    const code = genOrderCode(item);
+    setOrderCode(code);
     setOrderTime(Date.now());
     setOrdered(true);
     setCancelled(false);
+    supabase.from('orders').insert({
+      order_code: code,
+      restaurant_name: item.name,
+      dining_mode: diningMode,
+      contact: tableNum,
+      items: cart.map(c=>({name:c.name,qty:c.qty,price:c.price})),
+      total: total,
+    }).then(({error})=>{ if(error) console.error('Order save failed:', error.message); });
   };
 
   const cancelOrder = ()=>{
     if(!window.confirm('Cancel this order? The restaurant will be notified.')) return;
     setCancelled(true);
+    supabase.from('orders').update({status:'cancelled'}).eq('order_code', orderCode)
+      .then(({error})=>{ if(error) console.error('Cancel update failed:', error.message); });
   };
 
   const emailSubject = encodeURIComponent(`Order ${orderCode} – ${item.name}`);
@@ -1125,11 +1137,22 @@ function HotelDetail({item,onBack,t}) {
   const confirmBooking = ()=>{
     if(!checkIn||!checkOut) return alert('Please fill in all dates');
     const code = genOrderCode(item);
-    setConfirmed({code,room:selRoom||(item.rooms[0]&&item.rooms[0].name),checkIn,checkOut,guests});
+    const roomName = selRoom||(item.rooms[0]&&item.rooms[0].name);
+    setConfirmed({code,room:roomName,checkIn,checkOut,guests});
     setShowBooking(false);
+    supabase.from('bookings').insert({
+      booking_code: code,
+      property_name: item.name,
+      property_type: item.category||'Hotel',
+      check_in: checkIn,
+      check_out: checkOut,
+      guests: parseInt(guests)||1,
+    }).then(({error})=>{ if(error) console.error('Booking save failed:', error.message); });
   };
   const cancelBooking = ()=>{
     if(!window.confirm('Cancel this booking? The property will be notified.')) return;
+    supabase.from('bookings').update({status:'cancelled'}).eq('booking_code', confirmed.code)
+      .then(({error})=>{ if(error) console.error('Cancel update failed:', error.message); });
     setConfirmed(null);
   };
 
@@ -2007,6 +2030,7 @@ function BusinessTab({t}) {
   const [step,setStep]   = useState('list');
   const [form,setForm]   = useState({name:'',type:'Hotel',region:'',phone:'',email:'',desc:''});
   const [photos,setPhotos] = useState([]); // data-URLs of uploaded business photos
+  const [saving,setSaving] = useState(false);
   const handlePhotoUpload = (e)=>{
     const files = Array.from(e.target.files||[]).slice(0,6-photos.length);
     files.forEach(file=>{
@@ -2025,10 +2049,58 @@ function BusinessTab({t}) {
     {name:"Malandela's Restaurant",type:'Restaurant',region:'Malkerns',img:photo('african,restaurant,garden'),views:'876',verified:true,revenue:'E 2,800'},
     {name:'Swazi Candles Market',type:'Craft',region:'Malkerns',img:photo('candles,colorful,craft,african'),views:'654',verified:true,revenue:'E 1,200'},
   ]);
-  const pay=()=>{
+
+  // Load any previously-saved businesses from Supabase so listings persist for everyone.
+  useEffect(()=>{
+    supabase.from('businesses').select('*').order('created_at',{ascending:false})
+      .then(({data,error})=>{
+        if(error){ console.error('Load businesses failed:', error.message); return; }
+        if(data&&data.length){
+          setList(prev=>[
+            ...data.map(b=>({
+              name:b.name, type:b.type, region:b.region,
+              img:(b.photos&&b.photos[0])||photo(b.type+',business,africa'),
+              gallery:b.photos||[], views:String(b.views||0), verified:b.verified,
+              revenue:'E 0', phone:b.phone, email:b.email, desc:b.description,
+            })),
+            ...prev,
+          ]);
+        }
+      });
+  },[]);
+
+  const dataURLtoBlob = (dataURL)=>{
+    const [meta, base64] = dataURL.split(',');
+    const mime = meta.match(/data:(.*);base64/)[1];
+    const bin = atob(base64);
+    const arr = new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    return new Blob([arr],{type:mime});
+  };
+
+  const pay=async()=>{
     if(!card||!exp||!cvv||card.replace(/\s/g,'').length<16){alert('Please fill in all valid payment details');return;}
+    setSaving(true);
+    let photoUrls = [];
+    try{
+      for(let i=0;i<photos.length;i++){
+        const blob = dataURLtoBlob(photos[i]);
+        const path = `${Date.now()}_${i}.jpg`;
+        const { error: upErr } = await supabase.storage.from('business-photos').upload(path, blob, {contentType:blob.type});
+        if(upErr){ console.error('Photo upload failed:', upErr.message); continue; }
+        const { data:pub } = supabase.storage.from('business-photos').getPublicUrl(path);
+        if(pub&&pub.publicUrl) photoUrls.push(pub.publicUrl);
+      }
+      const { error: insErr } = await supabase.from('businesses').insert({
+        name:form.name, type:form.type, region:form.region,
+        phone:form.phone, email:form.email, description:form.desc,
+        photos: photoUrls,
+      });
+      if(insErr) console.error('Business save failed:', insErr.message);
+    }catch(e){ console.error('Business registration error:', e); }
+    setSaving(false);
     alert('Payment of E200 successful!\nYour listing will go live within 24 hours.');
-    setList(p=>[...p,{name:form.name,type:form.type,region:form.region,img:photos[0]||photo(form.type+',business,africa'),gallery:photos,views:'0',verified:false,revenue:'E 0'}]);
+    setList(p=>[...p,{name:form.name,type:form.type,region:form.region,img:photoUrls[0]||photos[0]||photo(form.type+',business,africa'),gallery:photoUrls.length?photoUrls:photos,views:'0',verified:false,revenue:'E 0'}]);
     setStep('list'); setForm({name:'',type:'Hotel',region:'',phone:'',email:'',desc:''}); setCard(''); setExp(''); setCvv(''); setPhotos([]);
   };
   if(selBiz) return (
@@ -2160,7 +2232,7 @@ function BusinessTab({t}) {
           <div style={{background:'rgba(29,158,117,0.08)',border:'0.5px solid rgba(29,158,117,0.2)',borderRadius:10,padding:10,marginBottom:14,display:'flex',gap:7,alignItems:'center'}}>
             <span>🔒</span><div style={{fontSize:11,color:'#5dcaa5'}}>Secured with 256-bit SSL encryption</div>
           </div>
-          <button style={{...styles.btnPrimary,marginBottom:8}} onClick={pay}>Pay E200 and Submit Listing</button>
+          <button style={{...styles.btnPrimary,marginBottom:8,opacity:saving?0.6:1}} disabled={saving} onClick={pay}>{saving?'Saving…':'Pay E200 and Submit Listing'}</button>
           <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}>← Back</button>
         </div>
       )}
