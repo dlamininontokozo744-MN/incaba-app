@@ -640,6 +640,22 @@ function Img({src, alt, style, fallback='https://media.istockphoto.com/id/105159
 // ── MAIN APP ──────────────────────────────────────────────
 function App() {
   const [screen,setScreen]   = useState('splash');
+  const [user,setUser] = useState(null);
+const [showAuth,setShowAuth] = useState(false);
+const [authMode,setAuthMode] = useState('signin'); // 'signin' | 'signup'
+const [authCallback,setAuthCallback] = useState(null);
+
+useEffect(()=>{
+  supabase.auth.getSession().then(({data:{session}})=>setUser(session?.user||null));
+  const {data:{subscription}} = supabase.auth.onAuthStateChange((_,session)=>setUser(session?.user||null));
+  return ()=>subscription.unsubscribe();
+},[]);
+
+const requireAuth = (callback)=>{
+  if(user){ callback(); return; }
+  setAuthCallback(()=>callback);
+  setShowAuth(true);
+};
   const [tab,setTab]         = useState('home');
   const [lang,setLang]       = useState('en');
   const [showLangPicker,setShowLangPicker] = useState(false);
@@ -671,8 +687,8 @@ function App() {
 
   if(showVirtualTour) return <VirtualTourScreen place={showVirtualTour} onBack={()=>setShowVirtualTour(null)} t={t}/>;
   if(selectedPlace) return <DetailScreen place={selectedPlace} onBack={()=>setSelectedPlace(null)} t={t} onVirtualTour={()=>setShowVirtualTour(selectedPlace)}/>;
-  if(selectedRestaurant) return <RestaurantDetail item={selectedRestaurant} onBack={()=>setSelectedRestaurant(null)} t={t}/>;
-  if(selectedHotel) return <HotelDetail item={selectedHotel} onBack={()=>setSelectedHotel(null)} t={t}/>;
+  if(selectedRestaurant) return <RestaurantDetail item={selectedRestaurant} onBack={()=>setSelectedRestaurant(null)} t={t} user={user} requireAuth={requireAuth}/>;
+  if(selectedHotel) return <HotelDetail item={selectedHotel} onBack={()=>setSelectedHotel(null)} t={t} user={user} requireAuth={requireAuth}/>;
   if(selectedStore) return <StoreDetail item={selectedStore} onBack={()=>setSelectedStore(null)} t={t}/>;
 
   return (
@@ -693,7 +709,15 @@ function App() {
               ))}
             </div>
           )}
-          <span style={{fontSize:20}}>🇸🇿</span>
+          {user
+  ? <div style={{display:'flex',alignItems:'center',gap:6}}>
+      <div style={{width:28,height:28,borderRadius:'50%',background:'linear-gradient(135deg,#c9a227,#e8b93a)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#0a1628'}}>
+        {(user.user_metadata?.full_name||user.email||'U')[0].toUpperCase()}
+      </div>
+      <button onClick={()=>supabase.auth.signOut()} style={{fontSize:10,color:'#8fa3c4',background:'transparent',border:'none',cursor:'pointer'}}>Sign out</button>
+    </div>
+  : <button onClick={()=>setShowAuth(true)} style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 10px',cursor:'pointer'}}>Sign In</button>
+}
         </div>
       </div>
 
@@ -942,7 +966,7 @@ function Slideshow({images,height=260}) {
 }
 
 // ── REVIEWS ───────────────────────────────────────────────
-function Reviews({name,t}) {
+function Reviews({name,t,user,requireAuth}) {
   const [list,setList] = useState([
     {name:'Sarah M.',flag:'🇬🇧',stars:5,text:'Absolutely breathtaking! Best experience of my life.',date:'2 days ago'},
     {name:'Joao P.',flag:'🇧🇷',stars:5,text:'Incredible! Will definitely come back.',date:'1 week ago'},
@@ -954,7 +978,7 @@ function Reviews({name,t}) {
     <div style={{marginBottom:16}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
         <div style={styles.sectionTitle}>{t.reviews}</div>
-        <button style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 12px',cursor:'pointer'}} onClick={()=>setShow(!show)}>+ {t.writeReview}</button>
+        <button style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 12px',cursor:'pointer'}} onClick={()=>{if(!user){requireAuth(()=>setShow(true));return;}setShow(!show);}}>+ {t.writeReview}</button>
       </div>
       {show&&(
         <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:14,marginBottom:12}}>
@@ -1070,6 +1094,7 @@ function RestaurantDetail({item,onBack,t}) {
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address||item.name)}`;
 
   const placeOrder = ()=>{
+    if(!user) { requireAuth(()=>{}); return; }
     if(!diningMode) return alert('Please choose Dine-in or Takeaway');
     if(diningMode==='dinein' && !tableNum) return alert('Please enter your table number');
     if(diningMode==='takeaway' && !tableNum) return alert('Please enter a contact number for pickup');
@@ -2336,6 +2361,71 @@ function BusinessTab({t}) {
           <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}>← Back</button>
         </div>
       )}
+    </div>
+  );
+}
+function AuthModal({mode,setMode,onClose,onSuccess}){
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+  const [name,setName]=useState('');
+  const [loading,setLoading]=useState(false);
+  const [error,setError]=useState('');
+
+  const submit = async()=>{
+    if(!email||!password){setError('Please fill in all fields');return;}
+    setLoading(true); setError('');
+    if(mode==='signup'){
+      const {data,error:e} = await supabase.auth.signUp({
+        email, password,
+        options:{data:{full_name:name}}
+      });
+      if(e){setError(e.message);setLoading(false);return;}
+      onSuccess(data.user);
+    } else {
+      const {data,error:e} = await supabase.auth.signInWithPassword({email,password});
+      if(e){setError(e.message);setLoading(false);return;}
+      onSuccess(data.user);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{minHeight:'100vh',background:'#0a1628',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,maxWidth:480,margin:'0 auto'}}>
+      <div style={{fontSize:48,marginBottom:8}}>💎</div>
+      <div style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:4}}>
+        {mode==='signup'?'Create Account':'Welcome Back'}
+      </div>
+      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:24,textAlign:'center'}}>
+        {mode==='signup'
+          ? 'Sign up to save favourites, view order history and get receipts'
+          : 'Sign in to access your bookings and order history'}
+      </div>
+
+      {mode==='signup'&&(
+        <input value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name"
+          style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
+      )}
+      <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" type="email"
+        style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
+      <input value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" type="password"
+        style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:14,boxSizing:'border-box'}}/>
+
+      {error&&<div style={{fontSize:12,color:'#e24b4a',marginBottom:10,textAlign:'center'}}>{error}</div>}
+
+      <button style={{background:'linear-gradient(135deg,#c9a227,#e8b93a)',color:'#0a1628',border:'none',padding:'13px',borderRadius:50,fontSize:15,fontWeight:700,cursor:'pointer',width:'100%',marginBottom:12,opacity:loading?0.6:1}} disabled={loading} onClick={submit}>
+        {loading?'Please wait…':mode==='signup'?'Create Account':'Sign In'}
+      </button>
+
+      <button onClick={onClose} style={{width:'100%',padding:'12px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13,marginBottom:14}}>
+        Continue as Guest →
+      </button>
+
+      <div style={{fontSize:12,color:'#8fa3c4',textAlign:'center'}}>
+        {mode==='signup'?'Already have an account? ':'New to Incaba? '}
+        <span onClick={()=>setMode(mode==='signup'?'signin':'signup')} style={{color:'#c9a227',cursor:'pointer',fontWeight:600}}>
+          {mode==='signup'?'Sign In':'Sign Up Free'}
+        </span>
+      </div>
     </div>
   );
 }
