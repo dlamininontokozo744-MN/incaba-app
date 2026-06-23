@@ -2,6 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from './supabaseClient';
 import './App.css';
 
+// A stable anonymous ID per device/browser, so a tourist can see their own
+// order/booking history without needing to create an account.
+function getDeviceId(){
+  let id = localStorage.getItem('incaba_device_id');
+  if(!id){
+    id = 'dev_'+Math.random().toString(36).slice(2)+Date.now().toString(36);
+    localStorage.setItem('incaba_device_id', id);
+  }
+  return id;
+}
+
 // ── LOCAL IMAGE HELPER ────────────────────────────────────
 // Pulls every image bundled in src/images so we can reference them by filename
 // instead of relying on external stock-photo URLs.
@@ -698,9 +709,95 @@ function App() {
         {tab==='map'       && <MapTab t={t}/>}
         {tab==='ai'        && <AITab t={t}/>}
         {tab==='business'  && <BusinessTab t={t}/>}
+        {tab==='mytrips'   && <MyOrdersTab t={t}/>}
       </div>
 
       <BottomNav tab={tab} setTab={setTab} t={t}/>
+    </div>
+  );
+}
+
+function MyOrdersTab({t}){
+  const [orders,setOrders]   = useState([]);
+  const [bookings,setBookings] = useState([]);
+  const [loading,setLoading] = useState(true);
+
+  const load = ()=>{
+    setLoading(true);
+    const deviceId = getDeviceId();
+    Promise.all([
+      supabase.from('orders').select('*').eq('device_id',deviceId).order('created_at',{ascending:false}),
+      supabase.from('bookings').select('*').eq('device_id',deviceId).order('created_at',{ascending:false}),
+    ]).then(([o,b])=>{
+      if(o.error) console.error('Load orders failed:', o.error.message); else setOrders(o.data||[]);
+      if(b.error) console.error('Load bookings failed:', b.error.message); else setBookings(b.data||[]);
+      setLoading(false);
+    });
+  };
+  useEffect(load,[]);
+
+  const cancelOrder = (code)=>{
+    if(!window.confirm('Cancel this order?')) return;
+    supabase.from('orders').update({status:'cancelled'}).eq('order_code',code).then(()=>load());
+  };
+  const cancelBooking = (code)=>{
+    if(!window.confirm('Cancel this booking?')) return;
+    supabase.from('bookings').update({status:'cancelled'}).eq('booking_code',code).then(()=>load());
+  };
+
+  const Empty = ()=>(
+    <div style={{textAlign:'center',padding:'30px 10px',color:'#8fa3c4',fontSize:13}}>
+      Nothing here yet. Orders and bookings you make will show up on this device.
+    </div>
+  );
+
+  return (
+    <div>
+      <div style={styles.sectionTitle}>📋 My Orders & Bookings</div>
+      {loading ? (
+        <div style={{textAlign:'center',padding:30,color:'#8fa3c4',fontSize:13}}>Loading…</div>
+      ) : (orders.length===0 && bookings.length===0) ? <Empty/> : (
+        <>
+          {orders.length>0 && (
+            <>
+              <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'4px 0 10px'}}>🍽️ Food Orders</div>
+              {orders.map(o=>(
+                <div key={o.id} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:13,marginBottom:10}}>
+                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                    <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{o.restaurant_name}</span>
+                    <span style={{fontSize:11,fontWeight:700,color:o.status==='cancelled'?'#e24b4a':'#5dcaa5'}}>{o.status==='cancelled'?'Cancelled':'Active'}</span>
+                  </div>
+                  <div style={{fontSize:11,color:'#8fa3c4',marginBottom:6}}>{o.dining_mode==='dinein'?'Dine-in':'Takeaway'} · {new Date(o.created_at).toLocaleString([], {dateStyle:'medium',timeStyle:'short'})}</div>
+                  <div style={{fontSize:18,fontWeight:800,color:'#c9a227',letterSpacing:1,marginBottom:6}}>{o.order_code}</div>
+                  <div style={{fontSize:12,color:'#f0f4ff',marginBottom:8}}>
+                    {(o.items||[]).map((it,i)=><div key={i}>{it.name} x{it.qty} — E {it.price*it.qty}</div>)}
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <span style={{fontSize:13,fontWeight:700,color:'#c9a227'}}>Total: E {o.total}</span>
+                    {o.status!=='cancelled' && <button onClick={()=>cancelOrder(o.order_code)} style={{padding:'6px 12px',borderRadius:50,border:'0.5px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',fontSize:11,fontWeight:600,cursor:'pointer'}}>Cancel</button>}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+          {bookings.length>0 && (
+            <>
+              <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'14px 0 10px'}}>🛏️ Accommodation Bookings</div>
+              {bookings.map(b=>(
+                <div key={b.id} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:13,marginBottom:10}}>
+                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                    <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{b.property_name}</span>
+                    <span style={{fontSize:11,fontWeight:700,color:b.status==='cancelled'?'#e24b4a':'#5dcaa5'}}>{b.status==='cancelled'?'Cancelled':'Confirmed'}</span>
+                  </div>
+                  <div style={{fontSize:11,color:'#8fa3c4',marginBottom:6}}>{b.check_in} → {b.check_out} · {b.guests} guest(s)</div>
+                  <div style={{fontSize:18,fontWeight:800,color:'#c9a227',letterSpacing:1,marginBottom:8}}>{b.booking_code}</div>
+                  {b.status!=='cancelled' && <button onClick={()=>cancelBooking(b.booking_code)} style={{padding:'6px 12px',borderRadius:50,border:'0.5px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',fontSize:11,fontWeight:600,cursor:'pointer'}}>Cancel</button>}
+                </div>
+              ))}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
@@ -715,6 +812,7 @@ function BottomNav({tab,setTab,t}){
     {id:'map',     icon:'🗺️',label:t.navigate},
   ];
   const more=[
+    {id:'mytrips',  icon:'📋',label:'My Trips'},
     {id:'culture',  icon:'🎭',label:'Culture'},
     {id:'getaround',icon:'🚗',label:'Travel'},
     {id:'translate',icon:'🌐',label:t.translate},
@@ -987,6 +1085,7 @@ function RestaurantDetail({item,onBack,t}) {
       contact: tableNum,
       items: cart.map(c=>({name:c.name,qty:c.qty,price:c.price})),
       total: total,
+      device_id: getDeviceId(),
     }).then(({error})=>{ if(error) console.error('Order save failed:', error.message); });
   };
 
@@ -1147,6 +1246,7 @@ function HotelDetail({item,onBack,t}) {
       check_in: checkIn,
       check_out: checkOut,
       guests: parseInt(guests)||1,
+      device_id: getDeviceId(),
     }).then(({error})=>{ if(error) console.error('Booking save failed:', error.message); });
   };
   const cancelBooking = ()=>{
