@@ -1068,7 +1068,7 @@ function genOrderCode(item){
   return prefix+'-'+rand;
 }
 
-function RestaurantDetail({item,onBack,t}) {
+function RestaurantDetail({item,onBack,t,user,requireAuth}) {
   const [cart,setCart]           = useState([]);
   const [showCart,setShowCart]   = useState(false);
   const [ordered,setOrdered]     = useState(false);
