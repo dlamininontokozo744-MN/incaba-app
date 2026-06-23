@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   try {
     const { message } = req.body;
-    const apiKey = process.env.ANTHROPIC_KEY;
+    const apiKey = process.env.REACT_APP_ANTHROPIC;
 
     if (!apiKey) {
       return res.status(200).json({ reply: 'API key not configured. Please contact admin.' });
