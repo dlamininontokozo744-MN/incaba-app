@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
 import { supabase } from './supabaseClient';
 import './App.css';
 
@@ -638,24 +638,126 @@ function Img({src, alt, style, fallback='https://media.istockphoto.com/id/105159
 }
 
 // ── MAIN APP ──────────────────────────────────────────────
-function App() {
+// ── AUTH ───────────────────────────────────────────────────
+// Guests can browse, search, view places, get directions, and call
+// restaurants freely. Signing in only gets asked for at the moment it
+// actually unlocks something: ordering, booking, or reviewing.
+const AuthContext = createContext(null);
+function useAuth(){ return useContext(AuthContext); }
+
+function AuthProvider({children}){
+  const [user,setUser]   = useState(null);
+  const [ready,setReady] = useState(false);
+  const [prompt,setPrompt] = useState(null);   // {reason, onSuccess}
+  const [authScreen,setAuthScreen] = useState(null); // null | 'signin' | 'signup'
+
+  useEffect(()=>{
+    supabase.auth.getSession().then(({data})=>{ setUser(data.session?.user||null); setReady(true); });
+    const {data:sub} = supabase.auth.onAuthStateChange((_e,session)=>{ setUser(session?.user||null); });
+    return ()=> sub.subscription.unsubscribe();
+  },[]);
+
+  // Call this before any "members only" action. If signed in, runs onSuccess
+  // immediately. If not, shows a friendly prompt instead of blocking outright.
+  const requireAuth = (reason, onSuccess)=>{
+    if(user){ onSuccess && onSuccess(); return true; }
+    setPrompt({reason, onSuccess});
+    return false;
+  };
+
+  const signOut = ()=> supabase.auth.signOut();
+
+  return (
+    <AuthContext.Provider value={{user,ready,requireAuth,setAuthScreen,signOut}}>
+      {children}
+      {prompt && (
+        <SignInPrompt
+          reason={prompt.reason}
+          onClose={()=>setPrompt(null)}
+          onChooseAuth={(mode)=>{ setAuthScreen(mode); }}
+        />
+      )}
+      {authScreen && (
+        <AuthScreen
+          mode={authScreen}
+          onClose={()=>setAuthScreen(null)}
+          onSwitch={(m)=>setAuthScreen(m)}
+          onSuccess={()=>{
+            setAuthScreen(null);
+            if(prompt&&prompt.onSuccess) prompt.onSuccess();
+            setPrompt(null);
+          }}
+        />
+      )}
+    </AuthContext.Provider>
+  );
+}
+
+function SignInPrompt({reason,onClose,onChooseAuth}){
+  return (
+    <div style={{position:'fixed',inset:0,background:'rgba(10,22,40,0.75)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={onClose}>
+      <div onClick={e=>e.stopPropagation()} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.35)',borderRadius:18,padding:24,maxWidth:340,width:'100%',textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,0.6)'}}>
+        <div style={{fontSize:40,marginBottom:10}}>🔐</div>
+        <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginBottom:8}}>Sign in to continue</div>
+        <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:18}}>{reason}</div>
+        <button style={{...styles.btnPrimary,marginBottom:8}} onClick={()=>onChooseAuth('signup')}>Create free account</button>
+        <button style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,cursor:'pointer',marginBottom:8}} onClick={()=>onChooseAuth('signin')}>I already have an account</button>
+        <button style={{width:'100%',padding:'9px',border:'none',background:'transparent',color:'#5f7a9a',fontSize:12,cursor:'pointer'}} onClick={onClose}>Maybe later</button>
+      </div>
+    </div>
+  );
+}
+
+function AuthScreen({mode,onClose,onSwitch,onSuccess}){
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [fullName,setFullName] = useState('');
+  const [loading,setLoading] = useState(false);
+  const [error,setError] = useState('');
+
+  const submit = async()=>{
+    if(!email||!password) return setError('Please fill in email and password.');
+    setLoading(true); setError('');
+    if(mode==='signup'){
+      const {error} = await supabase.auth.signUp({email,password,options:{data:{full_name:fullName}}});
+      if(error) setError(error.message);
+      else { setLoading(false); onSuccess(); return; }
+    } else {
+      const {error} = await supabase.auth.signInWithPassword({email,password});
+      if(error) setError(error.message);
+      else { setLoading(false); onSuccess(); return; }
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{position:'fixed',inset:0,background:'rgba(10,22,40,0.92)',zIndex:1001,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+      <div style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.35)',borderRadius:18,padding:24,maxWidth:340,width:'100%',boxShadow:'0 20px 60px rgba(0,0,0,0.6)'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+          <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>{mode==='signup'?'Create your account':'Welcome back'}</div>
+          <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}>✕</button>
+        </div>
+        {mode==='signup'&&(
+          <input value={fullName} onChange={e=>setFullName(e.target.value)} placeholder="Full name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
+        )}
+        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" type="email" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
+        <input value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" type="password" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
+        {error && <div style={{fontSize:12,color:'#e24b4a',marginBottom:10}}>{error}</div>}
+        <button style={{...styles.btnPrimary,marginBottom:10,opacity:loading?0.6:1}} disabled={loading} onClick={submit}>{loading?'Please wait…':(mode==='signup'?'Create account':'Sign in')}</button>
+        <div style={{textAlign:'center',fontSize:12,color:'#8fa3c4'}}>
+          {mode==='signup' ? (
+            <>Already have an account? <span style={{color:'#c9a227',cursor:'pointer'}} onClick={()=>onSwitch('signin')}>Sign in</span></>
+          ) : (
+            <>New here? <span style={{color:'#c9a227',cursor:'pointer'}} onClick={()=>onSwitch('signup')}>Create an account</span></>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AppInner() {
   const [screen,setScreen]   = useState('splash');
-  const [user,setUser] = useState(null);
-const [showAuth,setShowAuth] = useState(false);
-const [authMode,setAuthMode] = useState('signin'); // 'signin' | 'signup'
-const [authCallback,setAuthCallback] = useState(null);
-
-useEffect(()=>{
-  supabase.auth.getSession().then(({data:{session}})=>setUser(session?.user||null));
-  const {data:{subscription}} = supabase.auth.onAuthStateChange((_,session)=>setUser(session?.user||null));
-  return ()=>subscription.unsubscribe();
-},[]);
-
-const requireAuth = (callback)=>{
-  if(user){ callback(); return; }
-  setAuthCallback(()=>callback);
-  setShowAuth(true);
-};
   const [tab,setTab]         = useState('home');
   const [lang,setLang]       = useState('en');
   const [showLangPicker,setShowLangPicker] = useState(false);
@@ -665,7 +767,6 @@ const requireAuth = (callback)=>{
   const [selectedStore,setSelectedStore]           = useState(null);
   const [showVirtualTour,setShowVirtualTour]       = useState(null);
   const t = T[lang];
-  if(showAuth) return <AuthModal mode={authMode} setMode={setAuthMode} onClose={()=>setShowAuth(false)} onSuccess={(u)=>{setUser(u);setShowAuth(false);if(authCallback){authCallback();setAuthCallback(null);}}} />;
 
   if(screen==='splash') return (
     <div style={styles.splash}>
@@ -688,8 +789,8 @@ const requireAuth = (callback)=>{
 
   if(showVirtualTour) return <VirtualTourScreen place={showVirtualTour} onBack={()=>setShowVirtualTour(null)} t={t}/>;
   if(selectedPlace) return <DetailScreen place={selectedPlace} onBack={()=>setSelectedPlace(null)} t={t} onVirtualTour={()=>setShowVirtualTour(selectedPlace)}/>;
-  if(selectedRestaurant) return <RestaurantDetail item={selectedRestaurant} onBack={()=>setSelectedRestaurant(null)} t={t} user={user} requireAuth={requireAuth}/>;
-  if(selectedHotel) return <HotelDetail item={selectedHotel} onBack={()=>setSelectedHotel(null)} t={t} user={user} requireAuth={requireAuth}/>;
+  if(selectedRestaurant) return <RestaurantDetail item={selectedRestaurant} onBack={()=>setSelectedRestaurant(null)} t={t}/>;
+  if(selectedHotel) return <HotelDetail item={selectedHotel} onBack={()=>setSelectedHotel(null)} t={t}/>;
   if(selectedStore) return <StoreDetail item={selectedStore} onBack={()=>setSelectedStore(null)} t={t}/>;
 
   return (
@@ -710,15 +811,8 @@ const requireAuth = (callback)=>{
               ))}
             </div>
           )}
-          {user
-  ? <div style={{display:'flex',alignItems:'center',gap:6}}>
-      <div style={{width:28,height:28,borderRadius:'50%',background:'linear-gradient(135deg,#c9a227,#e8b93a)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#0a1628'}}>
-        {(user.user_metadata?.full_name||user.email||'U')[0].toUpperCase()}
-      </div>
-      <button onClick={()=>supabase.auth.signOut()} style={{fontSize:10,color:'#8fa3c4',background:'transparent',border:'none',cursor:'pointer'}}>Sign out</button>
-    </div>
-  : <button onClick={()=>setShowAuth(true)} style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 10px',cursor:'pointer'}}>Sign In</button>
-}
+          <span style={{fontSize:20}}>🇸🇿</span>
+          <ProfileButton/>
         </div>
       </div>
 
@@ -742,24 +836,61 @@ const requireAuth = (callback)=>{
   );
 }
 
+function ProfileButton(){
+  const {user,requireAuth,signOut} = useAuth();
+  const [open,setOpen] = useState(false);
+  const name = user && (user.user_metadata?.full_name || user.email);
+
+  if(!user) return (
+    <button onClick={()=>requireAuth('Sign in to save favourites, see your order history, and manage bookings.')}
+      style={{padding:'4px 11px',borderRadius:20,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontSize:11,fontWeight:600,cursor:'pointer'}}>
+      Sign in
+    </button>
+  );
+
+  return (
+    <div style={{position:'relative'}}>
+      <button onClick={()=>setOpen(!open)} style={{width:28,height:28,borderRadius:'50%',background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontWeight:700,fontSize:12,cursor:'pointer'}}>
+        {(name||'?').charAt(0).toUpperCase()}
+      </button>
+      {open&&(
+        <div style={{position:'absolute',top:34,right:0,background:'#0d1f3c',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,padding:10,zIndex:300,minWidth:180,boxShadow:'0 8px 32px rgba(0,0,0,0.5)'}}>
+          <div style={{fontSize:12,color:'#8fa3c4',padding:'4px 8px 10px',borderBottom:'0.5px solid rgba(255,255,255,0.08)',marginBottom:6,wordBreak:'break-all'}}>Signed in as<br/><b style={{color:'#f0f4ff'}}>{name}</b></div>
+          <button onClick={()=>{signOut();setOpen(false);}} style={{width:'100%',textAlign:'left',padding:'8px',borderRadius:8,border:'none',background:'transparent',color:'#e24b4a',fontSize:13,cursor:'pointer'}}>Sign out</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
+function App(){
+  return <AuthProvider><AppInner/></AuthProvider>;
+}
+
 function MyOrdersTab({t}){
+  const {user,requireAuth} = useAuth();
   const [orders,setOrders]   = useState([]);
   const [bookings,setBookings] = useState([]);
+  const [favorites,setFavorites] = useState([]);
   const [loading,setLoading] = useState(true);
 
   const load = ()=>{
+    if(!user){ setLoading(false); return; }
     setLoading(true);
-    const deviceId = getDeviceId();
     Promise.all([
-      supabase.from('orders').select('*').eq('device_id',deviceId).order('created_at',{ascending:false}),
-      supabase.from('bookings').select('*').eq('device_id',deviceId).order('created_at',{ascending:false}),
-    ]).then(([o,b])=>{
+      supabase.from('orders').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),
+      supabase.from('bookings').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),
+      supabase.from('favorites').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),
+    ]).then(([o,b,f])=>{
       if(o.error) console.error('Load orders failed:', o.error.message); else setOrders(o.data||[]);
       if(b.error) console.error('Load bookings failed:', b.error.message); else setBookings(b.data||[]);
+      if(f.error) console.error('Load favorites failed:', f.error.message); else setFavorites(f.data||[]);
       setLoading(false);
     });
   };
-  useEffect(load,[]);
+  useEffect(load,[user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cancelOrder = (code)=>{
     if(!window.confirm('Cancel this order?')) return;
@@ -769,24 +900,46 @@ function MyOrdersTab({t}){
     if(!window.confirm('Cancel this booking?')) return;
     supabase.from('bookings').update({status:'cancelled'}).eq('booking_code',code).then(()=>load());
   };
+  const removeFavorite = (id)=>{
+    supabase.from('favorites').delete().eq('id',id).then(()=>load());
+  };
 
-  const Empty = ()=>(
-    <div style={{textAlign:'center',padding:'30px 10px',color:'#8fa3c4',fontSize:13}}>
-      Nothing here yet. Orders and bookings you make will show up on this device.
+  if(!user) return (
+    <div style={{textAlign:'center',padding:'40px 16px'}}>
+      <div style={{fontSize:46,marginBottom:12}}>🔐</div>
+      <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginBottom:8}}>This is your space</div>
+      <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:18}}>
+        Sign in to see your saved favourites, order history with receipts, and manage your bookings — all in one place.
+      </div>
+      <button style={styles.btnPrimary} onClick={()=>requireAuth('Sign in to see your favourites, orders, and bookings.')}>Sign in</button>
     </div>
+  );
+
+  const Empty = ({label})=>(
+    <div style={{textAlign:'center',padding:'20px 10px',color:'#8fa3c4',fontSize:13}}>{label}</div>
   );
 
   return (
     <div>
-      <div style={styles.sectionTitle}>📋 My Orders & Bookings</div>
+      <div style={styles.sectionTitle}>📋 My Account</div>
       {loading ? (
         <div style={{textAlign:'center',padding:30,color:'#8fa3c4',fontSize:13}}>Loading…</div>
-      ) : (orders.length===0 && bookings.length===0) ? <Empty/> : (
+      ) : (
         <>
-          {orders.length>0 && (
-            <>
-              <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'4px 0 10px'}}>🍽️ Food Orders</div>
-              {orders.map(o=>(
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'4px 0 10px'}}>❤️ Favourites</div>
+          {favorites.length===0 ? <Empty label="No favourites yet — tap 'Save' on any place you like."/> : favorites.map(f=>(
+            <div key={f.id} style={{display:'flex',alignItems:'center',gap:10,background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:10,marginBottom:8}}>
+              <Img src={f.img} alt={f.place_name} style={{width:48,height:48,borderRadius:8,flexShrink:0}}/>
+              <div style={{flex:1}}>
+                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{f.place_name}</div>
+                <div style={{fontSize:11,color:'#8fa3c4'}}>{f.region}</div>
+              </div>
+              <button onClick={()=>removeFavorite(f.id)} style={{padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',fontSize:11,fontWeight:600,cursor:'pointer'}}>Remove</button>
+            </div>
+          ))}
+
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'18px 0 10px'}}>🍽️ Food Orders</div>
+          {orders.length===0 ? <Empty label="No orders yet."/> : orders.map(o=>(
                 <div key={o.id} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:13,marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
                     <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{o.restaurant_name}</span>
@@ -803,12 +956,9 @@ function MyOrdersTab({t}){
                   </div>
                 </div>
               ))}
-            </>
-          )}
-          {bookings.length>0 && (
-            <>
-              <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'14px 0 10px'}}>🛏️ Accommodation Bookings</div>
-              {bookings.map(b=>(
+
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'18px 0 10px'}}>🛏️ Accommodation Bookings</div>
+          {bookings.length===0 ? <Empty label="No bookings yet."/> : bookings.map(b=>(
                 <div key={b.id} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:13,marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
                     <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{b.property_name}</span>
@@ -819,8 +969,6 @@ function MyOrdersTab({t}){
                   {b.status!=='cancelled' && <button onClick={()=>cancelBooking(b.booking_code)} style={{padding:'6px 12px',borderRadius:50,border:'0.5px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',fontSize:11,fontWeight:600,cursor:'pointer'}}>Cancel</button>}
                 </div>
               ))}
-            </>
-          )}
         </>
       )}
     </div>
@@ -967,36 +1115,66 @@ function Slideshow({images,height=260}) {
 }
 
 // ── REVIEWS ───────────────────────────────────────────────
-function Reviews({name,t,user,requireAuth}) {
-  const [list,setList] = useState([
-    {name:'Sarah M.',flag:'🇬🇧',stars:5,text:'Absolutely breathtaking! Best experience of my life.',date:'2 days ago'},
-    {name:'Joao P.',flag:'🇧🇷',stars:5,text:'Incredible! Will definitely come back.',date:'1 week ago'},
-    {name:'Thandi D.',flag:'🇿🇦',stars:4,text:'Beautiful place, well maintained.',date:'2 weeks ago'},
-  ]);
+function Reviews({name,t}) {
+  const {user,requireAuth} = useAuth();
+  const seedList = [
+    {id:'seed1',user_name:'Sarah M.',stars:5,text:'Absolutely breathtaking! Best experience of my life.',created_at:null},
+    {id:'seed2',user_name:'Joao P.',stars:5,text:'Incredible! Will definitely come back.',created_at:null},
+    {id:'seed3',user_name:'Thandi D.',stars:4,text:'Beautiful place, well maintained.',created_at:null},
+  ];
+  const [list,setList] = useState(seedList);
+  const [loading,setLoading] = useState(true);
   const [show,setShow] = useState(false);
-  const [nName,setNName]=useState(''); const [nText,setNText]=useState(''); const [nStars,setNStars]=useState(5);
+  const [nText,setNText]=useState(''); const [nStars,setNStars]=useState(5);
+  const reviewerName = user ? (user.user_metadata?.full_name || user.email) : '';
+
+  useEffect(()=>{
+    setLoading(true);
+    supabase.from('reviews').select('*').eq('place_name',name).order('created_at',{ascending:false})
+      .then(({data,error})=>{
+        if(error){ console.error('Load reviews failed:', error.message); setLoading(false); return; }
+        setList([...(data||[]), ...seedList]);
+        setLoading(false);
+      });
+  },[name]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const openReviewForm = ()=>{
+    requireAuth("Sign in to write a review — it helps other tourists, and we'll credit it to your name.", ()=> setShow(true));
+  };
+  const submitReview = ()=>{
+    if(!nText) return;
+    supabase.from('reviews').insert({user_id:user.id, user_name:reviewerName, place_name:name, stars:nStars, text:nText})
+      .then(({error})=>{
+        if(error){ console.error('Review save failed:', error.message); alert('Could not post your review — please try again.'); return; }
+        setList(p=>[{id:'tmp'+Date.now(),user_name:reviewerName,stars:nStars,text:nText,created_at:new Date().toISOString()},...p]);
+        setNText(''); setShow(false);
+      });
+  };
+
   return (
     <div style={{marginBottom:16}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
         <div style={styles.sectionTitle}>{t.reviews}</div>
-        <button style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 12px',cursor:'pointer'}} onClick={()=>{if(!user){requireAuth(()=>setShow(true));return;}setShow(!show);}}>+ {t.writeReview}</button>
+        <button style={{fontSize:11,color:'#c9a227',background:'rgba(201,162,39,0.1)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:20,padding:'4px 12px',cursor:'pointer'}} onClick={openReviewForm}>+ {t.writeReview}</button>
       </div>
       {show&&(
         <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:14,marginBottom:12}}>
+          <div style={{fontSize:11,color:'#8fa3c4',marginBottom:8}}>Posting as <b style={{color:'#c9a227'}}>{reviewerName}</b></div>
           <div style={{display:'flex',gap:5,marginBottom:10}}>{[1,2,3,4,5].map(s=><span key={s} onClick={()=>setNStars(s)} style={{fontSize:22,cursor:'pointer',opacity:s<=nStars?1:0.3}}>⭐</span>)}</div>
-          <input value={nName} onChange={e=>setNName(e.target.value)} placeholder="Your name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'9px 12px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:8,boxSizing:'border-box'}}/>
           <textarea value={nText} onChange={e=>setNText(e.target.value)} placeholder="Share your experience..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'9px 12px',color:'#f0f4ff',fontSize:13,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box'}}/>
           <div style={{display:'flex',gap:8,marginTop:8}}>
-            <button style={{...styles.btnPrimary,flex:1,padding:'9px',fontSize:13}} onClick={()=>{if(!nName||!nText)return;setList(p=>[{name:nName,flag:'🌍',stars:nStars,text:nText,date:'Just now'},...p]);setNName('');setNText('');setShow(false);}}>{t.submit}</button>
+            <button style={{...styles.btnPrimary,flex:1,padding:'9px',fontSize:13}} onClick={submitReview}>{t.submit}</button>
             <button style={{flex:1,padding:'9px',fontSize:13,borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer'}} onClick={()=>setShow(false)}>{t.cancel}</button>
           </div>
         </div>
       )}
-      {list.map((r,i)=>(
-        <div key={i} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.15)',borderRadius:12,padding:12,marginBottom:8}}>
+      {loading ? (
+        <div style={{textAlign:'center',padding:16,color:'#8fa3c4',fontSize:12}}>Loading reviews…</div>
+      ) : list.map((r,i)=>(
+        <div key={r.id||i} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.15)',borderRadius:12,padding:12,marginBottom:8}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5}}>
-            <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:18}}>{r.flag}</span><span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</span></div>
-            <span style={{fontSize:10,color:'#8fa3c4'}}>{r.date}</span>
+            <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.user_name}</span>
+            <span style={{fontSize:10,color:'#8fa3c4'}}>{r.created_at?new Date(r.created_at).toLocaleDateString():''}</span>
           </div>
           <div style={{marginBottom:5}}>{'⭐'.repeat(r.stars)}</div>
           <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.6}}>{r.text}</div>
@@ -1008,7 +1186,26 @@ function Reviews({name,t,user,requireAuth}) {
 
 // ── DETAIL SCREEN ─────────────────────────────────────────
 function DetailScreen({place,onBack,t,onVirtualTour}) {
+  const {user,requireAuth} = useAuth();
   const [saved,setSaved] = useState(false);
+
+  useEffect(()=>{
+    if(!user) return;
+    supabase.from('favorites').select('id').eq('user_id',user.id).eq('place_name',place.name).maybeSingle()
+      .then(({data})=> setSaved(!!data));
+  },[user, place.name]);
+
+  const toggleSave = ()=>{
+    requireAuth('Sign in to save places to your favourites and find them again anytime.', async()=>{
+      if(saved){
+        await supabase.from('favorites').delete().eq('user_id',user.id).eq('place_name',place.name);
+        setSaved(false);
+      }else{
+        await supabase.from('favorites').insert({user_id:user.id, place_name:place.name, place_type:'attraction', region:place.region, img:place.gallery&&place.gallery[0]});
+        setSaved(true);
+      }
+    });
+  };
   return (
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
@@ -1053,7 +1250,7 @@ function DetailScreen({place,onBack,t,onVirtualTour}) {
         <Reviews name={place.name} t={t}/>
         <div style={{display:'flex',gap:10,marginTop:8,marginBottom:8}}>
           <button style={{...styles.btnPrimary,flex:1,padding:'11px',fontSize:13}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(place.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
-          <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(29,158,117,0.6)':'0.5px solid rgba(201,162,39,0.4)',background:saved?'rgba(29,158,117,0.15)':'transparent',color:saved?'#5dcaa5':'#c9a227',cursor:'pointer',fontWeight:600}} onClick={()=>setSaved(true)}>{saved?'✅ Saved':t.savePlace}</button>
+          <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(29,158,117,0.6)':'0.5px solid rgba(201,162,39,0.4)',background:saved?'rgba(29,158,117,0.15)':'transparent',color:saved?'#5dcaa5':'#c9a227',cursor:'pointer',fontWeight:600}} onClick={toggleSave}>{saved?'✅ Saved':t.savePlace}</button>
         </div>
         <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.1)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:16}} onClick={()=>{if(window.confirm('Call Eswatini Emergency Services 999?'))window.location.href='tel:999';}}>🆘 {t.sos}</button>
       </div>
@@ -1069,7 +1266,8 @@ function genOrderCode(item){
   return prefix+'-'+rand;
 }
 
-function RestaurantDetail({item,onBack,t,user,requireAuth}) {
+function RestaurantDetail({item,onBack,t}) {
+  const {user,requireAuth} = useAuth();
   const [cart,setCart]           = useState([]);
   const [showCart,setShowCart]   = useState(false);
   const [ordered,setOrdered]     = useState(false);
@@ -1095,10 +1293,10 @@ function RestaurantDetail({item,onBack,t,user,requireAuth}) {
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address||item.name)}`;
 
   const placeOrder = ()=>{
-    if(!user) { requireAuth(()=>{}); return; }
     if(!diningMode) return alert('Please choose Dine-in or Takeaway');
     if(diningMode==='dinein' && !tableNum) return alert('Please enter your table number');
     if(diningMode==='takeaway' && !tableNum) return alert('Please enter a contact number for pickup');
+    requireAuth('Sign in to complete your order and receive a receipt.', ()=>{
     const code = genOrderCode(item);
     setOrderCode(code);
     setOrderTime(Date.now());
@@ -1112,7 +1310,9 @@ function RestaurantDetail({item,onBack,t,user,requireAuth}) {
       items: cart.map(c=>({name:c.name,qty:c.qty,price:c.price})),
       total: total,
       device_id: getDeviceId(),
+      user_id: user.id,
     }).then(({error})=>{ if(error) console.error('Order save failed:', error.message); });
+    });
   };
 
   const cancelOrder = ()=>{
@@ -1248,12 +1448,18 @@ function RestaurantDetail({item,onBack,t,user,requireAuth}) {
 
 // ── HOTEL DETAIL WITH ROOM PHOTOS ─────────────────────────
 function HotelDetail({item,onBack,t}) {
+  const {user,requireAuth} = useAuth();
   const [showBooking,setShowBooking] = useState(false);
   const [checkIn,setCheckIn]   = useState('');
   const [checkOut,setCheckOut] = useState('');
   const [guests,setGuests]     = useState('2');
+  const [guestName,setGuestName] = useState('');
   const [selRoom,setSelRoom]   = useState(null);
   const [confirmed,setConfirmed] = useState(null);
+
+  useEffect(()=>{
+    if(user) setGuestName(user.user_metadata?.full_name || user.email || '');
+  },[user]);
 
   const dirUrl = item.lat&&item.lng
     ? `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`
@@ -1261,6 +1467,7 @@ function HotelDetail({item,onBack,t}) {
 
   const confirmBooking = ()=>{
     if(!checkIn||!checkOut) return alert('Please fill in all dates');
+    requireAuth('Sign in to confirm your booking and manage it later.', ()=>{
     const code = genOrderCode(item);
     const roomName = selRoom||(item.rooms[0]&&item.rooms[0].name);
     setConfirmed({code,room:roomName,checkIn,checkOut,guests});
@@ -1273,7 +1480,10 @@ function HotelDetail({item,onBack,t}) {
       check_out: checkOut,
       guests: parseInt(guests)||1,
       device_id: getDeviceId(),
+      user_id: user.id,
+      guest_name: guestName,
     }).then(({error})=>{ if(error) console.error('Booking save failed:', error.message); });
+    });
   };
   const cancelBooking = ()=>{
     if(!window.confirm('Cancel this booking? The property will be notified.')) return;
@@ -1349,6 +1559,10 @@ function HotelDetail({item,onBack,t}) {
         {showBooking&&(
           <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:16,marginTop:14,marginBottom:14}}>
             <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:14}}>📅 {t.bookNow}{selRoom?' — '+selRoom:''}</div>
+            <div style={{marginBottom:12}}>
+              <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Name for this booking</div>
+              <input type="text" value={guestName} onChange={e=>setGuestName(e.target.value)} placeholder="Sign in to auto-fill your name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 14px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
+            </div>
             {[[t.checkIn,checkIn,setCheckIn,'date'],[t.checkOut,checkOut,setCheckOut,'date'],[t.guests,guests,setGuests,'number']].map(([label,val,setter,type])=>(
               <div key={label} style={{marginBottom:12}}>
                 <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>{label}</div>
@@ -2362,71 +2576,6 @@ function BusinessTab({t}) {
           <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}>← Back</button>
         </div>
       )}
-    </div>
-  );
-}
-function AuthModal({mode,setMode,onClose,onSuccess}){
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
-  const [name,setName]=useState('');
-  const [loading,setLoading]=useState(false);
-  const [error,setError]=useState('');
-
-  const submit = async()=>{
-    if(!email||!password){setError('Please fill in all fields');return;}
-    setLoading(true); setError('');
-    if(mode==='signup'){
-      const {data,error:e} = await supabase.auth.signUp({
-        email, password,
-        options:{data:{full_name:name}}
-      });
-      if(e){setError(e.message);setLoading(false);return;}
-      onSuccess(data.user);
-    } else {
-      const {data,error:e} = await supabase.auth.signInWithPassword({email,password});
-      if(e){setError(e.message);setLoading(false);return;}
-      onSuccess(data.user);
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div style={{minHeight:'100vh',background:'#0a1628',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,maxWidth:480,margin:'0 auto'}}>
-      <div style={{fontSize:48,marginBottom:8}}>💎</div>
-      <div style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:4}}>
-        {mode==='signup'?'Create Account':'Welcome Back'}
-      </div>
-      <div style={{fontSize:12,color:'#8fa3c4',marginBottom:24,textAlign:'center'}}>
-        {mode==='signup'
-          ? 'Sign up to save favourites, view order history and get receipts'
-          : 'Sign in to access your bookings and order history'}
-      </div>
-
-      {mode==='signup'&&(
-        <input value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name"
-          style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
-      )}
-      <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" type="email"
-        style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
-      <input value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" type="password"
-        style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:14,boxSizing:'border-box'}}/>
-
-      {error&&<div style={{fontSize:12,color:'#e24b4a',marginBottom:10,textAlign:'center'}}>{error}</div>}
-
-      <button style={{background:'linear-gradient(135deg,#c9a227,#e8b93a)',color:'#0a1628',border:'none',padding:'13px',borderRadius:50,fontSize:15,fontWeight:700,cursor:'pointer',width:'100%',marginBottom:12,opacity:loading?0.6:1}} disabled={loading} onClick={submit}>
-        {loading?'Please wait…':mode==='signup'?'Create Account':'Sign In'}
-      </button>
-
-      <button onClick={onClose} style={{width:'100%',padding:'12px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13,marginBottom:14}}>
-        Continue as Guest →
-      </button>
-
-      <div style={{fontSize:12,color:'#8fa3c4',textAlign:'center'}}>
-        {mode==='signup'?'Already have an account? ':'New to Incaba? '}
-        <span onClick={()=>setMode(mode==='signup'?'signin':'signup')} style={{color:'#c9a227',cursor:'pointer',fontWeight:600}}>
-          {mode==='signup'?'Sign In':'Sign Up Free'}
-        </span>
-      </div>
     </div>
   );
 }
