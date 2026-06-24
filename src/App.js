@@ -1608,27 +1608,37 @@ function StoreDetail({item,onBack,t}) {
   );
 }
 
-// ── WEATHER ───────────────────────────────────────────────
 function WeatherWidget({t}) {
   const [day,setDay] = useState('Today');
   const [sel,setSel] = useState(null);
   const [liveWeather,setLiveWeather] = useState({});
+  const [searchCity,setSearchCity] = useState('');
+  const [searching,setSearching] = useState(false);
+  const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  const fetchCity = (city)=>{
+    setSearching(true);
+    fetch(`/api/weather?city=${city}`)
+      .then(r=>r.json())
+      .then(d=>{
+        if(d.main) setLiveWeather(prev=>({...prev,[city]:{
+          temp: Math.round(d.main.temp),
+          desc: d.weather[0].description,
+          humidity: d.main.humidity+'%',
+          wind: Math.round(d.wind.speed*3.6)+' km/h',
+          icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':d.weather[0].main==='Drizzle'?'🌦️':'☀️',
+          realName: d.name,
+          country: d.sys.country,
+          feelsLike: Math.round(d.main.feels_like),
+          live: true,
+        }}));
+        setSearching(false);
+      }).catch(()=>setSearching(false));
+  };
 
   useEffect(()=>{
-    ['Mbabane','Manzini','Siteki'].forEach(city=>{
-      fetch(`/api/weather?city=${city}`)
-        .then(r=>r.json())
-        .then(d=>{
-          if(d.main) setLiveWeather(prev=>({...prev,[city]:{
-            temp: Math.round(d.main.temp),
-            desc: d.weather[0].description,
-            humidity: d.main.humidity+'%',
-            wind: Math.round(d.wind.speed*3.6)+' km/h',
-            icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
-          }}));
-        }).catch(()=>{});
-    });
-  },[]);
+    ['Mbabane','Manzini','Siteki'].forEach(city=>fetchCity(city));
+  },[]); // eslint-disable-line
 
   const days = Object.keys(weatherData);
   const cities = weatherData[day].map(c=>({
@@ -1636,27 +1646,57 @@ function WeatherWidget({t}) {
     ...(liveWeather[c.name]||{}),
   }));
 
+  const handleSearch = ()=>{
+    if(!searchCity.trim()) return;
+    fetchCity(searchCity.trim());
+    setSearchCity('');
+  };
+
   return (
     <div style={{marginBottom:16}}>
-      <div style={styles.sectionTitle}>{t.weather}</div>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
+        <div style={styles.sectionTitle}>{t.weather}</div>
+        <div style={{fontSize:10,color:'#5dcaa5'}}>🟢 Live</div>
+      </div>
+      <div style={{fontSize:10,color:'#8fa3c4',marginBottom:10}}>📅 {today}</div>
+
+      <div style={{display:'flex',gap:8,marginBottom:12}}>
+        <input
+          value={searchCity}
+          onChange={e=>setSearchCity(e.target.value)}
+          onKeyDown={e=>e.key==='Enter'&&handleSearch()}
+          placeholder="Search any city..."
+          style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'8px 12px',color:'#f0f4ff',fontSize:12,outline:'none'}}
+        />
+        <button onClick={handleSearch} disabled={searching} style={{padding:'8px 14px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer'}}>
+          {searching?'…':'🔍'}
+        </button>
+      </div>
+
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:10,scrollbarWidth:'none'}}>
         {days.map(d=><button key={d} onClick={()=>{setDay(d);setSel(null);}} style={{flexShrink:0,padding:'5px 13px',borderRadius:20,border:d===day?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:d===day?'rgba(201,162,39,0.15)':'transparent',color:d===day?'#c9a227':'#8fa3c4',fontSize:11,cursor:'pointer',fontWeight:d===day?600:400}}>{d}</button>)}
       </div>
-      <div style={{display:'flex',gap:10}}>
-        {cities.map(c=>(
-          <div key={c.name} onClick={()=>setSel(sel&&sel.name===c.name?null:c)} style={{flex:1,background:sel&&sel.name===c.name?'rgba(24,95,165,0.25)':'rgba(24,95,165,0.12)',border:sel&&sel.name===c.name?'0.5px solid rgba(24,95,165,0.6)':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 6px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
+
+      <div style={{display:'flex',gap:10,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
+        {[...cities,...Object.entries(liveWeather).filter(([k])=>!['Mbabane','Manzini','Siteki'].includes(k)).map(([k,v])=>({name:v.realName||k,...v}))].map(c=>(
+          <div key={c.name} onClick={()=>setSel(sel&&sel.name===c.name?null:c)} style={{flexShrink:0,minWidth:90,background:sel&&sel.name===c.name?'rgba(24,95,165,0.25)':'rgba(24,95,165,0.12)',border:sel&&sel.name===c.name?'0.5px solid rgba(24,95,165,0.6)':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 8px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
+            {c.live&&<div style={{fontSize:8,color:'#5dcaa5',marginBottom:2}}>● LIVE</div>}
             <div style={{fontSize:22}}>{c.icon}</div>
             <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{c.temp}°C</div>
-            <div style={{fontSize:10,color:'#c9a227',fontWeight:600,marginTop:2}}>{c.name}</div>
+            <div style={{fontSize:10,color:'#c9a227',fontWeight:600,marginTop:2}}>{c.realName||c.name}</div>
             <div style={{fontSize:9,color:'#8fa3c4',marginTop:1}}>{c.desc}</div>
           </div>
         ))}
       </div>
+
       {sel&&(
         <div style={{background:'rgba(24,95,165,0.12)',border:'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:12,marginTop:10}}>
-          <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:8}}>{sel.icon} {sel.name} — {day}</div>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:8}}>
+            <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{sel.icon} {sel.realName||sel.name}{sel.country?' · '+sel.country:''}</div>
+            {sel.live&&<span style={{fontSize:10,color:'#5dcaa5'}}>🟢 Live data</span>}
+          </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-            {[['💧',sel.humidity,'Humidity'],['💨',sel.wind,'Wind'],['☀️',sel.uv,'UV']].map(([ic,val,lbl])=>(
+            {[['💧',sel.humidity,'Humidity'],['💨',sel.wind,'Wind'],['🌡️',sel.feelsLike?sel.feelsLike+'°C':sel.uv,'Feels Like']].map(([ic,val,lbl])=>(
               <div key={lbl} style={{background:'rgba(255,255,255,0.05)',borderRadius:8,padding:'9px 6px',textAlign:'center'}}>
                 <div style={{fontSize:16}}>{ic}</div>
                 <div style={{fontSize:12,fontWeight:600,color:'#c9a227',marginTop:3}}>{val}</div>
