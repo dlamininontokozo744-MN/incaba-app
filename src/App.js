@@ -1608,12 +1608,13 @@ function StoreDetail({item,onBack,t}) {
   );
 }
 
+// ── WEATHER ───────────────────────────────────────────────
 function WeatherWidget({t}) {
-  const [day,setDay] = useState('Today');
   const [sel,setSel] = useState(null);
   const [liveWeather,setLiveWeather] = useState({});
   const [searchCity,setSearchCity] = useState('');
   const [searching,setSearching] = useState(false);
+  const [cities,setCities] = useState(['Mbabane','Manzini','Siteki']);
   const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
   const fetchCity = (city)=>{
@@ -1621,17 +1622,23 @@ function WeatherWidget({t}) {
     fetch(`/api/weather?city=${city}`)
       .then(r=>r.json())
       .then(d=>{
-        if(d.main) setLiveWeather(prev=>({...prev,[city]:{
-          temp: Math.round(d.main.temp),
-          desc: d.weather[0].description,
-          humidity: d.main.humidity+'%',
-          wind: Math.round(d.wind.speed*3.6)+' km/h',
-          icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':d.weather[0].main==='Drizzle'?'🌦️':'☀️',
-          realName: d.name,
-          country: d.sys.country,
-          feelsLike: Math.round(d.main.feels_like),
-          live: true,
-        }}));
+        if(d.main){
+          const name = d.name;
+          setLiveWeather(prev=>({...prev,[name]:{
+            temp: Math.round(d.main.temp),
+            desc: d.weather[0].description,
+            humidity: d.main.humidity+'%',
+            wind: Math.round(d.wind.speed*3.6)+' km/h',
+            feelsLike: Math.round(d.main.feels_like),
+            icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':d.weather[0].main==='Drizzle'?'🌦️':'☀️',
+            country: d.sys.country,
+            live: true,
+          }}));
+          setCities(prev=>prev.includes(name)?prev:[...prev,name]);
+          setSel(name);
+        } else {
+          alert('City not found. Try another name!');
+        }
         setSearching(false);
       }).catch(()=>setSearching(false));
   };
@@ -1640,70 +1647,70 @@ function WeatherWidget({t}) {
     ['Mbabane','Manzini','Siteki'].forEach(city=>fetchCity(city));
   },[]); // eslint-disable-line
 
-  const days = Object.keys(weatherData);
-  const cities = weatherData[day].map(c=>({
-    ...c,
-    ...(liveWeather[c.name]||{}),
-  }));
-
   const handleSearch = ()=>{
     if(!searchCity.trim()) return;
     fetchCity(searchCity.trim());
     setSearchCity('');
   };
 
+  const selectedData = sel ? liveWeather[sel] : null;
+
   return (
     <div style={{marginBottom:16}}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:2}}>
         <div style={styles.sectionTitle}>{t.weather}</div>
         <div style={{fontSize:10,color:'#5dcaa5'}}>🟢 Live</div>
       </div>
-      <div style={{fontSize:10,color:'#8fa3c4',marginBottom:10}}>📅 {today}</div>
+      <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginBottom:10}}>📅 {today}</div>
 
       <div style={{display:'flex',gap:8,marginBottom:12}}>
         <input
           value={searchCity}
           onChange={e=>setSearchCity(e.target.value)}
           onKeyDown={e=>e.key==='Enter'&&handleSearch()}
-          placeholder="Search any city..."
-          style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'8px 12px',color:'#f0f4ff',fontSize:12,outline:'none'}}
+          placeholder="Search city in Eswatini or worldwide..."
+          style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px 12px',color:'#f0f4ff',fontSize:12,outline:'none'}}
         />
-        <button onClick={handleSearch} disabled={searching} style={{padding:'8px 14px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer'}}>
+        <button onClick={handleSearch} disabled={searching} style={{padding:'9px 14px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:13,fontWeight:700,cursor:'pointer'}}>
           {searching?'…':'🔍'}
         </button>
       </div>
 
-      <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:10,scrollbarWidth:'none'}}>
-        {days.map(d=><button key={d} onClick={()=>{setDay(d);setSel(null);}} style={{flexShrink:0,padding:'5px 13px',borderRadius:20,border:d===day?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:d===day?'rgba(201,162,39,0.15)':'transparent',color:d===day?'#c9a227':'#8fa3c4',fontSize:11,cursor:'pointer',fontWeight:d===day?600:400}}>{d}</button>)}
-      </div>
-
-      <div style={{display:'flex',gap:10,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
-        {[...cities,...Object.entries(liveWeather).filter(([k])=>!['Mbabane','Manzini','Siteki'].includes(k)).map(([k,v])=>({name:v.realName||k,...v}))].map(c=>(
-          <div key={c.name} onClick={()=>setSel(sel&&sel.name===c.name?null:c)} style={{flexShrink:0,minWidth:90,background:sel&&sel.name===c.name?'rgba(24,95,165,0.25)':'rgba(24,95,165,0.12)',border:sel&&sel.name===c.name?'0.5px solid rgba(24,95,165,0.6)':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 8px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
-            {c.live&&<div style={{fontSize:8,color:'#5dcaa5',marginBottom:2}}>● LIVE</div>}
-            <div style={{fontSize:22}}>{c.icon}</div>
-            <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{c.temp}°C</div>
-            <div style={{fontSize:10,color:'#c9a227',fontWeight:600,marginTop:2}}>{c.realName||c.name}</div>
-            <div style={{fontSize:9,color:'#8fa3c4',marginTop:1}}>{c.desc}</div>
+      <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:6,scrollbarWidth:'none',marginBottom:12}}>
+        {cities.map(c=>(
+          <div key={c} onClick={()=>setSel(c)} style={{flexShrink:0,minWidth:85,background:sel===c?'rgba(201,162,39,0.18)':'rgba(24,95,165,0.12)',border:sel===c?'1px solid #c9a227':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 8px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
+            <div style={{fontSize:20}}>{liveWeather[c]?.icon||'⏳'}</div>
+            <div style={{fontSize:16,fontWeight:700,color:'#f0f4ff',marginTop:3}}>{liveWeather[c]?liveWeather[c].temp+'°C':'--'}</div>
+            <div style={{fontSize:9,color:sel===c?'#c9a227':'#8fa3c4',fontWeight:600,marginTop:2}}>{c}</div>
+            {liveWeather[c]?.live&&<div style={{fontSize:8,color:'#5dcaa5',marginTop:2}}>● LIVE</div>}
           </div>
         ))}
       </div>
 
-      {sel&&(
-        <div style={{background:'rgba(24,95,165,0.12)',border:'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:12,marginTop:10}}>
-          <div style={{display:'flex',justifyContent:'space-between',marginBottom:8}}>
-            <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{sel.icon} {sel.realName||sel.name}{sel.country?' · '+sel.country:''}</div>
-            {sel.live&&<span style={{fontSize:10,color:'#5dcaa5'}}>🟢 Live data</span>}
+      {selectedData&&(
+        <div style={{background:'rgba(24,95,165,0.15)',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:14}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+            <div>
+              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{selectedData.icon} {sel}{selectedData.country?' · '+selectedData.country:''}</div>
+              <div style={{fontSize:11,color:'#8fa3c4',marginTop:2,textTransform:'capitalize'}}>{selectedData.desc}</div>
+            </div>
+            <div style={{fontSize:36,fontWeight:700,color:'#c9a227'}}>{selectedData.temp}°C</div>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-            {[['💧',sel.humidity,'Humidity'],['💨',sel.wind,'Wind'],['🌡️',sel.feelsLike?sel.feelsLike+'°C':sel.uv,'Feels Like']].map(([ic,val,lbl])=>(
-              <div key={lbl} style={{background:'rgba(255,255,255,0.05)',borderRadius:8,padding:'9px 6px',textAlign:'center'}}>
-                <div style={{fontSize:16}}>{ic}</div>
-                <div style={{fontSize:12,fontWeight:600,color:'#c9a227',marginTop:3}}>{val}</div>
+            {[['💧',selectedData.humidity,'Humidity'],['💨',selectedData.wind,'Wind'],['🌡️',selectedData.feelsLike+'°C','Feels Like']].map(([ic,val,lbl])=>(
+              <div key={lbl} style={{background:'rgba(255,255,255,0.06)',borderRadius:10,padding:'10px 6px',textAlign:'center'}}>
+                <div style={{fontSize:18}}>{ic}</div>
+                <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:3}}>{val}</div>
                 <div style={{fontSize:9,color:'#8fa3c4',marginTop:2}}>{lbl}</div>
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {!selectedData&&(
+        <div style={{textAlign:'center',padding:20,color:'#8fa3c4',fontSize:12}}>
+          Loading weather data...
         </div>
       )}
     </div>
