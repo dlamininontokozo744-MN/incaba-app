@@ -2215,6 +2215,7 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
 // ── HOME TAB ──────────────────────────────────────────────
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore,t}) {
   const [sec,setSec] = useState('attractions');
+  const [showWeather,setShowWeather] = useState(false);
   const handleSOS = ()=>{if(window.confirm('Call Eswatini Emergency Services?\nPolice: 999\nAmbulance: 977\nFire: 933'))window.location.href='tel:999';};
   return (
     <div>
@@ -2223,7 +2224,16 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         <div><div style={{fontSize:12,fontWeight:600,color:'#e24b4a'}}>{t.sos}</div><div style={{fontSize:10,color:'#8fa3c4'}}>{t.sosSub}</div></div>
         <span style={{color:'#8fa3c4',marginLeft:'auto'}}>›</span>
       </div>
-      <WeatherWidget t={t}/>
+      <WeatherMiniCard t={t} onClick={()=>setShowWeather(true)}/>
+{showWeather&&(
+  <div style={{position:'fixed',inset:0,background:'#0a1628',zIndex:200,overflowY:'auto',padding:16,maxWidth:480,margin:'0 auto'}}>
+    <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
+      <button onClick={()=>setShowWeather(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}>← Back</button>
+      <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{t.weather}</div>
+    </div>
+    <WeatherWidget t={t}/>
+  </div>
+)}
       <div style={styles.heroBanner}>
         <div style={styles.heroBadge}>✦ Kingdom of Eswatini</div>
         <h2 style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:7}}>{t.welcome}</h2>
