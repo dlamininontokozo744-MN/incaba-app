@@ -1609,27 +1609,33 @@ function StoreDetail({item,onBack,t}) {
 }
 
 // ── WEATHER ───────────────────────────────────────────────
-useEffect(()=>{
-  ['Mbabane','Manzini','Siteki'].forEach(city=>{
-    fetch(`/api/weather?city=${city}`)
-      .then(r=>r.json())
-      .then(d=>{
-        if(d.main) setLiveWeather(prev=>({...prev,[city]:{
-          temp: Math.round(d.main.temp),
-          desc: d.weather[0].description,
-          humidity: d.main.humidity+'%',
-          wind: Math.round(d.wind.speed*3.6)+' km/h',
-          icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
-        }}));
-      });
-  });
-},[]);
-const [liveWeather,setLiveWeather] = useState({});
 function WeatherWidget({t}) {
-  const [day,setDay]     = useState('Today');
-  const [sel,setSel]     = useState(null);
+  const [day,setDay] = useState('Today');
+  const [sel,setSel] = useState(null);
+  const [liveWeather,setLiveWeather] = useState({});
+
+  useEffect(()=>{
+    ['Mbabane','Manzini','Siteki'].forEach(city=>{
+      fetch(`/api/weather?city=${city}`)
+        .then(r=>r.json())
+        .then(d=>{
+          if(d.main) setLiveWeather(prev=>({...prev,[city]:{
+            temp: Math.round(d.main.temp),
+            desc: d.weather[0].description,
+            humidity: d.main.humidity+'%',
+            wind: Math.round(d.wind.speed*3.6)+' km/h',
+            icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
+          }}));
+        }).catch(()=>{});
+    });
+  },[]);
+
   const days = Object.keys(weatherData);
-  const cities = weatherData[day];
+  const cities = weatherData[day].map(c=>({
+    ...c,
+    ...(liveWeather[c.name]||{}),
+  }));
+
   return (
     <div style={{marginBottom:16}}>
       <div style={styles.sectionTitle}>{t.weather}</div>
