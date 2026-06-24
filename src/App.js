@@ -1612,14 +1612,37 @@ function StoreDetail({item,onBack,t}) {
 function WeatherWidget({t}) {
   const [sel,setSel] = useState(null);
   const [liveWeather,setLiveWeather] = useState({});
+  const [forecast,setForecast] = useState([]);
   const [searchCity,setSearchCity] = useState('');
   const [searching,setSearching] = useState(false);
   const [cities,setCities] = useState(['Mbabane','Manzini','Siteki']);
-  const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const [locating,setLocating] = useState(false);
 
-  const fetchCity = (city)=>{
-    setSearching(true);
-    fetch(`/api/weather?city=${city}`)
+  // Get day name from date
+  const getDayName = (date)=>{
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return days[date.getDay()];
+  };
+
+  // Today's full date
+  const today = new Date().toLocaleDateString('en-GB',{
+    weekday:'long',day:'numeric',month:'long',year:'numeric'
+  });
+
+  const getIcon = (main)=>{
+    if(main==='Rain') return '🌧️';
+    if(main==='Thunderstorm') return '🌩️';
+    if(main==='Drizzle') return '🌦️';
+    if(main==='Clouds') return '⛅';
+    if(main==='Snow') return '❄️';
+    return '☀️';
+  };
+
+  const fetchWeather = (city, lat, lon)=>{
+    const params = lat&&lon ? `lat=${lat}&lon=${lon}` : `city=${encodeURIComponent(city)}`;
+    
+    // Current weather
+    fetch(`/api/weather?${params}`)
       .then(r=>r.json())
       .then(d=>{
         if(d.main){
@@ -1630,26 +1653,70 @@ function WeatherWidget({t}) {
             humidity: d.main.humidity+'%',
             wind: Math.round(d.wind.speed*3.6)+' km/h',
             feelsLike: Math.round(d.main.feels_like),
-            icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':d.weather[0].main==='Drizzle'?'🌦️':'☀️',
+            icon: getIcon(d.weather[0].main),
             country: d.sys.country,
+            lat: d.coord.lat,
+            lon: d.coord.lon,
             live: true,
           }}));
           setCities(prev=>prev.includes(name)?prev:[...prev,name]);
           setSel(name);
+
+          // Fetch 7-day forecast
+          fetch(`/api/weather?${params}&type=forecast`)
+            .then(r=>r.json())
+            .then(f=>{
+              if(f.list){
+                // Get one entry per day (noon readings)
+                const days = [];
+                const seen = new Set();
+                f.list.forEach(item=>{
+                  const date = new Date(item.dt*1000);
+                  const dayKey = date.toDateString();
+                  if(!seen.has(dayKey)){
+                    seen.add(dayKey);
+                    days.push({
+                      day: getDayName(date),
+                      date: date.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),
+                      temp: Math.round(item.main.temp),
+                      min: Math.round(item.main.temp_min),
+                      max: Math.round(item.main.temp_max),
+                      desc: item.weather[0].description,
+                      icon: getIcon(item.weather[0].main),
+                      isToday: date.toDateString()===new Date().toDateString(),
+                    });
+                  }
+                });
+                setForecast(days.slice(0,7));
+              }
+            }).catch(()=>{});
         } else {
-          alert('City not found. Try another name!');
+          alert('Location not found. Try another name!');
         }
         setSearching(false);
-      }).catch(()=>setSearching(false));
+        setLocating(false);
+      }).catch(()=>{setSearching(false);setLocating(false);});
   };
 
+  // Load default cities on mount
   useEffect(()=>{
-    ['Mbabane','Manzini','Siteki'].forEach(city=>fetchCity(city));
+    ['Mbabane','Manzini','Siteki'].forEach(c=>fetchWeather(c));
   },[]); // eslint-disable-line
+
+  // Get user's live GPS location
+  const getMyLocation = ()=>{
+    if(!navigator.geolocation){alert('GPS not supported');return;}
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      p=>fetchWeather('',p.coords.latitude,p.coords.longitude),
+      ()=>{setLocating(false);alert('Could not get location');}
+    );
+  };
 
   const handleSearch = ()=>{
     if(!searchCity.trim()) return;
-    fetchCity(searchCity.trim());
+    setSearching(true);
+    fetchWeather(searchCity.trim());
     setSearchCity('');
   };
 
@@ -1663,54 +1730,74 @@ function WeatherWidget({t}) {
       </div>
       <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginBottom:10}}>📅 {today}</div>
 
-      <div style={{display:'flex',gap:8,marginBottom:12}}>
+      {/* Search bar */}
+      <div style={{display:'flex',gap:8,marginBottom:10}}>
         <input
           value={searchCity}
           onChange={e=>setSearchCity(e.target.value)}
           onKeyDown={e=>e.key==='Enter'&&handleSearch()}
-          placeholder="Search city in Eswatini or worldwide..."
+          placeholder="Search any town or village in Eswatini..."
           style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px 12px',color:'#f0f4ff',fontSize:12,outline:'none'}}
         />
-        <button onClick={handleSearch} disabled={searching} style={{padding:'9px 14px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:13,fontWeight:700,cursor:'pointer'}}>
+        <button onClick={handleSearch} disabled={searching} style={{padding:'9px 12px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:13,fontWeight:700,cursor:'pointer'}}>
           {searching?'…':'🔍'}
+        </button>
+        <button onClick={getMyLocation} disabled={locating} style={{padding:'9px 12px',borderRadius:10,border:'0.5px solid rgba(29,158,117,0.4)',background:'rgba(29,158,117,0.12)',color:'#5dcaa5',fontSize:13,cursor:'pointer'}}>
+          {locating?'…':'📍'}
         </button>
       </div>
 
+      {/* City pills */}
       <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:6,scrollbarWidth:'none',marginBottom:12}}>
         {cities.map(c=>(
-          <div key={c} onClick={()=>setSel(c)} style={{flexShrink:0,minWidth:85,background:sel===c?'rgba(201,162,39,0.18)':'rgba(24,95,165,0.12)',border:sel===c?'1px solid #c9a227':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 8px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
-            <div style={{fontSize:20}}>{liveWeather[c]?.icon||'⏳'}</div>
-            <div style={{fontSize:16,fontWeight:700,color:'#f0f4ff',marginTop:3}}>{liveWeather[c]?liveWeather[c].temp+'°C':'--'}</div>
-            <div style={{fontSize:9,color:sel===c?'#c9a227':'#8fa3c4',fontWeight:600,marginTop:2}}>{c}</div>
-            {liveWeather[c]?.live&&<div style={{fontSize:8,color:'#5dcaa5',marginTop:2}}>● LIVE</div>}
+          <div key={c} onClick={()=>setSel(c)} style={{flexShrink:0,minWidth:80,background:sel===c?'rgba(201,162,39,0.18)':'rgba(24,95,165,0.12)',border:sel===c?'1px solid #c9a227':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'8px 6px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
+            <div style={{fontSize:18}}>{liveWeather[c]?.icon||'⏳'}</div>
+            <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginTop:2}}>{liveWeather[c]?liveWeather[c].temp+'°C':'--'}</div>
+            <div style={{fontSize:9,color:sel===c?'#c9a227':'#8fa3c4',fontWeight:600,marginTop:1}}>{c}</div>
           </div>
         ))}
       </div>
 
+      {/* Current weather detail */}
       {selectedData&&(
-        <div style={{background:'rgba(24,95,165,0.15)',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:14}}>
+        <div style={{background:'rgba(24,95,165,0.15)',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:14,marginBottom:12}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
             <div>
-              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{selectedData.icon} {sel}{selectedData.country?' · '+selectedData.country:''}</div>
+              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{selectedData.icon} {sel}</div>
               <div style={{fontSize:11,color:'#8fa3c4',marginTop:2,textTransform:'capitalize'}}>{selectedData.desc}</div>
+              <div style={{fontSize:10,color:'#5dcaa5',marginTop:2}}>🟢 Live · {today.split(',')[0]}</div>
             </div>
-            <div style={{fontSize:36,fontWeight:700,color:'#c9a227'}}>{selectedData.temp}°C</div>
+            <div style={{textAlign:'right'}}>
+              <div style={{fontSize:40,fontWeight:700,color:'#c9a227'}}>{selectedData.temp}°C</div>
+              <div style={{fontSize:10,color:'#8fa3c4'}}>Feels {selectedData.feelsLike}°C</div>
+            </div>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-            {[['💧',selectedData.humidity,'Humidity'],['💨',selectedData.wind,'Wind'],['🌡️',selectedData.feelsLike+'°C','Feels Like']].map(([ic,val,lbl])=>(
-              <div key={lbl} style={{background:'rgba(255,255,255,0.06)',borderRadius:10,padding:'10px 6px',textAlign:'center'}}>
-                <div style={{fontSize:18}}>{ic}</div>
-                <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:3}}>{val}</div>
-                <div style={{fontSize:9,color:'#8fa3c4',marginTop:2}}>{lbl}</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+            {[['💧 Humidity',selectedData.humidity],['💨 Wind',selectedData.wind]].map(([lbl,val])=>(
+              <div key={lbl} style={{background:'rgba(255,255,255,0.06)',borderRadius:10,padding:'8px',textAlign:'center'}}>
+                <div style={{fontSize:11,color:'#8fa3c4'}}>{lbl}</div>
+                <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:2}}>{val}</div>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {!selectedData&&(
-        <div style={{textAlign:'center',padding:20,color:'#8fa3c4',fontSize:12}}>
-          Loading weather data...
+      {/* 7-day forecast starting from TODAY */}
+      {forecast.length>0&&(
+        <div>
+          <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:8}}>7-Day Forecast</div>
+          <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:6,scrollbarWidth:'none'}}>
+            {forecast.map((f,i)=>(
+              <div key={i} style={{flexShrink:0,minWidth:70,background:f.isToday?'rgba(201,162,39,0.15)':'rgba(255,255,255,0.04)',border:f.isToday?'1px solid rgba(201,162,39,0.5)':'0.5px solid rgba(255,255,255,0.08)',borderRadius:12,padding:'10px 6px',textAlign:'center'}}>
+                <div style={{fontSize:10,fontWeight:700,color:f.isToday?'#c9a227':'#8fa3c4'}}>{f.isToday?'TODAY':f.day.toUpperCase()}</div>
+                <div style={{fontSize:9,color:'#5f7a9a',marginBottom:4}}>{f.date}</div>
+                <div style={{fontSize:20}}>{f.icon}</div>
+                <div style={{fontSize:13,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{f.temp}°C</div>
+                <div style={{fontSize:9,color:'#8fa3c4',marginTop:2}}>{f.max}° / {f.min}°</div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
