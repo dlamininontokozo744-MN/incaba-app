@@ -1609,6 +1609,37 @@ function StoreDetail({item,onBack,t}) {
 }
 
 // ── WEATHER ───────────────────────────────────────────────
+function WeatherMiniCard({t,onClick}) {
+  const [data,setData] = useState(null);
+  const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+
+  useEffect(()=>{
+    fetch('/api/weather?city=Mbabane')
+      .then(r=>r.json())
+      .then(d=>{
+        if(d.main) setData({
+          temp: Math.round(d.main.temp),
+          desc: d.weather[0].description,
+          city: d.name,
+          icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
+        });
+      }).catch(()=>{});
+  },[]);
+
+  return (
+    <div onClick={onClick} style={{background:'linear-gradient(135deg,rgba(24,95,165,0.25),rgba(24,95,165,0.1))',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:'12px 14px',marginBottom:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <div>
+        <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600,marginBottom:2}}>🟢 Live Weather · {today}</div>
+        <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{data?`${data.icon} ${data.city} · ${data.temp}°C`:'Loading weather...'}</div>
+        <div style={{fontSize:11,color:'#8fa3c4',marginTop:2,textTransform:'capitalize'}}>{data?.desc||''}</div>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+        <div style={{fontSize:28}}>{data?.icon||'⏳'}</div>
+        <div style={{fontSize:9,color:'#c9a227',fontWeight:600}}>Tap for forecast →</div>
+      </div>
+    </div>
+  );
+}
 function WeatherWidget({t}) {
   const [sel,setSel] = useState(null);
   const [liveWeather,setLiveWeather] = useState({});
