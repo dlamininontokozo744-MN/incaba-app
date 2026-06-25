@@ -694,12 +694,19 @@ function AuthProvider({children}){
 }
 
 function SignInPrompt({reason,onClose,onChooseAuth}){
+  const signInWithGoogle = async()=>{
+    await supabase.auth.signInWithOAuth({ provider: 'google' });
+  };
   return (
     <div style={{position:'fixed',inset:0,background:'rgba(10,22,40,0.75)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.35)',borderRadius:18,padding:24,maxWidth:340,width:'100%',textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,0.6)'}}>
         <div style={{fontSize:40,marginBottom:10}}>🔐</div>
         <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginBottom:8}}>Sign in to continue</div>
         <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:18}}>{reason}</div>
+        <button onClick={signInWithGoogle} style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(255,255,255,0.2)',background:'#fff',color:'#1f1f1f',fontWeight:600,fontSize:13,cursor:'pointer',marginBottom:14,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+          <span style={{fontSize:16}}>🇬</span> Continue with Google
+        </button>
+        <div style={{textAlign:'center',color:'#5f7a9a',fontSize:11,marginBottom:14}}>— or use email —</div>
         <button style={{...styles.btnPrimary,marginBottom:8}} onClick={()=>onChooseAuth('signup')}>Create free account</button>
         <button style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,cursor:'pointer',marginBottom:8}} onClick={()=>onChooseAuth('signin')}>I already have an account</button>
         <button style={{width:'100%',padding:'9px',border:'none',background:'transparent',color:'#5f7a9a',fontSize:12,cursor:'pointer'}} onClick={onClose}>Maybe later</button>
@@ -714,6 +721,10 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
   const [fullName,setFullName] = useState('');
   const [loading,setLoading] = useState(false);
   const [error,setError] = useState('');
+
+  const signInWithGoogle = async()=>{
+    await supabase.auth.signInWithOAuth({ provider: 'google' });
+  };
 
   const submit = async()=>{
     if(!email||!password) return setError('Please fill in email and password.');
@@ -737,6 +748,10 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
           <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>{mode==='signup'?'Create your account':'Welcome back'}</div>
           <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}>✕</button>
         </div>
+        <button onClick={signInWithGoogle} style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(255,255,255,0.2)',background:'#fff',color:'#1f1f1f',fontWeight:600,fontSize:13,cursor:'pointer',marginBottom:10,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+          <span style={{fontSize:16}}>🇬</span> Continue with Google
+        </button>
+        <div style={{textAlign:'center',color:'#5f7a9a',fontSize:11,marginBottom:14}}>— or use email —</div>
         {mode==='signup'&&(
           <input value={fullName} onChange={e=>setFullName(e.target.value)} placeholder="Full name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:13,outline:'none',marginBottom:10,boxSizing:'border-box'}}/>
         )}
@@ -755,7 +770,6 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
     </div>
   );
 }
-
 function AppInner() {
   const [screen,setScreen]   = useState('splash');
   const [tab,setTab]         = useState('home');
