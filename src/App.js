@@ -695,8 +695,12 @@ function AuthProvider({children}){
 
 function SignInPrompt({reason,onClose,onChooseAuth}){
   const signInWithGoogle = async()=>{
-    await supabase.auth.signInWithOAuth({ provider: 'google' });
-  };
+  await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin }
+  });
+};
+  
   return (
     <div style={{position:'fixed',inset:0,background:'rgba(10,22,40,0.75)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.35)',borderRadius:18,padding:24,maxWidth:340,width:'100%',textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,0.6)'}}>
