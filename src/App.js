@@ -619,6 +619,29 @@ const PHRASES = {
 };
 
 // ── LAZY IMAGE COMPONENT ──────────────────────────────────
+function Lightbox({src,onClose}) {
+  return (
+    <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.95)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16}}>
+      <button onClick={onClose} style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,0.15)',border:'none',borderRadius:'50%',width:36,height:36,color:'#fff',fontSize:20,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>✕</button>
+      <img src={src} alt="" style={{maxWidth:'100%',maxHeight:'90vh',borderRadius:12,objectFit:'contain'}} onClick={e=>e.stopPropagation()}/>
+    </div>
+  );
+}
+function PhotoGrid({images}) {
+  const [lightbox,setLightbox] = useState(null);
+  return (
+    <>
+      {lightbox&&<Lightbox src={lightbox} onClose={()=>setLightbox(null)}/>}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:8}}>
+        {(images||[]).filter(Boolean).map((img,i)=>(
+          <div key={i} onClick={()=>setLightbox(img)} style={{cursor:'pointer'}}>
+            <Img src={img} alt="" style={{height:80,borderRadius:10}}/>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 function Img({src, alt, style, fallback='https://media.istockphoto.com/id/1051594302/photo/swaziland-valley-of-ezulwini.webp?a=1&b=1&s=612x612&w=0&k=20&c=2Riei98Nbq3cxQXv8Ie3c6e_NjMyAk1ZwPKzUC0sDFk='}) {
   const [loaded,setLoaded] = useState(false);
   const [error,setError]   = useState(false);
@@ -1110,24 +1133,31 @@ function VirtualTourScreen({place,onBack,t}) {
 function Slideshow({images,height=260}) {
   const [cur,setCur] = useState(0);
   const [play,setPlay] = useState(true);
+  const [lightbox,setLightbox] = useState(null);
+
   useEffect(()=>{
     if(!play) return;
     const t = setInterval(()=>setCur(p=>(p+1)%images.length),3500);
     return ()=>clearInterval(t);
   },[play,images.length]);
+
   return (
-    <div style={{position:'relative',height,overflow:'hidden',background:'#0d2540',flexShrink:0}}>
-      {images.map((img,i)=>(
-        <div key={i} style={{position:'absolute',inset:0,opacity:i===cur?1:0,transition:'opacity 0.9s ease'}}>
-          <Img src={img} alt="" style={{width:'100%',height:'100%'}}/>
+    <>
+      {lightbox&&<Lightbox src={lightbox} onClose={()=>setLightbox(null)}/>}
+      <div style={{position:'relative',height,overflow:'hidden',background:'#0d2540',flexShrink:0}}>
+        {images.map((img,i)=>(
+          <div key={i} style={{position:'absolute',inset:0,opacity:i===cur?1:0,transition:'opacity 0.9s ease'}}>
+            <Img src={img} alt="" style={{width:'100%',height:'100%'}}/>
+          </div>
+        ))}
+        <div style={{position:'absolute',bottom:10,left:'50%',transform:'translateX(-50%)',display:'flex',gap:5}}>
+          {images.map((_,i)=><div key={i} onClick={()=>{setCur(i);setPlay(false);}} style={{width:i===cur?18:6,height:6,borderRadius:3,background:i===cur?'#c9a227':'rgba(255,255,255,0.5)',cursor:'pointer',transition:'all 0.3s'}}/>)}
         </div>
-      ))}
-      <div style={{position:'absolute',bottom:10,left:'50%',transform:'translateX(-50%)',display:'flex',gap:5}}>
-        {images.map((_,i)=><div key={i} onClick={()=>{setCur(i);setPlay(false);}} style={{width:i===cur?18:6,height:6,borderRadius:3,background:i===cur?'#c9a227':'rgba(255,255,255,0.5)',cursor:'pointer',transition:'all 0.3s'}}/>)}
+        <button onClick={()=>{setCur(p=>(p-1+images.length)%images.length);setPlay(false);}} style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>‹</button>
+        <button onClick={()=>{setCur(p=>(p+1)%images.length);setPlay(false);}} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>›</button>
+        <button onClick={()=>setLightbox(images[cur])} style={{position:'absolute',top:10,right:10,background:'rgba(0,0,0,0.5)',border:'none',borderRadius:20,padding:'4px 10px',color:'#fff',fontSize:11,cursor:'pointer'}}>⛶ Zoom</button>
       </div>
-      <button onClick={()=>{setCur(p=>(p-1+images.length)%images.length);setPlay(false);}} style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>‹</button>
-      <button onClick={()=>{setCur(p=>(p+1)%images.length);setPlay(false);}} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>›</button>
-    </div>
+    </>
   );
 }
 
@@ -1202,6 +1232,24 @@ function Reviews({name,t}) {
 }
 
 // ── DETAIL SCREEN ─────────────────────────────────────────
+function PhotoGrid({images}) {
+  const [lightbox,setLightbox] = useState(null);
+  return (
+    <>
+      {lightbox&&<Lightbox src={lightbox} onClose={()=>setLightbox(null)}/>}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:8}}>
+        {images.map((img,i)=>(
+          <div key={i} onClick={()=>setLightbox(img)} style={{cursor:'pointer',position:'relative'}}>
+            <Img src={img} alt="" style={{height:80,borderRadius:10}}/>
+            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:0,transition:'opacity 0.2s',borderRadius:10,background:'rgba(0,0,0,0.3)'}} className="zoom-overlay">
+              <span style={{fontSize:18,color:'#fff'}}>⛶</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 function DetailScreen({place,onBack,t,onVirtualTour}) {
   const {user,requireAuth} = useAuth();
   const [saved,setSaved] = useState(false);
@@ -1615,9 +1663,19 @@ function StoreDetail({item,onBack,t}) {
         </div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:16}}>{item.desc}</div>
         <div style={styles.sectionTitle}>{t.photos}</div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-          {item.gallery.map((img,i)=><Img key={i} src={img} alt="" style={{height:120,borderRadius:12}}/>)}
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+  {place.gallery.map((img,i)=>{
+    const [lb,setLb]=useState(null);
+    return(
+      <div key={i}>
+        {lb&&<Lightbox src={lb} onClose={()=>setLb(null)}/>}
+        <div onClick={()=>setLb(img)} style={{cursor:'pointer'}}>
+          <Img src={img} alt="" style={{height:80,borderRadius:10}}/>
         </div>
+      </div>
+    );
+  })}
+</div>
         <Reviews name={item.name} t={t}/>
         <button style={{...styles.btnPrimary,marginBottom:20}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(item.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
       </div>
@@ -2696,7 +2754,7 @@ function BusinessTab({t}) {
         <Reviews name={selBiz.name} t={t}/>
         {selBiz.gallery&&selBiz.gallery.length>0&&(
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:16}}>
-            {selBiz.gallery.map((img,i)=><Img key={i} src={img} alt="" style={{height:100,borderRadius:10}}/>)}
+            {selBiz.gallery&&selBiz.gallery.length>0&&<PhotoGrid images={selBiz.gallery}/>}
           </div>
         )}
         <button style={{...styles.btnPrimary,marginBottom:16}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(selBiz.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
