@@ -202,8 +202,8 @@ const places = [
     desc:"Lions, elephants and white rhinos in Eswatini's largest park",
     fullDesc:"Hlane Royal National Park is Eswatini's largest protected area covering 22,000 hectares. Named by King Sobhuza II — Hlane means wilderness in siSwati. Home to lions, elephants, white rhinos, giraffes, zebras and over 300 bird species.",
     rating:'4.9', category:'Wildlife',
-    img: photo('lion,safari,africa'),
-    gallery:[photo('lion,wildlife,africa'),photo('elephant,safari'),photo('rhino,africa,wildlife'),photo('giraffe,africa'),photo('zebra,africa,safari')],
+    img: limg('hlane.jpg'),
+    gallery:[limg('hlane.jpg'),...limgAll('lubombo')].filter(Boolean),
     location:'Lubombo Region, 67km from Manzini', hours:'6am to 6pm daily', price:'E 150',
     tips:['Book guided game drives in advance','Best time is early morning','Bring binoculars'],
     videoId:'KWr0KUZLPi4', videoTitle:'Self-Drive Safari at Hlane'
@@ -213,8 +213,8 @@ const places = [
     desc:'Breathtaking 95m waterfall in the Ezulwini Valley',
     fullDesc:"Mantenga Falls drops 95 metres into a pristine pool surrounded by lush indigenous forest. Perfect for swimming, hiking and photography. One of Eswatini's most spectacular natural wonders.",
     rating:'4.8', category:'Nature',
-    img: photo('waterfall,africa,tropical'),
-    gallery:[photo('waterfall,africa,nature'),photo('waterfall,swimming,tropical'),photo('jungle,waterfall,green'),photo('hiking,waterfall'),photo('nature,river,africa')],
+    img: limg('mantenga.jpg'),
+    gallery:[limg('mantenga.jpg'),limg('ezulwinivalley.jpg'),limg('ezulwinimarket.jpg')].filter(Boolean),
     location:'Ezulwini Valley, Hhohho Region', hours:'7am to 5pm daily', price:'E 80',
     tips:['Wear waterproof shoes','Best after rainy season','Swimming allowed below the falls'],
     videoId:'X9CLKGqqkjU', videoTitle:'Ezulwini Valley Drone Tour'
@@ -224,8 +224,8 @@ const places = [
     desc:'Heart of Swazi culture — home of the King',
     fullDesc:"Lobamba is the royal and legislative capital of Eswatini. Home of the Queen Mother and where the Incwala and Umhlanga ceremonies take place. Contains the National Museum and Parliament buildings.",
     rating:'4.7', category:'Culture',
-    img: photo('african,village,traditional,culture'),
-    gallery:[photo('african,culture,traditional'),photo('african,ceremony,dance'),photo('africa,museum,heritage'),photo('african,village,people'),photo('africa,traditional,dress')],
+    img: limg('lobamba.jpg'),
+    gallery:limgAll('lobamba').filter(Boolean),
     location:'Ezulwini Valley, Manzini Region', hours:'8am to 4pm daily', price:'E 50',
     tips:['Dress respectfully','Visit during Umhlanga in August','Photography may need permission'],
     videoId:'604KjnoBw8o', videoTitle:'Mantenga Cultural Village'
@@ -235,8 +235,8 @@ const places = [
     desc:'World-famous handmade candles and African craft market',
     fullDesc:"Artisans hand-craft beautiful animal-shaped candles using traditional techniques. The market features local crafts, textiles, jewelry and fresh produce. Perfect for authentic Swazi souvenirs.",
     rating:'4.6', category:'Culture',
-    img: photo('african,craft,market,colorful'),
-    gallery:[photo('candles,colorful,handmade'),photo('african,craft,market'),photo('african,art,souvenir'),photo('market,africa,colorful'),photo('handcraft,africa,basket')],
+    img: limg('swazicandles.jpg'),
+    gallery:[limg('swazicandles.jpg'),...limgAll('swazicandles')].filter(Boolean),
     location:'Malkerns Valley, Manzini Region', hours:'8am to 5pm daily', price:'Free',
     tips:['Bargaining is acceptable','Great for unique gifts','Try the local food stalls'],
     videoId:'gZY5KT6bhGY', videoTitle:'Mantenga Waterfalls Eswatini'
@@ -246,8 +246,8 @@ const places = [
     desc:'Ancient mountains, rare orchids and spectacular zipline',
     fullDesc:"Malolotja Nature Reserve contains some of the oldest geological formations on earth. Rare indigenous flora, rare bird species and a famous canopy zipline. Less than 2% of tourists ever visit.",
     rating:'4.8', category:'Nature',
-    img: photo('mountain,africa,landscape,green'),
-    gallery:[photo('mountain,green,africa,landscape'),photo('zipline,canopy,forest'),photo('orchid,flowers,wild'),photo('bird,africa,wildlife'),photo('hiking,mountain,africa')],
+    img: limg('malolotja.jpg'),
+    gallery:limgAll('malolotja').filter(Boolean),
     location:'Northwestern Eswatini, Hhohho Region', hours:'6am to 6pm daily', price:'E 120',
     tips:['Zipline tour is a must-do','Bring warm clothing','Great for serious hikers'],
     videoId:'0ny1QSno2Go', videoTitle:'Kingdom of Eswatini Cultural Experience'
@@ -257,8 +257,8 @@ const places = [
     desc:"World's second largest exposed granite rock near Mbabane",
     fullDesc:"The world's second largest exposed granite rock. Just 10km from capital Mbabane, offering challenging hiking trails and panoramic views across the entire country.",
     rating:'4.5', category:'Adventure',
-    img: photo('granite,rock,hiking,landscape'),
-    gallery:[photo('rock,climbing,hiking'),photo('granite,landscape,panoramic'),photo('hiking,summit,views'),photo('rock,formation,africa'),photo('mountain,trail,hiking')],
+    img: limg('lubombo.jpg'),
+    gallery:limgAll('lubombo').filter(Boolean),
     location:'10km from Mbabane, Hhohho Region', hours:'6am to 6pm daily', price:'E 60',
     tips:['Wear proper hiking shoes','Go early to avoid heat','Bring plenty of water'],
     videoId:'sDN7HXh5rdc', videoTitle:'Bhubesi Camp Hlane'
@@ -268,38 +268,37 @@ const places = [
     desc:"Eswatini's southern paradise — untouched and spectacular",
     fullDesc:"Shiselweni is Eswatini's southernmost region and one of its most beautiful. Home to Nhlangano town, vast forests, rivers and traditional Swazi villages. A true off-the-beaten-path destination.",
     rating:'4.7', category:'Nature',
-    img: photo('africa,river,forest,landscape'),
-    gallery:[photo('africa,forest,green,river'),photo('village,africa,traditional'),photo('africa,landscape,trees'),photo('river,africa,nature'),photo('africa,rural,traditional')],
+    img: limg('shiselweni.jpg'),
+    gallery:limgAll('shiselweni').filter(Boolean),
     location:'Southern Eswatini, Shiselweni Region', hours:'All year round', price:'Free',
     tips:['Visit Nhlangano town for local culture','Great for eco-tourism','Best in dry season'],
     videoId:'clEnwhClD1o', videoTitle:'A Day Trip to Eswatini'
   },
 ];
-
 const restaurants = [
   {
     name:"Malandela's Restaurant", region:'Malkerns', rating:'4.8',
     price:'E 80 to 200', hours:'11am to 9pm daily',
     phone:'+268 2528 3110', email:'bookings@malandelas.com', address:"Malandela's Farm, Malkerns Valley, Eswatini", lat:-26.5212, lng:31.2003,
-    coverImg: photo('african,restaurant,garden,outdoor'),
+    coverImg: limg('hotel-malandelas.jpg'),
     desc:'Traditional Swazi cuisine in a beautiful garden setting',
     menu:[
       {category:'Starters',items:[
-        {name:'Sishwala Bites',price:45,desc:'Traditional maize bites with dipping sauce',img:photo('african,starter,food,appetizer')},
-        {name:'Swazi Soup',price:55,desc:'Rich traditional vegetable soup',img:photo('soup,african,bowl,food')},
+        {name:'Sishwala Bites',price:45,desc:'Traditional maize bites with dipping sauce',img:limg('food-sishwalabite.jpg')},
+        {name:'Swazi Soup',price:55,desc:'Rich traditional vegetable soup',img:limg('food-swazisoup.jpg')},
       ]},
       {category:'Main Course',items:[
-        {name:'Grilled Tilapia',price:145,desc:'Fresh local fish with sishwala and vegetables',img:photo('grilled,fish,african,food')},
-        {name:'Swazi Chicken',price:135,desc:'Free-range chicken in traditional sauce',img:photo('grilled,chicken,african,food')},
-        {name:'Braai Platter',price:185,desc:'Mixed grilled meats with pap and salad',img:photo('braai,bbq,grilled,meat,african')},
+        {name:'Grilled Tilapia',price:145,desc:'Fresh local fish with sishwala and vegetables',img:limg('food-grilledtilapia.jpg')},
+        {name:'Swazi Chicken',price:135,desc:'Free-range chicken in traditional sauce',img:limg('food-swazichicken.jpg')},
+        {name:'Braai Platter',price:185,desc:'Mixed grilled meats with pap and salad',img:limg('food-braaiplatter.jpg')},
       ]},
       {category:'Traditional',items:[
-        {name:'Umncweba Plate',price:95,desc:'Dried Swazi meat with emasi and rice',img:photo('african,traditional,food,plate')},
-        {name:'Sishwala Special',price:75,desc:'Thick maize porridge with relish',img:photo('porridge,african,food,traditional')},
+        {name:'Umncweba Plate',price:95,desc:'Dried Swazi meat with emasi and rice',img:limg('food-umncwebaplate.jpg')},
+        {name:'Sishwala Special',price:75,desc:'Thick maize porridge with relish',img:limg('Food-Emabele Pap with chuchuza and Greenbeans Salad.jpg')},
       ]},
       {category:'Drinks',items:[
-        {name:'Marula Juice',price:30,desc:'Fresh local marula fruit juice',img:photo('juice,tropical,fruit,drink')},
-        {name:'Soft Drinks',price:20,desc:'Coke, Sprite, Fanta',img:photo('cold,drink,refreshing,soda')},
+        {name:'Marula Juice',price:30,desc:'Fresh local marula fruit juice',img:limg('food-marulajuice.jpg')},
+        {name:'Soft Drinks',price:20,desc:'Coke, Sprite, Fanta',img:limg('Food-Watermelon.jpg')},
       ]},
     ]
   },
@@ -307,20 +306,20 @@ const restaurants = [
     name:"Tum's George Hotel", region:'Mbabane', rating:'4.6',
     price:'E 120 to 300', hours:'7am to 10pm daily',
     phone:'+268 2404 4030', email:'reservations@tumsgeorge.com', address:'Mbabane, Eswatini', lat:-26.3054, lng:31.1367,
-    coverImg: photo('fine,dining,restaurant,elegant'),
+    coverImg: limg('ezulwinimarket.jpg'),
     desc:'Fine dining with panoramic views of the Ezulwini Valley',
     menu:[
       {category:'Breakfast',items:[
-        {name:'Full English',price:95,desc:'Eggs, bacon, sausage, toast and juice',img:photo('english,breakfast,eggs,bacon')},
-        {name:'Continental',price:75,desc:'Pastries, fruit, yoghurt and coffee',img:photo('continental,breakfast,pastry,fruit')},
+        {name:'Full English',price:95,desc:'Eggs, bacon, sausage, toast and juice',img:limg('Food-Traditional Beakfast.jpg')},
+        {name:'Continental',price:75,desc:'Pastries, fruit, yoghurt and coffee',img:limg('Food-Fatcakes with Boiled eggs + sammosa and Tea.jpg')},
       ]},
       {category:'Mains',items:[
-        {name:'Beef Tenderloin',price:245,desc:'Premium cut with seasonal vegetables',img:photo('steak,beef,fine,dining')},
-        {name:'Seafood Pasta',price:195,desc:'Imported seafood in cream sauce',img:photo('pasta,seafood,restaurant,food')},
+        {name:'Beef Tenderloin',price:245,desc:'Premium cut with seasonal vegetables',img:limg('Food-Schewed Ribbs with boiled spinach.jpg')},
+        {name:'Seafood Pasta',price:195,desc:'Imported seafood in cream sauce',img:limg('Food-Italian Food.PNG')},
       ]},
       {category:'Drinks',items:[
-        {name:'House Wine',price:85,desc:'Red or white per glass',img:photo('wine,glass,restaurant,elegant')},
-        {name:'Fresh Juice',price:35,desc:'Orange, mango or mixed',img:photo('fresh,juice,tropical,glass')},
+        {name:'House Wine',price:85,desc:'Red or white per glass',img:limg('Food-Honey.jpg')},
+        {name:'Fresh Juice',price:35,desc:'Orange, mango or mixed',img:limg('food-marulajuice.jpg')},
       ]},
     ]
   },
@@ -328,20 +327,20 @@ const restaurants = [
     name:'Foresters Arms', region:'Malkerns', rating:'4.4',
     price:'E 60 to 150', hours:'11am to 10pm daily',
     phone:'+268 2528 3344', email:'info@forestersarms.co.sz', address:'Mhlambanyatsi, Eswatini', lat:-26.5523, lng:31.0136,
-    coverImg: photo('pub,restaurant,countryside,cozy'),
+    coverImg: limg('hotel-forestersarms.PNG'),
     desc:'Classic pub meals in a cozy countryside atmosphere',
     menu:[
       {category:'Pub Meals',items:[
-        {name:'Beef Burger',price:95,desc:'100% beef patty with chips',img:photo('burger,beef,chips,pub')},
-        {name:'Fish and Chips',price:105,desc:'Battered fish with thick-cut chips',img:photo('fish,chips,pub,food')},
+        {name:'Beef Burger',price:95,desc:'100% beef patty with chips',img:limg('Food-Full plate with fries.jpg')},
+        {name:'Fish and Chips',price:105,desc:'Battered fish with thick-cut chips',img:limg('food-grilledtilapia.jpg')},
       ]},
       {category:'Grills',items:[
-        {name:'Ribeye Steak',price:185,desc:'300g ribeye with salad and chips',img:photo('ribeye,steak,grill,restaurant')},
-        {name:'Chicken Strips',price:95,desc:'Crispy chicken with dipping sauce',img:photo('chicken,strips,crispy,food')},
+        {name:'Ribeye Steak',price:185,desc:'300g ribeye with salad and chips',img:limg('Food-Grilled Emanyamane and Pap.jpg')},
+        {name:'Chicken Strips',price:95,desc:'Crispy chicken with dipping sauce',img:limg('Food-Fried Chips with fried chicke and fillings.jpg')},
       ]},
       {category:'Drinks',items:[
-        {name:'Draft Beer',price:35,desc:'Local Sibebe Lager on tap',img:photo('beer,draft,pub,glass')},
-        {name:'Ciders',price:40,desc:'Apple or mixed berry',img:photo('cider,apple,drink,glass')},
+        {name:'Draft Beer',price:35,desc:'Local Sibebe Lager on tap',img:limg('Food-Watermelon.jpg')},
+        {name:'Ciders',price:40,desc:'Apple or mixed berry',img:limg('food-marulajuice.jpg')},
       ]},
     ]
   },
@@ -349,20 +348,20 @@ const restaurants = [
     name:'Gables Food Court', region:'Ezulwini', rating:'4.2',
     price:'E 40 to 120', hours:'9am to 8pm daily',
     phone:'+268 2416 1100', email:'info@gablescentre.co.sz', address:'Gables Shopping Centre, Ezulwini, Eswatini', lat:-26.4453, lng:31.1366,
-    coverImg: photo('food,court,mall,restaurant'),
+    coverImg: limg('ezulwinivalley.jpg'),
     desc:'Local and international food options for every budget',
     menu:[
       {category:'Fast Food',items:[
-        {name:'Chicken and Chips',price:65,desc:'Fried chicken with seasoned chips',img:photo('fried,chicken,chips,fast,food')},
-        {name:'Pizza Slice',price:45,desc:'Various toppings available',img:photo('pizza,slice,food')},
+        {name:'Chicken and Chips',price:65,desc:'Fried chicken with seasoned chips',img:limg('Food-Fried Chips with fried chicke and fillings.jpg')},
+        {name:'Pizza Slice',price:45,desc:'Various toppings available',img:limg('Food-Italian Food.PNG')},
       ]},
       {category:'Local Food',items:[
-        {name:'Pap and Stew',price:45,desc:'Traditional maize pap with beef stew',img:photo('pap,stew,african,food,traditional')},
-        {name:'Vetkoek',price:25,desc:'Fried dough with mince filling',img:photo('fried,bread,food,african')},
+        {name:'Pap and Stew',price:45,desc:'Traditional maize pap with beef stew',img:limg('Food-Boiled kwangekhatsi with pap and Suger Beans.jpg')},
+        {name:'Vetkoek',price:25,desc:'Fried dough with mince filling',img:limg('Food-Fatcakes with Boiled eggs + sammosa and Tea.jpg')},
       ]},
       {category:'Drinks',items:[
-        {name:'Milkshake',price:40,desc:'Chocolate, vanilla or strawberry',img:photo('milkshake,drink,glass,sweet')},
-        {name:'Water',price:15,desc:'Still or sparkling',img:photo('water,bottle,drink,clear')},
+        {name:'Milkshake',price:40,desc:'Chocolate, vanilla or strawberry',img:limg('food-marulajuice.jpg')},
+        {name:'Water',price:15,desc:'Still or sparkling',img:limg('Food-Watermelon.jpg')},
       ]},
     ]
   },
@@ -570,29 +569,29 @@ const localStores = [
     name:'Swazi Candles', region:'Malkerns', rating:'4.8',
     price:'E 50 to 500', type:'Craft Market',
     desc:'World-famous handmade candles and African crafts',
-    coverImg: photo('candles,colorful,handmade,craft'),
-    gallery:[photo('candles,african,handmade,colorful'),photo('craft,market,africa,colorful'),photo('candles,animal,shaped,art'),photo('african,souvenir,craft'),photo('market,colorful,shopping')]
+    coverImg: limg('swazicandles.jpg'),
+    gallery:[limg('swazicandles.jpg'),...limgAll('swazicandles')].filter(Boolean)
   },
   {
     name:'Gone Rural', region:'Malkerns', rating:'4.7',
     price:'E 100 to 2,000', type:'Woven Crafts',
     desc:'Women-made woven baskets and premium home decor',
-    coverImg: photo('basket,weaving,african,craft'),
-    gallery:[photo('woven,basket,africa,craft'),photo('african,woman,weaving'),photo('basket,handmade,colorful'),photo('african,craft,women'),photo('weaving,traditional,africa')]
+    coverImg: limg('gonerural.PNG'),
+    gallery:limgAll('gonerural').filter(Boolean)
   },
   {
     name:'Ngwenya Glass Factory', region:'Ngwenya', rating:'4.6',
     price:'E 80 to 800', type:'Glass Art',
     desc:'Recycled glass art and stunning sculptures',
-    coverImg: photo('glass,art,sculpture,colorful'),
-    gallery:[photo('glass,art,colorful,sculpture'),photo('recycled,glass,art'),photo('glass,factory,art'),photo('colorful,glass,ornament'),photo('glass,sculpture,art')]
+    coverImg: limg('ngwenya glass.PNG'),
+    gallery:limgAll('ngwenya glass').filter(Boolean)
   },
   {
     name:'Manzini Market', region:'Manzini', rating:'4.3',
     price:'E 10 to 200', type:'Traditional Market',
     desc:'Largest traditional market in Eswatini',
-    coverImg: photo('african,market,traditional,busy'),
-    gallery:[photo('african,market,colorful,food'),photo('market,africa,vegetables'),photo('african,market,people,busy'),photo('traditional,market,africa'),photo('market,africa,fresh,food')]
+    coverImg: limg('manzini.PNG'),
+    gallery:[limg('manzini.PNG'),limg('manzini2.PNG'),limg('mazini3.PNG')].filter(Boolean)
   },
 ];
 
