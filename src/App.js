@@ -202,8 +202,8 @@ const places = [
     desc:"Lions, elephants and white rhinos in Eswatini's largest park",
     fullDesc:"Hlane Royal National Park is Eswatini's largest protected area covering 22,000 hectares. Named by King Sobhuza II — Hlane means wilderness in siSwati. Home to lions, elephants, white rhinos, giraffes, zebras and over 300 bird species.",
     rating:'4.9', category:'Wildlife',
-    img: limg('hlane.jpg'),
-    gallery:[limg('hlane.jpg'),...limgAll('lubombo')].filter(Boolean),
+    img: photo('lion,safari,africa'),
+    gallery:[photo('lion,wildlife,africa'),photo('elephant,safari'),photo('rhino,africa,wildlife'),photo('zebra,africa,safari'),photo('bird,africa,wildlife')],
     location:'Lubombo Region, 67km from Manzini', hours:'6am to 6pm daily', price:'E 150',
     tips:['Book guided game drives in advance','Best time is early morning','Bring binoculars'],
     videoId:'KWr0KUZLPi4', videoTitle:'Self-Drive Safari at Hlane'
@@ -257,8 +257,8 @@ const places = [
     desc:"World's second largest exposed granite rock near Mbabane",
     fullDesc:"The world's second largest exposed granite rock. Just 10km from capital Mbabane, offering challenging hiking trails and panoramic views across the entire country.",
     rating:'4.5', category:'Adventure',
-    img: limg('lubombo.jpg'),
-    gallery:limgAll('lubombo').filter(Boolean),
+    img: limg('malolotja.jpg'),
+    gallery:[limg('malolotja2.jpg'),limg('malolotja3.jpg')].filter(Boolean),
     location:'10km from Mbabane, Hhohho Region', hours:'6am to 6pm daily', price:'E 60',
     tips:['Wear proper hiking shoes','Go early to avoid heat','Bring plenty of water'],
     videoId:'sDN7HXh5rdc', videoTitle:'Bhubesi Camp Hlane'
@@ -2098,15 +2098,30 @@ function AccommodationTab({onSelectHotel,t}) {
 
 // ── CULTURE & EVENTS TAB ─────────────────────────────────
 const cultureItems = [
-  {name:'Umhlanga (Reed Dance)', img:limg('lobamba'), when:'Late August / Early September',
+  {name:'Umhlanga (Reed Dance)', 
+   img:limg('lobamba.jpg'),
+   gallery:[limg('lobamba.jpg'),limg('lobamba2.jpg'),limg('lobamba3.jpg'),limg('lobamba4.jpg'),limg('lobamba5.jpg')].filter(Boolean),
+   when:'Late August / Early September',
    desc:"Thousands of unmarried young women gather at the Royal residence in Ludzidzini to cut reeds and present them to the Queen Mother, in a celebration of purity, unity and Swazi heritage. One of Africa's most spectacular cultural events."},
-  {name:'Incwala (Kingship Ceremony)', img:limg('lobamba')||limg('mantenga'), when:'December / January (timed to the new moon)',
+  {name:'Incwala (Kingship Ceremony)',
+   img:limg('culture-incwalaceremony.jpg'),
+   gallery:[limg('culture-incwalaceremony.jpg'),limg('culture-incwalafestival2.jpg'),limg('culture-incwalafestival3.jpg'),limg('culture-incwalafestival4.jpg')].filter(Boolean),
+   when:'December / January (timed to the new moon)',
    desc:"The most sacred ceremony in Swazi culture — a multi-day ritual affirming the kingship and the bond between the king, his people and the land. Several stages are open to respectful visitors."},
-  {name:'Marula Festival (Buganu)', img:limg('Food-Umoba-Sugarcane')||limg('gonerural'), when:'February / March',
+  {name:'Marula Festival (Buganu)',
+   img:limg('culuture-marulafestival.jpg'),
+   gallery:[limg('culuture-marulafestival.jpg'),limg('culuture-marulafestival2.jpg'),limg('culture-marulafestival3.jpg'),limg('culture-marulafestival4.jpg')].filter(Boolean),
+   when:'February / March',
    desc:'A harvest celebration of the marula fruit, marking the start of the traditional brewing season with feasting, song and dance across rural homesteads.'},
-  {name:'Traditional Villages', img:limg('mantenga'), when:'Open daily',
+  {name:'Traditional Villages',
+   img:limg('mantenga.jpg'),
+   gallery:[limg('mantenga.jpg'),limg('lobamba.jpg'),limg('ezulwinivalley.jpg')].filter(Boolean),
+   when:'Open daily',
    desc:'Living cultural villages such as Mantenga and Mantenga Cultural Village showcase traditional Swazi homestead life, beehive huts, dance performances and storytelling.'},
-  {name:'Crafts & Markets', img:limg('swazicandles')||limg('ezulwinimarket'), when:'Open daily',
+  {name:'Crafts & Markets',
+   img:limg('swazicandles.jpg'),
+   gallery:[limg('swazicandles.jpg'),limg('swazicandles5.jpg'),limg('swazicandles6.jpg'),limg('gonerural.PNG'),limg('ngwenya glass.PNG')].filter(Boolean),
+   when:'Open daily',
    desc:'Swazi Candles, Gone Rural weavers and Ngwenya Glass turn traditional craft skills into world-renowned art — all of it handmade locally and available to buy directly from the makers.'},
 ];
 function CultureTab({t}) {
@@ -2117,14 +2132,14 @@ function CultureTab({t}) {
       <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Eswatini's living traditions — ceremonies, festivals, villages and crafts.</div>
       {cultureItems.map(c=>(
         <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
-          {c.img && <Img src={c.img} alt={c.name} style={{width:'100%',height:150}}/>}
+          {c.gallery&&c.gallery.length>0 ? <Slideshow images={c.gallery} height={150}/> : c.img ? <Img src={c.img} alt={c.name} style={{width:'100%',height:150}}/> : null}
           <div style={{padding:'12px 14px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',cursor:'pointer'}} onClick={()=>setOpen(open===c.name?null:c.name)}>
               <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
               <span style={{color:'#c9a227',fontSize:13}}>{open===c.name?'▲':'▼'}</span>
             </div>
             <div style={{fontSize:11,color:'#c9a227',marginTop:3,fontWeight:600}}>📅 {c.when}</div>
-            {open===c.name && <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.7,marginTop:8}}>{c.desc}</div>}
+            {open===c.name && <div style={{fontSize:12,color:'rgb(176, 196, 222)',lineHeight:1.7,marginTop:8}}>{c.desc}</div>}
           </div>
         </div>
       ))}
