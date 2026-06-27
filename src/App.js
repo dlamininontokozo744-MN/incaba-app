@@ -815,13 +815,20 @@ function AppInner() {
       <h1 style={styles.splashTitle}>Inc<span style={styles.gold}>aba</span></h1>
       <div style={{fontSize:14,color:'#c9a227',fontWeight:600,marginBottom:6}}>{t.tagline}</div>
       <p style={{color:'#8fa3c4',fontSize:12,margin:'0 0 16px',lineHeight:1.6}}>{t.sub}</p>
-      <div style={{display:'flex',gap:6,justifyContent:'center',marginBottom:16,flexWrap:'wrap',maxWidth:340}}>
-        {Object.entries(T).map(([code,data])=>(
-          <button key={code} onClick={()=>setLang(code)} style={{padding:'5px 10px',borderRadius:20,border:lang===code?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:lang===code?'rgba(201,162,39,0.2)':'transparent',color:lang===code?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',display:'flex',alignItems:'center',gap:4}}>
-            {data.flag} {code.toUpperCase()}
-          </button>
-        ))}
-      </div>
+      <div style={{position:'relative',marginBottom:16,width:'100%',maxWidth:280}}>
+  <button onClick={()=>setShowLangPicker(s=>!s)} style={{width:'100%',padding:'11px 16px',borderRadius:50,border:'1px solid rgba(201,162,39,0.4)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontSize:13,fontWeight:600,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+    {T[lang].flag} {T[lang].name} ▾
+  </button>
+  {showLangPicker&&(
+    <div style={{position:'absolute',top:48,left:0,right:0,background:'#0d1f3c',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:14,padding:8,zIndex:300,boxShadow:'0 8px 32px rgba(0,0,0,0.6)',maxHeight:260,overflowY:'auto'}}>
+      {Object.entries(T).map(([code,data])=>(
+        <div key={code} onClick={()=>{setLang(code);setShowLangPicker(false);}} style={{padding:'10px 12px',borderRadius:8,cursor:'pointer',color:lang===code?'#c9a227':'#f0f4ff',background:lang===code?'rgba(201,162,39,0.12)':'transparent',fontSize:13,display:'flex',alignItems:'center',gap:8}}>
+          {data.flag} {data.name}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
       <button style={styles.btnPrimary} onClick={()=>setScreen('main')}>{t.explore}</button>
       <p style={{color:'#5f7a9a',fontSize:10,marginTop:12}}>{t.offline}</p>
     </div>
