@@ -2330,6 +2330,7 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
 
 // ── HOME TAB ──────────────────────────────────────────────
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore,t}) {
+  const [showStores,setShowStores] = useState(false);
   const [sec,setSec] = useState('attractions');
   const [showWeather,setShowWeather] = useState(false);
   const handleSOS = ()=>{if(window.confirm('Call Eswatini Emergency Services?\nPolice: 999\nAmbulance: 977\nFire: 933'))window.location.href='tel:999';};
@@ -2444,19 +2445,24 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
   <span style={{color:'#c9a227',fontSize:22}}>›</span>
 </div>
 
-      <div style={styles.sectionTitle}>Local Stores 🛍️</div>
-<div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
-  {localStores.map(s=>(
-    <div key={s.name} onClick={()=>onSelectStore(s)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:'11px 14px',cursor:'pointer'}}>
-      <div>
-        <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{s.name}</div>
-        <div style={{fontSize:11,color:'#8fa3c4'}}>{s.type}</div>
-        <div style={{fontSize:11,color:'#c9a227',marginTop:2}}>⭐ {s.rating} · {s.price}</div>
-      </div>
-      <span style={{color:'#c9a227',fontSize:22}}>›</span>
-    </div>
-  ))}
+      <div onClick={()=>setShowStores(s=>!s)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:'11px 14px',marginBottom:showStores?0:16,cursor:'pointer'}}>
+  <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>Local Stores 🛍️</div>
+  <span style={{color:'#c9a227',fontSize:18}}>{showStores?'▾':'›'}</span>
 </div>
+{showStores&&(
+  <div style={{marginBottom:16,border:'0.5px solid rgba(201,162,39,0.2)',borderTop:'none',borderRadius:'0 0 12px 12px',overflow:'hidden'}}>
+    {localStores.map(s=>(
+      <div key={s.name} onClick={()=>onSelectStore(s)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',borderBottom:'0.5px solid rgba(255,255,255,0.05)',padding:'11px 14px',cursor:'pointer'}}>
+        <div>
+          <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{s.name}</div>
+          <div style={{fontSize:11,color:'#8fa3c4'}}>{s.type}</div>
+          <div style={{fontSize:11,color:'#c9a227',marginTop:2}}>⭐ {s.rating} · {s.price}</div>
+        </div>
+        <span style={{color:'#c9a227',fontSize:18}}>›</span>
+      </div>
+    ))}
+  </div>
+)}
     </div>
   );
 }
