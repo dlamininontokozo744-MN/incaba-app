@@ -1232,24 +1232,7 @@ function Reviews({name,t}) {
 }
 
 // ── DETAIL SCREEN ─────────────────────────────────────────
-function PhotoGrid({images}) {
-  const [lightbox,setLightbox] = useState(null);
-  return (
-    <>
-      {lightbox&&<Lightbox src={lightbox} onClose={()=>setLightbox(null)}/>}
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:8}}>
-        {images.map((img,i)=>(
-          <div key={i} onClick={()=>setLightbox(img)} style={{cursor:'pointer',position:'relative'}}>
-            <Img src={img} alt="" style={{height:80,borderRadius:10}}/>
-            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:0,transition:'opacity 0.2s',borderRadius:10,background:'rgba(0,0,0,0.3)'}} className="zoom-overlay">
-              <span style={{fontSize:18,color:'#fff'}}>⛶</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
+
 function DetailScreen({place,onBack,t,onVirtualTour}) {
   const {user,requireAuth} = useAuth();
   const [saved,setSaved] = useState(false);
@@ -1663,19 +1646,7 @@ function StoreDetail({item,onBack,t}) {
         </div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:16}}>{item.desc}</div>
         <div style={styles.sectionTitle}>{t.photos}</div>
-<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-  {place.gallery.map((img,i)=>{
-    const [lb,setLb]=useState(null);
-    return(
-      <div key={i}>
-        {lb&&<Lightbox src={lb} onClose={()=>setLb(null)}/>}
-        <div onClick={()=>setLb(img)} style={{cursor:'pointer'}}>
-          <Img src={img} alt="" style={{height:80,borderRadius:10}}/>
-        </div>
-      </div>
-    );
-  })}
-</div>
+<PhotoGrid images={item.gallery}/>
         <Reviews name={item.name} t={t}/>
         <button style={{...styles.btnPrimary,marginBottom:20}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(item.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
       </div>
