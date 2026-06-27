@@ -1667,16 +1667,41 @@ function WeatherMiniCard({t,onClick}) {
   const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
 
   useEffect(()=>{
-    fetch('/api/weather?city=Mbabane')
-      .then(r=>r.json())
-      .then(d=>{
-        if(d.main) setData({
-          temp: Math.round(d.main.temp),
-          desc: d.weather[0].description,
-          city: d.name,
-          icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
-        });
-      }).catch(()=>{});
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        p=>fetch(`/api/weather?lat=${p.coords.latitude}&lon=${p.coords.longitude}`)
+            .then(r=>r.json())
+            .then(d=>{
+              if(d.main) setData({
+                temp: Math.round(d.main.temp),
+                desc: d.weather[0].description,
+                city: d.name,
+                icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
+              });
+            }).catch(()=>{}),
+        ()=>fetch('/api/weather?city=Mbabane')
+            .then(r=>r.json())
+            .then(d=>{
+              if(d.main) setData({
+                temp: Math.round(d.main.temp),
+                desc: d.weather[0].description,
+                city: d.name,
+                icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
+              });
+            }).catch(()=>{})
+      );
+    } else {
+      fetch('/api/weather?city=Mbabane')
+        .then(r=>r.json())
+        .then(d=>{
+          if(d.main) setData({
+            temp: Math.round(d.main.temp),
+            desc: d.weather[0].description,
+            city: d.name,
+            icon: d.weather[0].main==='Rain'?'🌧️':d.weather[0].main==='Clouds'?'⛅':d.weather[0].main==='Thunderstorm'?'🌩️':'☀️',
+          });
+        }).catch(()=>{});
+    }
   },[]);
 
   return (
@@ -1782,8 +1807,16 @@ function WeatherWidget({t}) {
       }).catch(()=>{setSearching(false);setLocating(false);});
   };
 
-  // Load default cities on mount
+  // Auto-load GPS location on mount + default cities
   useEffect(()=>{
+    // Auto GPS on open
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        p=>fetchWeather('',p.coords.latitude,p.coords.longitude),
+        ()=>{}
+      );
+    }
+    // Load default Eswatini cities
     ['Mbabane','Manzini','Siteki'].forEach(c=>fetchWeather(c));
   },[]); // eslint-disable-line
 
@@ -1820,7 +1853,7 @@ function WeatherWidget({t}) {
           value={searchCity}
           onChange={e=>setSearchCity(e.target.value)}
           onKeyDown={e=>e.key==='Enter'&&handleSearch()}
-          placeholder="Search any town or village in Eswatini..."
+          placeholder="Search any place, village or landmark..."
           style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px 12px',color:'#f0f4ff',fontSize:12,outline:'none'}}
         />
         <button onClick={handleSearch} disabled={searching} style={{padding:'9px 12px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:13,fontWeight:700,cursor:'pointer'}}>
