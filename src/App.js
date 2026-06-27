@@ -257,8 +257,8 @@ const places = [
     desc:"World's second largest exposed granite rock near Mbabane",
     fullDesc:"The world's second largest exposed granite rock. Just 10km from capital Mbabane, offering challenging hiking trails and panoramic views across the entire country.",
     rating:'4.5', category:'Adventure',
-    img: limg('malolotja.jpg'),
-    gallery:[limg('malolotja2.jpg'),limg('malolotja3.jpg')].filter(Boolean),
+    img: limg('sibebe.jpg'),
+    gallery:[limg('sibebe.jpg'),limg('malolotja2.jpg')].filter(Boolean),
     location:'10km from Mbabane, Hhohho Region', hours:'6am to 6pm daily', price:'E 60',
     tips:['Wear proper hiking shoes','Go early to avoid heat','Bring plenty of water'],
     videoId:'sDN7HXh5rdc', videoTitle:'Bhubesi Camp Hlane'
