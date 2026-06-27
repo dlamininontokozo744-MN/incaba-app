@@ -1928,6 +1928,7 @@ function CurrencyWidget({t}) {
   );
 }
 
+
 // ── TRANSLATE TAB ─────────────────────────────────────────
 function TranslateTab({t,lang}) {
   const [input,setInput]   = useState('');
@@ -2432,31 +2433,30 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         </>
       )}
 
-      <div style={styles.sectionTitle}>{t.hiddenGem} 💎</div>
-      <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16,cursor:'pointer'}} onClick={()=>onSelect(places[6])}>
-        <Img src={places[6].img} alt="Shiselweni" style={{width:'100%',height:140}}/>
-        <div style={{padding:12}}>
-          <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff',marginBottom:5}}>Shiselweni Region 🌿</div>
-          <div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.6,marginBottom:8}}>Eswatini's southern paradise — untouched forests, rivers and traditional villages. Only 5% of tourists visit.</div>
-          <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
-            {['🌿 Nature','📍 South Eswatini','🆓 Uncrowded'].map(tag=><span key={tag} style={styles.tag}>{tag}</span>)}
-          </div>
-        </div>
-      </div>
+      <div onClick={()=>onSelect(places[6])} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,padding:'12px 14px',marginBottom:16,cursor:'pointer'}}>
+  <div>
+    <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff',marginBottom:4}}>{t.hiddenGem} 💎</div>
+    <div style={{fontSize:11,color:'#8fa3c4'}}>Shiselweni Region 🌿 · Tap to explore</div>
+    <div style={{display:'flex',gap:7,flexWrap:'wrap',marginTop:6}}>
+      {['🌿 Nature','📍 South Eswatini','🆓 Uncrowded'].map(tag=><span key={tag} style={styles.tag}>{tag}</span>)}
+    </div>
+  </div>
+  <span style={{color:'#c9a227',fontSize:22}}>›</span>
+</div>
 
       <div style={styles.sectionTitle}>Local Stores 🛍️</div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-        {localStores.map(s=>(
-          <div key={s.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,overflow:'hidden',cursor:'pointer'}} onClick={()=>onSelectStore(s)}>
-            <Img src={s.coverImg} alt={s.name} style={{width:'100%',height:90}}/>
-            <div style={{padding:'8px 10px'}}>
-              <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{s.name}</div>
-              <div style={{fontSize:10,color:'#8fa3c4'}}>{s.type}</div>
-              <div style={{fontSize:10,color:'#c9a227',marginTop:3}}>⭐ {s.rating}</div>
-            </div>
-          </div>
-        ))}
+<div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+  {localStores.map(s=>(
+    <div key={s.name} onClick={()=>onSelectStore(s)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:'11px 14px',cursor:'pointer'}}>
+      <div>
+        <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{s.name}</div>
+        <div style={{fontSize:11,color:'#8fa3c4'}}>{s.type}</div>
+        <div style={{fontSize:11,color:'#c9a227',marginTop:2}}>⭐ {s.rating} · {s.price}</div>
       </div>
+      <span style={{color:'#c9a227',fontSize:22}}>›</span>
+    </div>
+  ))}
+</div>
     </div>
   );
 }
