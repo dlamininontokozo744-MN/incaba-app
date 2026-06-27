@@ -1883,24 +1883,47 @@ function WeatherWidget({t}) {
 
 // ── CURRENCY ──────────────────────────────────────────────
 function CurrencyWidget({t}) {
-  const [amount,setAmount] = useState('100');
-  const [from,setFrom]     = useState('USD');
-  const result = amount?(parseFloat(amount)*RATES[from]).toFixed(2):'0.00';
+  const [open,setOpen] = useState(false);
+  const [amount,setAmount] = useState('');
+  const [from,setFrom] = useState('USD');
+  const result = amount?(parseFloat(amount)*RATES[from]).toFixed(2):'';
+
   return (
-    <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:14,marginBottom:16}}>
-      <div style={styles.sectionTitle}>{t.currency}</div>
-      <div style={{fontSize:11,color:'#8fa3c4',marginBottom:10}}>Any Currency → Eswatini Lilangeni (SZL / Emalangeni)</div>
-      <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:12}}>
-        <input type="number" value={amount} onChange={e=>setAmount(e.target.value)} style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 12px',color:'#f0f4ff',fontSize:16,fontWeight:700,outline:'none'}} placeholder="Amount"/>
-        <select value={from} onChange={e=>setFrom(e.target.value)} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 10px',color:'#c9a227',fontSize:13,fontWeight:600,outline:'none',cursor:'pointer'}}>
-          {Object.keys(RATES).map(k=><option key={k} value={k}>{k}</option>)}
-        </select>
+    <div style={{marginBottom:13}}>
+      <div onClick={()=>setOpen(o=>!o)} style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.35)',borderRadius:14,padding:'12px 14px',display:'flex',alignItems:'center',gap:10,cursor:'pointer'}}>
+        <div style={{width:44,height:44,borderRadius:12,background:'rgba(201,162,39,0.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>💱</div>
+        <div style={{flex:1}}>
+          <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{t.currency}</div>
+          <div style={{fontSize:11,color:'#8fa3c4'}}>
+            {result ? `${amount} ${from} = E ${result} SZL` : 'Tap to convert any currency → SZL'}
+          </div>
+        </div>
+        <span style={{color:'#c9a227',fontSize:18}}>{open?'▾':'›'}</span>
       </div>
-      <div style={{background:'rgba(201,162,39,0.1)',borderRadius:10,padding:'12px 14px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:12,color:'#8fa3c4'}}>{amount||'0'} {from} =</span>
-        <span style={{fontSize:21,fontWeight:700,color:'#c9a227'}}>E {result} SZL</span>
-      </div>
-      <div style={{fontSize:9,color:'#8fa3c4',marginTop:6,textAlign:'center'}}>SZL = Emalangeni · Official currency of Eswatini</div>
+
+      {open&&(
+        <div style={{background:'rgba(83,74,183,0.08)',border:'0.5px solid rgba(131,122,221,0.2)',borderTop:'none',borderRadius:'0 0 14px 14px',padding:14}}>
+          <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:12}}>
+            <input
+              type="number"
+              value={amount}
+              onChange={e=>setAmount(e.target.value)}
+              placeholder="Enter amount..."
+              style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 12px',color:'#f0f4ff',fontSize:16,fontWeight:700,outline:'none'}}
+            />
+            <select value={from} onChange={e=>setFrom(e.target.value)} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#c9a227',fontSize:13,fontWeight:600,outline:'none',cursor:'pointer'}}>
+              {Object.keys(RATES).map(k=><option key={k} value={k}>{k}</option>)}
+            </select>
+          </div>
+          {result&&(
+            <div style={{background:'rgba(201,162,39,0.1)',borderRadius:10,padding:'12px 14px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontSize:12,color:'#8fa3c4'}}>{amount} {from} =</span>
+              <span style={{fontSize:21,fontWeight:700,color:'#c9a227'}}>E {result} SZL</span>
+            </div>
+          )}
+          <div style={{fontSize:9,color:'#8fa3c4',marginTop:6,textAlign:'center'}}>SZL = Emalangeni · Official currency of Eswatini</div>
+        </div>
+      )}
     </div>
   );
 }
