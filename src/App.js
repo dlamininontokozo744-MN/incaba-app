@@ -2451,9 +2451,11 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
     </div>
   );
 }
+// ── HOME TAB — matches the design mockups exactly ─────────
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore,t}) {
   const [sec,setSec] = useState('attractions');
   const [showWeather,setShowWeather] = useState(false);
+  const isDesktop = window.innerWidth >= 768;
 
   const handleSOS = ()=>{
     if(window.confirm('Call Eswatini Emergency Services?\nPolice: 999\nAmbulance: 977\nFire: 933'))
@@ -2463,7 +2465,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
   return (
     <div>
       {showWeather&&(
-        <div style={{position:'fixed',inset:0,background:'#0a1628',zIndex:200,overflowY:'auto',padding:16}}>
+        <div style={{position:'fixed',inset:0,background:'#0a1628',zIndex:200,overflowY:'auto',padding:16,maxWidth:480,margin:'0 auto'}}>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
             <button onClick={()=>setShowWeather(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}>← Back</button>
             <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{t.weather}</div>
@@ -2472,82 +2474,156 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         </div>
       )}
 
-      {/* ── COMPACT UTILITY BAR ── */}
-      <div style={{display:'flex',gap:8,marginBottom:14}}>
-        <div onClick={handleSOS} style={{flex:1,display:'flex',alignItems:'center',gap:8,background:'rgba(226,75,74,0.12)',border:'0.5px solid rgba(226,75,74,0.3)',borderRadius:12,padding:'10px 12px',cursor:'pointer'}}>
-          <span style={{fontSize:16}}>🆘</span>
+      {/* ── UTILITY BAR: SOS + WEATHER + AI ── */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1.6fr 1fr',gap:8,marginBottom:14}}>
+        {/* SOS */}
+        <div onClick={handleSOS} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(226,75,74,0.15)',border:'0.5px solid rgba(226,75,74,0.4)',borderRadius:14,padding:'12px 10px',cursor:'pointer'}}>
+          <div style={{width:32,height:32,borderRadius:8,background:'#e24b4a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,flexShrink:0}}>🆘</div>
           <div>
-            <div style={{fontSize:11,fontWeight:600,color:'#e24b4a'}}>SOS</div>
+            <div style={{fontSize:11,fontWeight:700,color:'#e24b4a'}}>SOS</div>
             <div style={{fontSize:9,color:'#8fa3c4'}}>Emergency</div>
           </div>
+          <span style={{color:'#e24b4a',marginLeft:'auto',fontSize:14}}>›</span>
         </div>
-        <div onClick={()=>setShowWeather(true)} style={{flex:2,display:'flex',alignItems:'center',gap:8,background:'rgba(24,95,165,0.15)',border:'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 12px',cursor:'pointer'}}>
-          <span style={{fontSize:20}}>⛅</span>
+
+        {/* WEATHER */}
+        <div onClick={()=>setShowWeather(true)} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(24,95,165,0.18)',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:'12px 10px',cursor:'pointer'}}>
+          <span style={{fontSize:24}}>⛅</span>
           <div>
-            <div style={{fontSize:11,fontWeight:600,color:'#5dcaa5'}}>Live Weather · Mbabane</div>
-            <div style={{fontSize:9,color:'#8fa3c4'}}>Tap for 7-day forecast</div>
+            <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600}}>Live Weather</div>
+            <div style={{fontSize:12,fontWeight:700,color:'#f0f4ff'}}>Mbabane</div>
+            <div style={{fontSize:9,color:'#8fa3c4'}}>15°C · Partly cloudy</div>
           </div>
+          <span style={{color:'#8fa3c4',marginLeft:'auto',fontSize:14}}>›</span>
         </div>
-        <div onClick={()=>setTab('ai')} style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:6,background:'rgba(83,74,183,0.2)',border:'0.5px solid rgba(131,122,221,0.35)',borderRadius:12,padding:'10px 12px',cursor:'pointer'}}>
-          <span style={{fontSize:16}}>🤖</span>
-          <div style={{fontSize:11,fontWeight:600,color:'#afa9ec'}}>AI Guide</div>
+
+        {/* AI GUIDE */}
+        <div onClick={()=>setTab('ai')} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(83,74,183,0.18)',border:'0.5px solid rgba(131,122,221,0.4)',borderRadius:14,padding:'12px 10px',cursor:'pointer'}}>
+          <div style={{width:32,height:32,borderRadius:8,background:'rgba(83,74,183,0.4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>🤖</div>
+          <div>
+            <div style={{fontSize:11,fontWeight:700,color:'#afa9ec'}}>AI Guide</div>
+            <div style={{fontSize:9,color:'#8fa3c4'}}>Ask Incaba</div>
+          </div>
+          <span style={{color:'#afa9ec',marginLeft:'auto',fontSize:14}}>›</span>
         </div>
       </div>
 
-      {/* ── HERO BANNER WITH REAL IMAGE ── */}
-      <div style={{position:'relative',borderRadius:16,overflow:'hidden',marginBottom:14,height:220}}>
+      {/* ── HERO BANNER WITH REAL ESWATINI IMAGE ── */}
+      <div style={{position:'relative',borderRadius:18,overflow:'hidden',marginBottom:14,height:isDesktop?280:240}}>
         <img src={places[0].img} alt="Eswatini" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(10,22,40,0.2) 0%,rgba(10,22,40,0.85) 100%)'}}/>
-        <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'16px 18px'}}>
-          <div style={{fontSize:10,color:'#c9a227',fontWeight:600,marginBottom:4}}>✦ Kingdom of Eswatini</div>
-          <h2 style={{fontSize:22,fontWeight:700,color:'#fff',margin:'0 0 6px',lineHeight:1.2}}>{t.welcome}</h2>
-          <p style={{fontSize:11,color:'rgba(255,255,255,0.8)',margin:'0 0 10px'}}>{t.welcomeSub}</p>
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(10,22,40,0.15) 0%,rgba(10,22,40,0.88) 100%)'}}/>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'20px 18px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
+            <span style={{fontSize:14}}>👑</span>
+            <span style={{fontSize:10,color:'#c9a227',fontWeight:600,letterSpacing:0.5}}>Kingdom of Eswatini</span>
+          </div>
+          <h2 style={{fontSize:22,fontWeight:800,color:'#fff',margin:'0 0 6px',lineHeight:1.2,textShadow:'0 2px 8px rgba(0,0,0,0.5)'}}>{t.welcome}</h2>
+          <p style={{fontSize:11,color:'rgba(255,255,255,0.75)',margin:'0 0 14px',lineHeight:1.5}}>{t.welcomeSub}</p>
+          
+          {/* STATS ROW */}
           <div style={{display:'flex',gap:8}}>
-            {[['120+',t.attractions,'attractions'],['48',t.restaurants,'restaurants'],['35',t.hotels,'hotels']].map(([n,l,s])=>(
-              <div key={l} onClick={()=>setSec(s)} style={{background:'rgba(201,162,39,0.2)',border:sec===s?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.4)',borderRadius:8,padding:'6px 10px',cursor:'pointer',textAlign:'center'}}>
-                <div style={{fontSize:14,fontWeight:700,color:'#c9a227'}}>{n}</div>
-                <div style={{fontSize:9,color:sec===s?'#c9a227':'rgba(255,255,255,0.7)'}}>{l}</div>
+            {[
+              {icon:'🏔️',val:'120+',label:t.attractions,sec:'attractions'},
+              {icon:'🍽️',val:'48',label:t.restaurants,sec:'restaurants'},
+              {icon:'🏨',val:'35',label:t.hotels,sec:'hotels'},
+              {icon:'🌐',val:'9',label:'Languages',sec:null},
+            ].map(item=>(
+              <div key={item.label} onClick={()=>item.sec&&setSec(item.sec)} style={{flex:1,background:'rgba(201,162,39,0.15)',border:sec===item.sec?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'8px 6px',cursor:item.sec?'pointer':'default',textAlign:'center',backdropFilter:'blur(4px)'}}>
+                <div style={{fontSize:12}}>{item.icon}</div>
+                <div style={{fontSize:14,fontWeight:800,color:'#c9a227'}}>{item.val}</div>
+                <div style={{fontSize:8,color:sec===item.sec?'#c9a227':'rgba(255,255,255,0.7)',lineHeight:1.2}}>{item.label}</div>
               </div>
             ))}
-            <div onClick={()=>setTab('translate')} style={{background:'rgba(83,74,183,0.3)',border:'0.5px solid rgba(131,122,221,0.4)',borderRadius:8,padding:'6px 10px',cursor:'pointer',textAlign:'center'}}>
-              <div style={{fontSize:14,fontWeight:700,color:'#afa9ec'}}>9</div>
-              <div style={{fontSize:9,color:'rgba(255,255,255,0.7)'}}>Languages</div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* ── CURRENCY COMPACT ── */}
+      {/* ── CURRENCY CONVERTER COMPACT ── */}
       <CurrencyWidget t={t}/>
 
-      {/* ── POPULAR ATTRACTIONS GRID ── */}
+      {/* ── POPULAR ATTRACTIONS ── */}
       {sec==='attractions'&&(
         <>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-            <div style={styles.sectionTitle}>Popular Attractions</div>
-            <span onClick={()=>setTab('explore')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>View all →</span>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10,marginTop:4}}>
+            <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>Popular Attractions</div>
+            <span onClick={()=>setTab('explore')} style={{fontSize:11,color:'#c9a227',cursor:'pointer',fontWeight:600}}>View all →</span>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
             {places.slice(0,4).map(p=>(
-              <div key={p.name} onClick={()=>onSelect(p)} style={{borderRadius:12,overflow:'hidden',cursor:'pointer',position:'relative',height:140}}>
-                <img src={p.img} alt={p.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-                <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(10,22,40,0.92) 100%)'}}/>
-                <div style={{position:'absolute',top:8,right:8,background:'rgba(201,162,39,0.9)',borderRadius:6,padding:'2px 7px',fontSize:9,fontWeight:700,color:'#0a1628'}}>{p.category}</div>
-                <div style={{position:'absolute',bottom:8,left:10,right:10}}>
-                  <div style={{fontSize:12,fontWeight:700,color:'#fff'}}>{p.name}</div>
-                  <div style={{fontSize:10,color:'rgba(255,255,255,0.75)'}}>📍 {p.region} · ⭐ {p.rating}</div>
+              <div key={p.name} onClick={()=>onSelect(p)} style={{borderRadius:14,overflow:'hidden',cursor:'pointer',position:'relative',height:150,boxShadow:'0 4px 12px rgba(0,0,0,0.3)'}}>
+                <Img src={p.img} alt={p.name} style={{width:'100%',height:'100%'}}/>
+                <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 35%,rgba(10,22,40,0.95) 100%)'}}/>
+                <div style={{position:'absolute',top:8,left:8,background:p.category==='Wildlife'?'#e24b4a':p.category==='Nature'?'#27ae60':p.category==='Culture'?'#8e44ad':'#c9a227',borderRadius:6,padding:'2px 8px',fontSize:9,fontWeight:700,color:'#fff'}}>{p.category}</div>
+                <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'8px 10px'}}>
+                  <div style={{fontSize:12,fontWeight:700,color:'#fff',lineHeight:1.2}}>{p.name}</div>
+                  <div style={{fontSize:10,color:'rgba(255,255,255,0.7)',marginTop:2}}>📍 {p.region} · ⭐ {p.rating}</div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* ── TOP HOTELS + TOP RESTAURANTS SIDE BY SIDE ── */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
+            {/* Hotels */}
+            <div>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                <div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Top Hotels</div>
+                <span onClick={()=>setSec('hotels')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all →</span>
+              </div>
+              <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
+                {hotels.slice(0,3).map(h=>(
+                  <div key={h.name} onClick={()=>onSelectHotel(h)} style={{flexShrink:0,width:90,cursor:'pointer'}}>
+                    <Img src={h.coverImg} alt={h.name} style={{width:90,height:70,borderRadius:10}}/>
+                    <div style={{fontSize:10,fontWeight:600,color:'#f0f4ff',marginTop:4,lineHeight:1.2}}>{h.name}</div>
+                    <div style={{fontSize:9,color:'#c9a227'}}>⭐ {h.rating}</div>
+                    <div style={{fontSize:9,color:'#8fa3c4'}}>{h.region}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Restaurants */}
+            <div>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                <div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Top Restaurants</div>
+                <span onClick={()=>setSec('restaurants')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all →</span>
+              </div>
+              <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
+                {restaurants.slice(0,3).map(r=>(
+                  <div key={r.name} onClick={()=>onSelectRestaurant(r)} style={{flexShrink:0,width:90,cursor:'pointer'}}>
+                    <Img src={r.coverImg} alt={r.name} style={{width:90,height:70,borderRadius:10}}/>
+                    <div style={{fontSize:10,fontWeight:600,color:'#f0f4ff',marginTop:4,lineHeight:1.2}}>{r.name}</div>
+                    <div style={{fontSize:9,color:'#c9a227'}}>⭐ {r.rating}</div>
+                    <div style={{fontSize:9,color:'#8fa3c4'}}>{r.region}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ── PLAN YOUR TRIP BANNER ── */}
+          <div onClick={()=>setTab('book')} style={{position:'relative',borderRadius:16,overflow:'hidden',marginBottom:16,cursor:'pointer'}}>
+            <img src={places[4].img} alt="Plan" style={{width:'100%',height:90,objectFit:'cover'}}/>
+            <div style={{position:'absolute',inset:0,background:'rgba(10,22,40,0.72)'}}/>
+            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 16px'}}>
+              <div style={{display:'flex',alignItems:'center',gap:10}}>
+                <span style={{fontSize:28}}>🗺️</span>
+                <div>
+                  <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>Plan Your Trip</div>
+                  <div style={{fontSize:10,color:'rgba(255,255,255,0.7)'}}>Discover places, create itineraries</div>
+                </div>
+              </div>
+              <button style={{background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',borderRadius:50,padding:'8px 14px',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',whiteSpace:'nowrap'}}>Explore Now →</button>
+            </div>
+          </div>
         </>
       )}
 
-      {/* ── RESTAURANTS ── */}
+      {/* ── RESTAURANTS LIST ── */}
       {sec==='restaurants'&&(
         <>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-            <div style={styles.sectionTitle}>{t.restaurants}</div>
+            <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{t.restaurants}</div>
             <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>← Back</span>
           </div>
           {restaurants.map(r=>(
@@ -2555,7 +2631,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
               <Img src={r.coverImg} alt={r.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
-                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {r.region} · {r.hours}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {r.region}</div>
                 <div style={{fontSize:11,color:'#6a85a8',marginTop:2}}>{r.desc}</div>
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
@@ -2567,11 +2643,11 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         </>
       )}
 
-      {/* ── HOTELS ── */}
+      {/* ── HOTELS LIST ── */}
       {sec==='hotels'&&(
         <>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-            <div style={styles.sectionTitle}>{t.hotels}</div>
+            <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{t.hotels}</div>
             <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>← Back</span>
           </div>
           {hotels.map(h=>(
@@ -2590,72 +2666,10 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
           ))}
         </>
       )}
-
-      {/* ── TOP HOTELS & RESTAURANTS SIDE BY SIDE ── */}
-      {sec==='attractions'&&(
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
-          <div>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-              <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>Top Hotels</div>
-              <span onClick={()=>setSec('hotels')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all</span>
-            </div>
-            {hotels.slice(0,3).map(h=>(
-              <div key={h.name} onClick={()=>onSelectHotel(h)} style={{marginBottom:8,cursor:'pointer'}}>
-                <Img src={h.coverImg} alt={h.name} style={{width:'100%',height:80,borderRadius:10}}/>
-                <div style={{fontSize:11,fontWeight:600,color:'#f0f4ff',marginTop:4}}>{h.name}</div>
-                <div style={{fontSize:10,color:'#5dcaa5'}}>{h.price}</div>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-              <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>Top Restaurants</div>
-              <span onClick={()=>setSec('restaurants')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all</span>
-            </div>
-            {restaurants.slice(0,3).map(r=>(
-              <div key={r.name} onClick={()=>onSelectRestaurant(r)} style={{marginBottom:8,cursor:'pointer'}}>
-                <Img src={r.coverImg} alt={r.name} style={{width:'100%',height:80,borderRadius:10}}/>
-                <div style={{fontSize:11,fontWeight:600,color:'#f0f4ff',marginTop:4}}>{r.name}</div>
-                <div style={{fontSize:10,color:'#c9a227'}}>⭐ {r.rating}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ── HIDDEN GEM ── */}
-      <div onClick={()=>onSelect(places[6])} style={{position:'relative',borderRadius:14,overflow:'hidden',marginBottom:16,height:100,cursor:'pointer'}}>
-        <img src={places[6].img} alt="Hidden Gem" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-        <div style={{position:'absolute',inset:0,background:'rgba(10,22,40,0.6)'}}/>
-        <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',padding:'0 16px',justifyContent:'space-between'}}>
-          <div>
-            <div style={{fontSize:13,fontWeight:700,color:'#c9a227'}}>{t.hiddenGem} 💎</div>
-            <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>Shiselweni Region · Uncrowded</div>
-          </div>
-          <span style={{color:'#c9a227',fontSize:20}}>›</span>
-        </div>
-      </div>
-
-      {/* ── LOCAL STORES ── */}
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-        <div style={styles.sectionTitle}>Local Stores 🛍️</div>
-        <span onClick={()=>setTab('compare')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>View all →</span>
-      </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-        {localStores.map(s=>(
-          <div key={s.name} onClick={()=>onSelectStore(s)} style={{borderRadius:12,overflow:'hidden',cursor:'pointer',position:'relative',height:100}}>
-            <Img src={s.coverImg} alt={s.name} style={{width:'100%',height:'100%'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 30%,rgba(10,22,40,0.9) 100%)'}}/>
-            <div style={{position:'absolute',bottom:8,left:10}}>
-              <div style={{fontSize:11,fontWeight:700,color:'#fff'}}>{s.name}</div>
-              <div style={{fontSize:9,color:'#c9a227'}}>⭐ {s.rating}</div>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
+
 
 // ── MAP TAB ───────────────────────────────────────────────
 function RealMap({loc,t}){
