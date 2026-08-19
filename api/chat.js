@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama-3.1-8b-instant',
         max_tokens: 1024,
         messages: [
           { role: 'system', content: 'You are Vaka, an AI guide for Eswatini tourism. Be helpful and friendly with emojis.' },
