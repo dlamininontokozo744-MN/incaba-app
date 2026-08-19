@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'compound-beta',
-        max_tokens: 1024,
+        max_tokens: 500,
         messages: [
           { role: 'system', content: 'You are Vaka, an AI guide for Eswatini tourism. Be helpful and friendly with emojis.' },
           { role: 'user', content: message }
