@@ -85,4 +85,62 @@ a {
     object-position: center;
   }
 }
+/* ── DESKTOP RESPONSIVE LAYOUT ── */
+@media (min-width: 768px) {
 
+  /* Main app fills full screen */
+  .app, [class*="app"] {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Content area gets padding */
+  [class*="content"] {
+    padding: 24px 40px !important;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Cards become 3 columns */
+  [class*="grid"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+  }
+
+  /* Images fit properly */
+  img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Hero banner bigger */
+  [class*="heroBanner"] {
+    padding: 40px !important;
+    font-size: 120% !important;
+  }
+
+  /* Bottom nav becomes side nav on desktop */
+  [class*="bottomNav"] {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 200px !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    padding: 80px 0 20px !important;
+    border-right: 0.5px solid rgba(201,162,39,0.25) !important;
+    border-top: none !important;
+  }
+
+  /* Push content right of side nav */
+  [class*="content"] {
+    margin-left: 200px !important;
+  }
+
+  /* Top bar also shifts */
+  [class*="topbar"] {
+    left: 200px !important;
+    width: calc(100% - 200px) !important;
+  }
+}
