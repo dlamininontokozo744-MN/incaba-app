@@ -24,6 +24,19 @@ body {
   width: 100%;
 }
 
+.app-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #0a1628;
+}
+
+#root {
+  background: #0a1628;
+  min-height: 100vh;
+  width: 100%;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
