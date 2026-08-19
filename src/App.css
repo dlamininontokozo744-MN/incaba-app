@@ -58,3 +58,25 @@ a {
   color: #c9a84c;
   text-decoration: none;
 }
+
+/* Responsive layout */
+.app-content {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* On desktop make cards side by side */
+@media (min-width: 768px) {
+  .places-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .list-card {
+    max-width: 100%;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: center;
+  }
+}
