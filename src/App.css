@@ -12,6 +12,11 @@ html, body, #root {
   font-family: 'Segoe UI', sans-serif;
   overflow-x: hidden;
 }
+/* Fix bottom nav */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
 
 body {
   background: #0a1628 !important;
@@ -80,3 +85,4 @@ a {
     object-position: center;
   }
 }
+
