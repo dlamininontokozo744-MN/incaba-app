@@ -2515,7 +2515,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'20px 18px'}}>
           <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
             <span style={{fontSize:14}}>👑</span>
-            <span style={{fontSize:10,color:'#c9a227',fontWeight:600,letterSpacing:0.5}}>Kingdom of Eswatini</span>
+            <span style={{fontSize:10,color:'#F0C94A',fontWeight:600,letterSpacing:0.5}}>Kingdom of Eswatini</span>
           </div>
           <h2 style={{fontSize:22,fontWeight:800,color:'#fff',margin:'0 0 6px',lineHeight:1.2,textShadow:'0 2px 8px rgba(0,0,0,0.5)'}}>{t.welcome}</h2>
           <p style={{fontSize:11,color:'rgba(255,255,255,0.75)',margin:'0 0 14px',lineHeight:1.5}}>{t.welcomeSub}</p>
