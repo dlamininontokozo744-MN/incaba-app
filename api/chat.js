@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'compound-beta',
+        model: 'gemma2-9b-it',
         max_tokens: 500,
         messages: [
           { role: 'system', content: 'You are Vaka, an AI guide for Eswatini tourism. Be helpful and friendly with emojis.' },
