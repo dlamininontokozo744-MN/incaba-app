@@ -2451,23 +2451,19 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
     </div>
   );
 }
-
-// ── HOME TAB ──────────────────────────────────────────────
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore,t}) {
-  const [showStores,setShowStores] = useState(false);
   const [sec,setSec] = useState('attractions');
   const [showWeather,setShowWeather] = useState(false);
-  const handleSOS = ()=>{if(window.confirm('Call Eswatini Emergency Services?\nPolice: 999\nAmbulance: 977\nFire: 933'))window.location.href='tel:999';};
+
+  const handleSOS = ()=>{
+    if(window.confirm('Call Eswatini Emergency Services?\nPolice: 999\nAmbulance: 977\nFire: 933'))
+      window.location.href='tel:999';
+  };
+
   return (
     <div>
-      <div style={styles.sosBtn} onClick={handleSOS}>
-        <span style={{fontSize:18}}>🆘</span>
-        <div><div style={{fontSize:12,fontWeight:600,color:'#e24b4a'}}>{t.sos}</div><div style={{fontSize:10,color:'#8fa3c4'}}>{t.sosSub}</div></div>
-        <span style={{color:'#8fa3c4',marginLeft:'auto'}}>›</span>
-      </div>
-      <WeatherMiniCard t={t} onClick={()=>setShowWeather(true)}/>
       {showWeather&&(
-        <div style={{position:'fixed',inset:0,background:'#0a1628',zIndex:200,overflowY:'auto',padding:16,maxWidth:480,margin:'0 auto'}}>
+        <div style={{position:'fixed',inset:0,background:'#0a1628',zIndex:200,overflowY:'auto',padding:16}}>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
             <button onClick={()=>setShowWeather(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}>← Back</button>
             <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{t.weather}</div>
@@ -2475,42 +2471,71 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
           <WeatherWidget t={t}/>
         </div>
       )}
-      <div style={styles.heroBanner}>
-        <div style={styles.heroBadge}>✦ Kingdom of Eswatini</div>
-        <h2 style={{fontSize:20,fontWeight:700,color:'#f0f4ff',marginBottom:7}}>{t.welcome}</h2>
-        <p style={{fontSize:12,color:'#8fa3c4',lineHeight:1.5,marginBottom:12}}>{t.welcomeSub}</p>
-        <div style={{display:'flex',gap:10}}>
-          {[['120+',t.attractions,'attractions'],['48',t.restaurants,'restaurants'],['35',t.hotels,'hotels']].map(([n,l,s])=>(
-            <div key={l} onClick={()=>setSec(s)} style={{...styles.hstat,cursor:'pointer',border:sec===s?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)'}}>
-              <div style={{fontSize:17,fontWeight:700,color:'#c9a227'}}>{n}</div>
-              <div style={{fontSize:9,color:sec===s?'#c9a227':'#8fa3c4',marginTop:2}}>{l}</div>
-            </div>
-          ))}
+
+      {/* ── COMPACT UTILITY BAR ── */}
+      <div style={{display:'flex',gap:8,marginBottom:14}}>
+        <div onClick={handleSOS} style={{flex:1,display:'flex',alignItems:'center',gap:8,background:'rgba(226,75,74,0.12)',border:'0.5px solid rgba(226,75,74,0.3)',borderRadius:12,padding:'10px 12px',cursor:'pointer'}}>
+          <span style={{fontSize:16}}>🆘</span>
+          <div>
+            <div style={{fontSize:11,fontWeight:600,color:'#e24b4a'}}>SOS</div>
+            <div style={{fontSize:9,color:'#8fa3c4'}}>Emergency</div>
+          </div>
         </div>
-      </div>
-      <CurrencyWidget t={t}/>
-      <div style={styles.aiCard} onClick={()=>setTab('ai')}>
-        <div style={{width:44,height:44,borderRadius:12,background:'rgba(83,74,183,0.25)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>🤖</div>
-        <div style={{flex:1}}>
-          <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{t.aiTitle}</div>
-          <div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.4}}>{t.aiSub}</div>
+        <div onClick={()=>setShowWeather(true)} style={{flex:2,display:'flex',alignItems:'center',gap:8,background:'rgba(24,95,165,0.15)',border:'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'10px 12px',cursor:'pointer'}}>
+          <span style={{fontSize:20}}>⛅</span>
+          <div>
+            <div style={{fontSize:11,fontWeight:600,color:'#5dcaa5'}}>Live Weather · Mbabane</div>
+            <div style={{fontSize:9,color:'#8fa3c4'}}>Tap for 7-day forecast</div>
+          </div>
         </div>
-        <span style={{color:'#c9a227',fontSize:18}}>›</span>
+        <div onClick={()=>setTab('ai')} style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:6,background:'rgba(83,74,183,0.2)',border:'0.5px solid rgba(131,122,221,0.35)',borderRadius:12,padding:'10px 12px',cursor:'pointer'}}>
+          <span style={{fontSize:16}}>🤖</span>
+          <div style={{fontSize:11,fontWeight:600,color:'#afa9ec'}}>AI Guide</div>
+        </div>
       </div>
 
+      {/* ── HERO BANNER WITH REAL IMAGE ── */}
+      <div style={{position:'relative',borderRadius:16,overflow:'hidden',marginBottom:14,height:220}}>
+        <img src={places[0].img} alt="Eswatini" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(10,22,40,0.2) 0%,rgba(10,22,40,0.85) 100%)'}}/>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'16px 18px'}}>
+          <div style={{fontSize:10,color:'#c9a227',fontWeight:600,marginBottom:4}}>✦ Kingdom of Eswatini</div>
+          <h2 style={{fontSize:22,fontWeight:700,color:'#fff',margin:'0 0 6px',lineHeight:1.2}}>{t.welcome}</h2>
+          <p style={{fontSize:11,color:'rgba(255,255,255,0.8)',margin:'0 0 10px'}}>{t.welcomeSub}</p>
+          <div style={{display:'flex',gap:8}}>
+            {[['120+',t.attractions,'attractions'],['48',t.restaurants,'restaurants'],['35',t.hotels,'hotels']].map(([n,l,s])=>(
+              <div key={l} onClick={()=>setSec(s)} style={{background:'rgba(201,162,39,0.2)',border:sec===s?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.4)',borderRadius:8,padding:'6px 10px',cursor:'pointer',textAlign:'center'}}>
+                <div style={{fontSize:14,fontWeight:700,color:'#c9a227'}}>{n}</div>
+                <div style={{fontSize:9,color:sec===s?'#c9a227':'rgba(255,255,255,0.7)'}}>{l}</div>
+              </div>
+            ))}
+            <div onClick={()=>setTab('translate')} style={{background:'rgba(83,74,183,0.3)',border:'0.5px solid rgba(131,122,221,0.4)',borderRadius:8,padding:'6px 10px',cursor:'pointer',textAlign:'center'}}>
+              <div style={{fontSize:14,fontWeight:700,color:'#afa9ec'}}>9</div>
+              <div style={{fontSize:9,color:'rgba(255,255,255,0.7)'}}>Languages</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── CURRENCY COMPACT ── */}
+      <CurrencyWidget t={t}/>
+
+      {/* ── POPULAR ATTRACTIONS GRID ── */}
       {sec==='attractions'&&(
         <>
-          <div style={styles.sectionTitle}>{t.topAttractions}</div>
-          <div style={styles.grid}>
-            {places.map(p=>(
-              <div key={p.name} style={styles.card} onClick={()=>onSelect(p)}>
-                <Img src={p.img} alt={p.name} style={{width:'100%',height:110}}/>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+            <div style={styles.sectionTitle}>Popular Attractions</div>
+            <span onClick={()=>setTab('explore')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>View all →</span>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
+            {places.slice(0,4).map(p=>(
+              <div key={p.name} onClick={()=>onSelect(p)} style={{borderRadius:12,overflow:'hidden',cursor:'pointer',position:'relative',height:140}}>
+                <img src={p.img} alt={p.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+                <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(10,22,40,0.92) 100%)'}}/>
                 <div style={{position:'absolute',top:8,right:8,background:'rgba(201,162,39,0.9)',borderRadius:6,padding:'2px 7px',fontSize:9,fontWeight:700,color:'#0a1628'}}>{p.category}</div>
-                <div style={{padding:'9px 11px'}}>
-                  <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{p.name}</div>
-                  <div style={{fontSize:10,color:'#8fa3c4',marginBottom:3}}>📍 {p.region}</div>
-                  <div style={{fontSize:10,color:'#6a85a8',lineHeight:1.4,marginBottom:4}}>{p.desc}</div>
-                  <div style={{fontSize:10,color:'#c9a227'}}>⭐ {p.rating}</div>
+                <div style={{position:'absolute',bottom:8,left:10,right:10}}>
+                  <div style={{fontSize:12,fontWeight:700,color:'#fff'}}>{p.name}</div>
+                  <div style={{fontSize:10,color:'rgba(255,255,255,0.75)'}}>📍 {p.region} · ⭐ {p.rating}</div>
                 </div>
               </div>
             ))}
@@ -2518,29 +2543,37 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         </>
       )}
 
+      {/* ── RESTAURANTS ── */}
       {sec==='restaurants'&&(
         <>
-          <div style={styles.sectionTitle}>{t.restaurants}</div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+            <div style={styles.sectionTitle}>{t.restaurants}</div>
+            <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>← Back</span>
+          </div>
           {restaurants.map(r=>(
             <div key={r.name} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>onSelectRestaurant(r)}>
               <Img src={r.coverImg} alt={r.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
                 <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {r.region} · {r.hours}</div>
-                <div style={{fontSize:11,color:'#6a85a8',marginTop:2,lineHeight:1.4}}>{r.desc}</div>
+                <div style={{fontSize:11,color:'#6a85a8',marginTop:2}}>{r.desc}</div>
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
                 <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>⭐ {r.rating}</div>
-                <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Tap to order →</div>
+                <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Order →</div>
               </div>
             </div>
           ))}
         </>
       )}
 
+      {/* ── HOTELS ── */}
       {sec==='hotels'&&(
         <>
-          <div style={styles.sectionTitle}>{t.hotels}</div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+            <div style={styles.sectionTitle}>{t.hotels}</div>
+            <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>← Back</span>
+          </div>
           {hotels.map(h=>(
             <div key={h.name} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>onSelectHotel(h)}>
               <Img src={h.coverImg} alt={h.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
@@ -2551,42 +2584,75 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
                 <div style={{fontSize:11,color:'#5dcaa5'}}>{h.price}</div>
-                <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Tap to book →</div>
+                <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Book →</div>
               </div>
             </div>
           ))}
         </>
       )}
 
-      <div onClick={()=>onSelect(places[6])} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,padding:'12px 14px',marginBottom:16,cursor:'pointer'}}>
-        <div>
-          <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff',marginBottom:4}}>{t.hiddenGem} 💎</div>
-          <div style={{fontSize:11,color:'#8fa3c4'}}>Shiselweni Region 🌿 · Tap to explore</div>
-          <div style={{display:'flex',gap:7,flexWrap:'wrap',marginTop:6}}>
-            {['🌿 Nature','📍 South Eswatini','🆓 Uncrowded'].map(tag=><span key={tag} style={styles.tag}>{tag}</span>)}
+      {/* ── TOP HOTELS & RESTAURANTS SIDE BY SIDE ── */}
+      {sec==='attractions'&&(
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
+          <div>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+              <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>Top Hotels</div>
+              <span onClick={()=>setSec('hotels')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all</span>
+            </div>
+            {hotels.slice(0,3).map(h=>(
+              <div key={h.name} onClick={()=>onSelectHotel(h)} style={{marginBottom:8,cursor:'pointer'}}>
+                <Img src={h.coverImg} alt={h.name} style={{width:'100%',height:80,borderRadius:10}}/>
+                <div style={{fontSize:11,fontWeight:600,color:'#f0f4ff',marginTop:4}}>{h.name}</div>
+                <div style={{fontSize:10,color:'#5dcaa5'}}>{h.price}</div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+              <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>Top Restaurants</div>
+              <span onClick={()=>setSec('restaurants')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all</span>
+            </div>
+            {restaurants.slice(0,3).map(r=>(
+              <div key={r.name} onClick={()=>onSelectRestaurant(r)} style={{marginBottom:8,cursor:'pointer'}}>
+                <Img src={r.coverImg} alt={r.name} style={{width:'100%',height:80,borderRadius:10}}/>
+                <div style={{fontSize:11,fontWeight:600,color:'#f0f4ff',marginTop:4}}>{r.name}</div>
+                <div style={{fontSize:10,color:'#c9a227'}}>⭐ {r.rating}</div>
+              </div>
+            ))}
           </div>
         </div>
-        <span style={{color:'#c9a227',fontSize:22}}>›</span>
+      )}
+
+      {/* ── HIDDEN GEM ── */}
+      <div onClick={()=>onSelect(places[6])} style={{position:'relative',borderRadius:14,overflow:'hidden',marginBottom:16,height:100,cursor:'pointer'}}>
+        <img src={places[6].img} alt="Hidden Gem" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+        <div style={{position:'absolute',inset:0,background:'rgba(10,22,40,0.6)'}}/>
+        <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',padding:'0 16px',justifyContent:'space-between'}}>
+          <div>
+            <div style={{fontSize:13,fontWeight:700,color:'#c9a227'}}>{t.hiddenGem} 💎</div>
+            <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>Shiselweni Region · Uncrowded</div>
+          </div>
+          <span style={{color:'#c9a227',fontSize:20}}>›</span>
+        </div>
       </div>
 
-      <div onClick={()=>setShowStores(s=>!s)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:'11px 14px',marginBottom:showStores?0:16,cursor:'pointer'}}>
-        <div style={{fontSize:14,fontWeight:600,color:'#f0f4ff'}}>Local Stores 🛍️</div>
-        <span style={{color:'#c9a227',fontSize:18}}>{showStores?'▾':'›'}</span>
+      {/* ── LOCAL STORES ── */}
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+        <div style={styles.sectionTitle}>Local Stores 🛍️</div>
+        <span onClick={()=>setTab('compare')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>View all →</span>
       </div>
-      {showStores&&(
-        <div style={{marginBottom:16,border:'0.5px solid rgba(201,162,39,0.2)',borderTop:'none',borderRadius:'0 0 12px 12px',overflow:'hidden'}}>
-          {localStores.map(s=>(
-            <div key={s.name} onClick={()=>onSelectStore(s)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,0.04)',borderBottom:'0.5px solid rgba(255,255,255,0.05)',padding:'11px 14px',cursor:'pointer'}}>
-              <div>
-                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{s.name}</div>
-                <div style={{fontSize:11,color:'#8fa3c4'}}>{s.type}</div>
-                <div style={{fontSize:11,color:'#c9a227',marginTop:2}}>⭐ {s.rating} · {s.price}</div>
-              </div>
-              <span style={{color:'#c9a227',fontSize:18}}>›</span>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
+        {localStores.map(s=>(
+          <div key={s.name} onClick={()=>onSelectStore(s)} style={{borderRadius:12,overflow:'hidden',cursor:'pointer',position:'relative',height:100}}>
+            <Img src={s.coverImg} alt={s.name} style={{width:'100%',height:'100%'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 30%,rgba(10,22,40,0.9) 100%)'}}/>
+            <div style={{position:'absolute',bottom:8,left:10}}>
+              <div style={{fontSize:11,fontWeight:700,color:'#fff'}}>{s.name}</div>
+              <div style={{fontSize:9,color:'#c9a227'}}>⭐ {s.rating}</div>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
