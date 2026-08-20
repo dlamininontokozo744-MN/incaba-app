@@ -2563,7 +2563,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
           </div>
 
           {/* ── TOP HOTELS + TOP RESTAURANTS SIDE BY SIDE ── */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
+          <div style={{display:'flex',flexDirection:'column',gap:16,marginBottom:16}}>
             {/* Hotels */}
             <div>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>

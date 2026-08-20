@@ -144,3 +144,32 @@ a {
     width: calc(100% - 200px) !important;
   }
 }
+
+/* Fix overlapping and all phone compatibility */
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Fix bottom nav on all phones */
+.bottom-nav-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* Prevent horizontal overflow */
+.content-area {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Fix grid on small phones */
+@media (max-width: 360px) {
+  * {
+    font-size: 90% !important;
+  }
+}
