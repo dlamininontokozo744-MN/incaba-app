@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
 import { supabase } from './supabaseClient';
 import './App.css';
+import { I, Stars } from './Icon';
 
 // A stable anonymous ID per device/browser, so a tourist can see their own
 // order/booking history without needing to create an account.
@@ -218,15 +219,15 @@ function useBackgroundGuard(active, onExpire){
 
 // ── ALL 9 LANGUAGES ───────────────────────────────────────
 const T = {
-  en:{flag:'🇬🇧',name:'English',explore:'Explore Eswatini ✦',tagline:"Unlocking Eswatini's Hidden Treasures",sub:'The Smart Digital Tourism Ecosystem 🇸🇿',offline:'9 Languages · Works Offline',welcome:"Welcome to Africa's Hidden Fortress 💎",welcomeSub:'Discover breathtaking landscapes, vibrant culture, and unforgettable experiences.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Attractions',hiddenGem:'Hidden Gem',aiTitle:'Incaba AI Guide',aiSub:'Ask anything about Eswatini',navigate:'Navigate',home:'Home',ai:'AI Guide',business:'Business',explore2:'Explore',translate:'Translate',compare:'Compare',sos:'SOS Emergency',sosSub:'Tap to share location with emergency services',weather:'Weather Today',currency:'Currency Converter',reviews:'Tourist Reviews',writeReview:'Write Review',submit:'Submit',cancel:'Cancel',getDir:'Get Directions',savePlace:'Save Place',about:'About',location:'Location',hours:'Opening Hours',price:'Entry Fee',tips:'Travel Tips',signIn:'Sign In',signUp:'Sign Up',logout:'Logout',welcome2:'Welcome back',createAccount:'Create Account',virtualTour:'Virtual Tour',orderFood:'Order Food',comparePrice:'Compare Prices',menu:'Menu',addToCart:'Add to Cart',cart:'Cart',placeOrder:'Place Order',tableNum:'Table number or delivery address',bookNow:'Book Now',checkIn:'Check-in Date',checkOut:'Check-out Date',guests:'Number of Guests',confirmBooking:'Confirm Booking',amenities:'Amenities',photos:'Photos',rooms:'Rooms',dishes:'Dishes'},
-  ss:{flag:'🇸🇿',name:'siSwati',explore:'Hlola Eswatini ✦',tagline:'Sivula Tigugu Letifihlekile Tase-Eswatini',sub:'Inhlelo Lehlakaniphile Yekuvakasha 🇸🇿',offline:'Tilimi Letingu-9 · Isebenta Ungaxhunyiwe',welcome:'Siyakemukela e-Africa Incaba Lefihlekile 💎',welcomeSub:'Tola tindzawo letimangalisako, inhlalo-mphilo, netilwimi letingakhohlwakali.',attractions:'Tindzawo',restaurants:'Emadlelo',hotels:'Emahhotela',topAttractions:'Tindzawo Letiphambili',hiddenGem:'Sigugu',aiTitle:'Umcondzi we-Incaba AI',aiSub:'Butseka noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Umcondzi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sehhatsi',sosSub:'Cindzetela wabelane ndzawo yakho nebaphephisi',weather:'Isimo Selizulu',currency:'Shintsha Imali',reviews:'Tibuka',writeReview:'Bhala Tibuka',submit:'Thumela',cancel:'Yekela',getDir:'Tsatsa Indlela',savePlace:'Gcina Indawo',about:'Mayelana',location:'Ndzawo',hours:'Sikhati',price:'Inkokhelo',tips:'Imilayeto',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakemukela',createAccount:'Yenta Akhawunti',virtualTour:'Vaka Nge-Virtual',orderFood:'Odela Kudla',comparePrice:'Qhatanisa Tintengo',menu:'Menyu',addToCart:'Engeta',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Buka Manje',checkIn:'Lusuku Lokungena',checkOut:'Lusuku Lokuphuma',guests:'Tinombolo Tetivakashi',confirmBooking:'Cina Kubuka',amenities:'Tinhlelo',photos:'Tifoto',rooms:'Tigumbi',dishes:'Kudla'},
-  zu:{flag:'🇿🇦',name:'Zulu',explore:'Hlola i-Eswatini ✦',tagline:'Sivula Amagugu Ase-Eswatini',sub:'Uhlelo Lokuhlakanipha Lokuvakasha 🇸🇿',offline:'Izilimi Eziyi-9 · Isebenza Offline',welcome:'Siyakwamukela e-Afrika Insaba Efihliwe 💎',welcomeSub:'Thola izindawo ezimangalisayo, amasiko ashisayo.',attractions:'Izindawo',restaurants:'Ama-Restorenti',hotels:'Amahhotela',topAttractions:'Izindawo Eziphezulu',hiddenGem:'Igugu Elisifihlekile',aiTitle:'Isiqondisi se-Incaba AI',aiSub:'Buza noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Isiqondisi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sezimo',sosSub:'Thepha ukwabelana nendawo yakho',weather:'Isimo Sezulu',currency:'Isiguquli Semali',reviews:'Izibuyekezo',writeReview:'Bhala Ukubuyekeza',submit:'Thumela',cancel:'Khansela',getDir:'Thola Izikhombo',savePlace:'Gcina Indawo',about:'Mayelana',location:'Indawo',hours:'Amahora',price:'Imali Yokungena',tips:'Amacebo',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakwamukela futhi',createAccount:'Dala I-Akhawunti',virtualTour:'Ithiyetha Elikhulu',orderFood:'Odela Ukudla',comparePrice:'Qhatanisa Amanani',menu:'Imenyu',addToCart:'Engeza',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Bhuka Manje',checkIn:'Usuku Lokungena',checkOut:'Usuku Lokuphuma',guests:'Izivakashi',confirmBooking:'Qinisekisa Ukubhuka',amenities:'Izinsiza',photos:'Izithombe',rooms:'Amagumbi',dishes:'Ukudla'},
-  af:{flag:'🇿🇦',name:'Afrikaans',explore:'Verken Eswatini ✦',tagline:"Ontsluit Eswatini se Verborge Skatte",sub:'Die Slim Digitale Toerisme-Ekosisteem 🇸🇿',offline:'9 Tale · Vanlyn Gereed',welcome:"Welkom by Afrika se Verborge Vesting 💎",welcomeSub:'Ontdek asemrowende landseigte, lewendige kultuur.',attractions:'Besienswaardighede',restaurants:'Restaurante',hotels:'Hotelle',topAttractions:'Top Besienswaardighede',hiddenGem:'Verborge Juweel',aiTitle:'Incaba KI-Gids',aiSub:'Vra enigiets oor Eswatini',navigate:'Navigeer',home:'Tuis',ai:'KI-Gids',business:'Besigheid',explore2:'Verken',translate:'Vertaal',compare:'Vergelyk',sos:'SOS Nood',sosSub:'Tik om ligging te deel',weather:'Weer Vandag',currency:'Geldomskakelaar',reviews:'Resensies',writeReview:'Skryf Resensie',submit:'Indien',cancel:'Kanselleer',getDir:'Kry Aanwysings',savePlace:'Stoor Plek',about:'Oor',location:'Ligging',hours:'Openingsure',price:'Toegangsgeld',tips:'Reistips',signIn:'Meld Aan',signUp:'Registreer',logout:'Meld Af',welcome2:'Welkom terug',createAccount:'Skep Rekening',virtualTour:'Virtuele Toer',orderFood:'Bestel Kos',comparePrice:'Vergelyk Pryse',menu:'Spyskaart',addToCart:'Voeg By',cart:'Mandjie',placeOrder:'Plaas Bestelling',tableNum:'Tafelnommer',bookNow:'Bespreek Nou',checkIn:'Inboekdatum',checkOut:'Uitboekdatum',guests:'Gaste',confirmBooking:'Bevestig Besprekings',amenities:'Fasiliteite',photos:'Fotos',rooms:'Kamers',dishes:'Geregte'},
-  pt:{flag:'🇲🇿',name:'Portugues',explore:'Explorar Eswatini ✦',tagline:'Desbloqueando os Tesouros Escondidos',sub:'O Ecossistema de Turismo Digital Inteligente 🇸🇿',offline:'9 Idiomas · Disponivel Offline',welcome:'Bem-vindo a Fortaleza Oculta de Africa 💎',welcomeSub:'Descubra paisagens deslumbrantes, cultura vibrante.',attractions:'Atracoes',restaurants:'Restaurantes',hotels:'Hoteis',topAttractions:'Principais Atracoes',hiddenGem:'Joia Escondida',aiTitle:'Guia IA Incaba',aiSub:'Pergunte qualquer coisa sobre Eswatini',navigate:'Navegar',home:'Inicio',ai:'Guia IA',business:'Negocios',explore2:'Explorar',translate:'Traduzir',compare:'Comparar',sos:'Emergencia SOS',sosSub:'Toque para partilhar localizacao',weather:'Tempo Hoje',currency:'Conversor de Moeda',reviews:'Avaliacoes',writeReview:'Escrever Avaliacao',submit:'Enviar',cancel:'Cancelar',getDir:'Obter Direcoes',savePlace:'Guardar Local',about:'Sobre',location:'Localizacao',hours:'Horario',price:'Taxa de Entrada',tips:'Dicas',signIn:'Entrar',signUp:'Registar',logout:'Sair',welcome2:'Bem-vindo de volta',createAccount:'Criar Conta',virtualTour:'Visita Virtual',orderFood:'Encomendar',comparePrice:'Comparar Precos',menu:'Menu',addToCart:'Adicionar',cart:'Carrinho',placeOrder:'Fazer Pedido',tableNum:'Numero da mesa',bookNow:'Reservar Agora',checkIn:'Data de Entrada',checkOut:'Data de Saida',guests:'Hospedes',confirmBooking:'Confirmar Reserva',amenities:'Comodidades',photos:'Fotos',rooms:'Quartos',dishes:'Pratos'},
-  fr:{flag:'🇫🇷',name:'Francais',explore:'Explorer Eswatini ✦',tagline:"Deverrouiller les Tresors Caches d Eswatini",sub:"L Ecosysteme Touristique Numerique 🇸🇿",offline:'9 Langues · Disponible Hors Ligne',welcome:"Bienvenue dans la Fortresse Cachee d Afrique 💎",welcomeSub:'Decouvrez des paysages a couper le souffle.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Meilleures Attractions',hiddenGem:'Joyau Cache',aiTitle:'Guide IA Incaba',aiSub:"Demandez n importe quoi sur Eswatini",navigate:'Naviguer',home:'Accueil',ai:'Guide IA',business:'Entreprise',explore2:'Explorer',translate:'Traduire',compare:'Comparer',sos:'Urgence SOS',sosSub:"Appuyez pour partager l emplacement",weather:"Meteo Aujourd hui",currency:'Convertisseur',reviews:'Avis',writeReview:'Ecrire un Avis',submit:'Soumettre',cancel:'Annuler',getDir:'Obtenir des Directions',savePlace:'Sauvegarder',about:'A Propos',location:'Emplacement',hours:"Heures d Ouverture",price:"Frais d Entree",tips:'Conseils',signIn:'Se Connecter',signUp:"S inscrire",logout:'Se Deconnecter',welcome2:'Bon Retour',createAccount:'Creer un Compte',virtualTour:'Visite Virtuelle',orderFood:'Commander',comparePrice:'Comparer les Prix',menu:'Menu',addToCart:'Ajouter',cart:'Panier',placeOrder:'Passer la Commande',tableNum:'Numero de table',bookNow:'Reserver Maintenant',checkIn:"Date d Arrivee",checkOut:'Date de Depart',guests:'Invites',confirmBooking:'Confirmer la Reservation',amenities:'Equipements',photos:'Photos',rooms:'Chambres',dishes:'Plats'},
-  de:{flag:'🇩🇪',name:'Deutsch',explore:'Eswatini Erkunden ✦',tagline:'Die Verborgenen Schatze Eswatinis',sub:'Das Intelligente Digitale Tourismus-Okosystem 🇸🇿',offline:'9 Sprachen · Offline Verfugbar',welcome:"Willkommen in Afrikas Verborgener Festung 💎",welcomeSub:'Entdecken Sie atemberaubende Landschaften.',attractions:'Sehenswurdigkeiten',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Sehenswurdigkeiten',hiddenGem:'Verborgenes Juwel',aiTitle:'Incaba KI-Fuhrer',aiSub:'Fragen Sie alles uber Eswatini',navigate:'Navigieren',home:'Startseite',ai:'KI-Fuhrer',business:'Geschaft',explore2:'Erkunden',translate:'Ubersetzen',compare:'Vergleichen',sos:'SOS-Notfall',sosSub:'Tippen Sie um den Standort zu teilen',weather:'Wetter Heute',currency:'Wahrungsrechner',reviews:'Bewertungen',writeReview:'Bewertung Schreiben',submit:'Einreichen',cancel:'Abbrechen',getDir:'Wegbeschreibung',savePlace:'Ort Speichern',about:'Uber',location:'Standort',hours:'Offnungszeiten',price:'Eintrittsgebuh',tips:'Reisetipps',signIn:'Anmelden',signUp:'Registrieren',logout:'Abmelden',welcome2:'Willkommen Zuruck',createAccount:'Konto Erstellen',virtualTour:'Virtuelle Tour',orderFood:'Essen Bestellen',comparePrice:'Preise Vergleichen',menu:'Speisekarte',addToCart:'Hinzufugen',cart:'Warenkorb',placeOrder:'Bestellung Aufgeben',tableNum:'Tischnummer',bookNow:'Jetzt Buchen',checkIn:'Anreisedatum',checkOut:'Abreisedatum',guests:'Gaste',confirmBooking:'Buchung Bestatigen',amenities:'Annehmlichkeiten',photos:'Fotos',rooms:'Zimmer',dishes:'Gerichte'},
-  zh:{flag:'🇨🇳',name:'Chinese',explore:'探索斯威士兰 ✦',tagline:'解锁斯威士兰的隐藏宝藏',sub:'智能数字旅游生态系统 🇸🇿',offline:'9种语言 · 离线可用',welcome:'欢迎来到非洲的隐藏堡垒 💎',welcomeSub:'探索令人叹为观止的风景、充满活力的文化。',attractions:'景点',restaurants:'餐厅',hotels:'酒店',topAttractions:'热门景点',hiddenGem:'隐藏宝石',aiTitle:'Incaba 人工智能向导',aiSub:'询问任何关于斯威士兰的问题',navigate:'导航',home:'主页',ai:'AI向导',business:'商业',explore2:'探索',translate:'翻译',compare:'比较',sos:'SOS紧急',sosSub:'点击与紧急服务共享位置',weather:'今日天气',currency:'货币换算器',reviews:'游客评论',writeReview:'写评论',submit:'提交',cancel:'取消',getDir:'获取路线',savePlace:'收藏地点',about:'关于',location:'位置',hours:'营业时间',price:'门票费用',tips:'旅行提示',signIn:'登录',signUp:'注册',logout:'退出',welcome2:'欢迎回来',createAccount:'创建账户',virtualTour:'虚拟游览',orderFood:'点餐',comparePrice:'比较价格',menu:'菜单',addToCart:'添加',cart:'购物车',placeOrder:'下单',tableNum:'桌号',bookNow:'立即预订',checkIn:'入住日期',checkOut:'退房日期',guests:'客人数量',confirmBooking:'确认预订',amenities:'设施',photos:'照片',rooms:'房间',dishes:'菜肴'},
-  ar:{flag:'🇸🇦',name:'Arabic',explore:'استكشف اسواتيني ✦',tagline:'اكتشف الكنوز الخفية لاسواتيني',sub:'نظام السياحة الرقمية الذكية 🇸🇿',offline:'9 لغات متاح بدون انترنت',welcome:'مرحبا بك في القلعة الخفية لافريقيا 💎',welcomeSub:'اكتشف مناظر طبيعية خلابة وثقافة نابضة بالحياة.',attractions:'المعالم',restaurants:'المطاعم',hotels:'الفنادق',topAttractions:'افضل المعالم',hiddenGem:'الجوهرة الخفية',aiTitle:'دليل Incaba الذكي',aiSub:'اسال اي شيء عن اسواتيني',navigate:'التنقل',home:'الرئيسية',ai:'الدليل الذكي',business:'الاعمال',explore2:'استكشف',translate:'ترجم',compare:'قارن',sos:'طوارئ SOS',sosSub:'انقر لمشاركة موقعك',weather:'الطقس اليوم',currency:'محول العملات',reviews:'تقييمات',writeReview:'اكتب تقييما',submit:'ارسال',cancel:'الغاء',getDir:'احصل على الاتجاهات',savePlace:'احفظ المكان',about:'حول',location:'الموقع',hours:'ساعات العمل',price:'رسوم الدخول',tips:'نصائح',signIn:'تسجيل الدخول',signUp:'انشاء حساب',logout:'خروج',welcome2:'مرحبا بعودتك',createAccount:'انشاء حساب',virtualTour:'جولة افتراضية',orderFood:'طلب الطعام',comparePrice:'مقارنة الاسعار',menu:'القائمة',addToCart:'اضف',cart:'السلة',placeOrder:'اطلب',tableNum:'رقم الطاولة',bookNow:'احجز الان',checkIn:'تاريخ الوصول',checkOut:'تاريخ المغادرة',guests:'عدد الضيوف',confirmBooking:'تاكيد الحجز',amenities:'المرافق',photos:'الصور',rooms:'الغرف',dishes:'الاطباق'},
+  en:{flag:'🇬🇧',name:'English',explore:'Explore Eswatini ✦',tagline:"Unlocking Eswatini's Hidden Treasures",sub:'The Smart Digital Tourism Ecosystem 🇸🇿',offline:'9 Languages · Works Offline',welcome:"Welcome to Africa's Hidden Fortress",welcomeSub:'Discover breathtaking landscapes, vibrant culture, and unforgettable experiences.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Attractions',hiddenGem:'Hidden Gem',aiTitle:'Incaba AI Guide',aiSub:'Ask anything about Eswatini',navigate:'Navigate',home:'Home',ai:'AI Guide',business:'Business',explore2:'Explore',translate:'Translate',compare:'Compare',sos:'SOS Emergency',sosSub:'Tap to share location with emergency services',weather:'Weather Today',currency:'Currency Converter',reviews:'Tourist Reviews',writeReview:'Write Review',submit:'Submit',cancel:'Cancel',getDir:'Get Directions',savePlace:'Save Place',about:'About',location:'Location',hours:'Opening Hours',price:'Entry Fee',tips:'Travel Tips',signIn:'Sign In',signUp:'Sign Up',logout:'Logout',welcome2:'Welcome back',createAccount:'Create Account',virtualTour:'Virtual Tour',orderFood:'Order Food',comparePrice:'Compare Prices',menu:'Menu',addToCart:'Add to Cart',cart:'Cart',placeOrder:'Place Order',tableNum:'Table number or delivery address',bookNow:'Book Now',checkIn:'Check-in Date',checkOut:'Check-out Date',guests:'Number of Guests',confirmBooking:'Confirm Booking',amenities:'Amenities',photos:'Photos',rooms:'Rooms',dishes:'Dishes'},
+  ss:{flag:'🇸🇿',name:'siSwati',explore:'Hlola Eswatini ✦',tagline:'Sivula Tigugu Letifihlekile Tase-Eswatini',sub:'Inhlelo Lehlakaniphile Yekuvakasha 🇸🇿',offline:'Tilimi Letingu-9 · Isebenta Ungaxhunyiwe',welcome:'Siyakemukela e-Africa Incaba Lefihlekile',welcomeSub:'Tola tindzawo letimangalisako, inhlalo-mphilo, netilwimi letingakhohlwakali.',attractions:'Tindzawo',restaurants:'Emadlelo',hotels:'Emahhotela',topAttractions:'Tindzawo Letiphambili',hiddenGem:'Sigugu',aiTitle:'Umcondzi we-Incaba AI',aiSub:'Butseka noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Umcondzi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sehhatsi',sosSub:'Cindzetela wabelane ndzawo yakho nebaphephisi',weather:'Isimo Selizulu',currency:'Shintsha Imali',reviews:'Tibuka',writeReview:'Bhala Tibuka',submit:'Thumela',cancel:'Yekela',getDir:'Tsatsa Indlela',savePlace:'Gcina Indawo',about:'Mayelana',location:'Ndzawo',hours:'Sikhati',price:'Inkokhelo',tips:'Imilayeto',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakemukela',createAccount:'Yenta Akhawunti',virtualTour:'Vaka Nge-Virtual',orderFood:'Odela Kudla',comparePrice:'Qhatanisa Tintengo',menu:'Menyu',addToCart:'Engeta',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Buka Manje',checkIn:'Lusuku Lokungena',checkOut:'Lusuku Lokuphuma',guests:'Tinombolo Tetivakashi',confirmBooking:'Cina Kubuka',amenities:'Tinhlelo',photos:'Tifoto',rooms:'Tigumbi',dishes:'Kudla'},
+  zu:{flag:'🇿🇦',name:'Zulu',explore:'Hlola i-Eswatini ✦',tagline:'Sivula Amagugu Ase-Eswatini',sub:'Uhlelo Lokuhlakanipha Lokuvakasha 🇸🇿',offline:'Izilimi Eziyi-9 · Isebenza Offline',welcome:'Siyakwamukela e-Afrika Insaba Efihliwe',welcomeSub:'Thola izindawo ezimangalisayo, amasiko ashisayo.',attractions:'Izindawo',restaurants:'Ama-Restorenti',hotels:'Amahhotela',topAttractions:'Izindawo Eziphezulu',hiddenGem:'Igugu Elisifihlekile',aiTitle:'Isiqondisi se-Incaba AI',aiSub:'Buza noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Isiqondisi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sezimo',sosSub:'Thepha ukwabelana nendawo yakho',weather:'Isimo Sezulu',currency:'Isiguquli Semali',reviews:'Izibuyekezo',writeReview:'Bhala Ukubuyekeza',submit:'Thumela',cancel:'Khansela',getDir:'Thola Izikhombo',savePlace:'Gcina Indawo',about:'Mayelana',location:'Indawo',hours:'Amahora',price:'Imali Yokungena',tips:'Amacebo',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakwamukela futhi',createAccount:'Dala I-Akhawunti',virtualTour:'Ithiyetha Elikhulu',orderFood:'Odela Ukudla',comparePrice:'Qhatanisa Amanani',menu:'Imenyu',addToCart:'Engeza',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Bhuka Manje',checkIn:'Usuku Lokungena',checkOut:'Usuku Lokuphuma',guests:'Izivakashi',confirmBooking:'Qinisekisa Ukubhuka',amenities:'Izinsiza',photos:'Izithombe',rooms:'Amagumbi',dishes:'Ukudla'},
+  af:{flag:'🇿🇦',name:'Afrikaans',explore:'Verken Eswatini ✦',tagline:"Ontsluit Eswatini se Verborge Skatte",sub:'Die Slim Digitale Toerisme-Ekosisteem 🇸🇿',offline:'9 Tale · Vanlyn Gereed',welcome:"Welkom by Afrika se Verborge Vesting",welcomeSub:'Ontdek asemrowende landseigte, lewendige kultuur.',attractions:'Besienswaardighede',restaurants:'Restaurante',hotels:'Hotelle',topAttractions:'Top Besienswaardighede',hiddenGem:'Verborge Juweel',aiTitle:'Incaba KI-Gids',aiSub:'Vra enigiets oor Eswatini',navigate:'Navigeer',home:'Tuis',ai:'KI-Gids',business:'Besigheid',explore2:'Verken',translate:'Vertaal',compare:'Vergelyk',sos:'SOS Nood',sosSub:'Tik om ligging te deel',weather:'Weer Vandag',currency:'Geldomskakelaar',reviews:'Resensies',writeReview:'Skryf Resensie',submit:'Indien',cancel:'Kanselleer',getDir:'Kry Aanwysings',savePlace:'Stoor Plek',about:'Oor',location:'Ligging',hours:'Openingsure',price:'Toegangsgeld',tips:'Reistips',signIn:'Meld Aan',signUp:'Registreer',logout:'Meld Af',welcome2:'Welkom terug',createAccount:'Skep Rekening',virtualTour:'Virtuele Toer',orderFood:'Bestel Kos',comparePrice:'Vergelyk Pryse',menu:'Spyskaart',addToCart:'Voeg By',cart:'Mandjie',placeOrder:'Plaas Bestelling',tableNum:'Tafelnommer',bookNow:'Bespreek Nou',checkIn:'Inboekdatum',checkOut:'Uitboekdatum',guests:'Gaste',confirmBooking:'Bevestig Besprekings',amenities:'Fasiliteite',photos:'Fotos',rooms:'Kamers',dishes:'Geregte'},
+  pt:{flag:'🇲🇿',name:'Portugues',explore:'Explorar Eswatini ✦',tagline:'Desbloqueando os Tesouros Escondidos',sub:'O Ecossistema de Turismo Digital Inteligente 🇸🇿',offline:'9 Idiomas · Disponivel Offline',welcome:'Bem-vindo a Fortaleza Oculta de Africa',welcomeSub:'Descubra paisagens deslumbrantes, cultura vibrante.',attractions:'Atracoes',restaurants:'Restaurantes',hotels:'Hoteis',topAttractions:'Principais Atracoes',hiddenGem:'Joia Escondida',aiTitle:'Guia IA Incaba',aiSub:'Pergunte qualquer coisa sobre Eswatini',navigate:'Navegar',home:'Inicio',ai:'Guia IA',business:'Negocios',explore2:'Explorar',translate:'Traduzir',compare:'Comparar',sos:'Emergencia SOS',sosSub:'Toque para partilhar localizacao',weather:'Tempo Hoje',currency:'Conversor de Moeda',reviews:'Avaliacoes',writeReview:'Escrever Avaliacao',submit:'Enviar',cancel:'Cancelar',getDir:'Obter Direcoes',savePlace:'Guardar Local',about:'Sobre',location:'Localizacao',hours:'Horario',price:'Taxa de Entrada',tips:'Dicas',signIn:'Entrar',signUp:'Registar',logout:'Sair',welcome2:'Bem-vindo de volta',createAccount:'Criar Conta',virtualTour:'Visita Virtual',orderFood:'Encomendar',comparePrice:'Comparar Precos',menu:'Menu',addToCart:'Adicionar',cart:'Carrinho',placeOrder:'Fazer Pedido',tableNum:'Numero da mesa',bookNow:'Reservar Agora',checkIn:'Data de Entrada',checkOut:'Data de Saida',guests:'Hospedes',confirmBooking:'Confirmar Reserva',amenities:'Comodidades',photos:'Fotos',rooms:'Quartos',dishes:'Pratos'},
+  fr:{flag:'🇫🇷',name:'Francais',explore:'Explorer Eswatini ✦',tagline:"Deverrouiller les Tresors Caches d Eswatini",sub:"L Ecosysteme Touristique Numerique 🇸🇿",offline:'9 Langues · Disponible Hors Ligne',welcome:"Bienvenue dans la Fortresse Cachee d Afrique",welcomeSub:'Decouvrez des paysages a couper le souffle.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Meilleures Attractions',hiddenGem:'Joyau Cache',aiTitle:'Guide IA Incaba',aiSub:"Demandez n importe quoi sur Eswatini",navigate:'Naviguer',home:'Accueil',ai:'Guide IA',business:'Entreprise',explore2:'Explorer',translate:'Traduire',compare:'Comparer',sos:'Urgence SOS',sosSub:"Appuyez pour partager l emplacement",weather:"Meteo Aujourd hui",currency:'Convertisseur',reviews:'Avis',writeReview:'Ecrire un Avis',submit:'Soumettre',cancel:'Annuler',getDir:'Obtenir des Directions',savePlace:'Sauvegarder',about:'A Propos',location:'Emplacement',hours:"Heures d Ouverture",price:"Frais d Entree",tips:'Conseils',signIn:'Se Connecter',signUp:"S inscrire",logout:'Se Deconnecter',welcome2:'Bon Retour',createAccount:'Creer un Compte',virtualTour:'Visite Virtuelle',orderFood:'Commander',comparePrice:'Comparer les Prix',menu:'Menu',addToCart:'Ajouter',cart:'Panier',placeOrder:'Passer la Commande',tableNum:'Numero de table',bookNow:'Reserver Maintenant',checkIn:"Date d Arrivee",checkOut:'Date de Depart',guests:'Invites',confirmBooking:'Confirmer la Reservation',amenities:'Equipements',photos:'Photos',rooms:'Chambres',dishes:'Plats'},
+  de:{flag:'🇩🇪',name:'Deutsch',explore:'Eswatini Erkunden ✦',tagline:'Die Verborgenen Schatze Eswatinis',sub:'Das Intelligente Digitale Tourismus-Okosystem 🇸🇿',offline:'9 Sprachen · Offline Verfugbar',welcome:"Willkommen in Afrikas Verborgener Festung",welcomeSub:'Entdecken Sie atemberaubende Landschaften.',attractions:'Sehenswurdigkeiten',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Sehenswurdigkeiten',hiddenGem:'Verborgenes Juwel',aiTitle:'Incaba KI-Fuhrer',aiSub:'Fragen Sie alles uber Eswatini',navigate:'Navigieren',home:'Startseite',ai:'KI-Fuhrer',business:'Geschaft',explore2:'Erkunden',translate:'Ubersetzen',compare:'Vergleichen',sos:'SOS-Notfall',sosSub:'Tippen Sie um den Standort zu teilen',weather:'Wetter Heute',currency:'Wahrungsrechner',reviews:'Bewertungen',writeReview:'Bewertung Schreiben',submit:'Einreichen',cancel:'Abbrechen',getDir:'Wegbeschreibung',savePlace:'Ort Speichern',about:'Uber',location:'Standort',hours:'Offnungszeiten',price:'Eintrittsgebuh',tips:'Reisetipps',signIn:'Anmelden',signUp:'Registrieren',logout:'Abmelden',welcome2:'Willkommen Zuruck',createAccount:'Konto Erstellen',virtualTour:'Virtuelle Tour',orderFood:'Essen Bestellen',comparePrice:'Preise Vergleichen',menu:'Speisekarte',addToCart:'Hinzufugen',cart:'Warenkorb',placeOrder:'Bestellung Aufgeben',tableNum:'Tischnummer',bookNow:'Jetzt Buchen',checkIn:'Anreisedatum',checkOut:'Abreisedatum',guests:'Gaste',confirmBooking:'Buchung Bestatigen',amenities:'Annehmlichkeiten',photos:'Fotos',rooms:'Zimmer',dishes:'Gerichte'},
+  zh:{flag:'🇨🇳',name:'Chinese',explore:'探索斯威士兰 ✦',tagline:'解锁斯威士兰的隐藏宝藏',sub:'智能数字旅游生态系统 🇸🇿',offline:'9种语言 · 离线可用',welcome:'欢迎来到非洲的隐藏堡垒',welcomeSub:'探索令人叹为观止的风景、充满活力的文化。',attractions:'景点',restaurants:'餐厅',hotels:'酒店',topAttractions:'热门景点',hiddenGem:'隐藏宝石',aiTitle:'Incaba 人工智能向导',aiSub:'询问任何关于斯威士兰的问题',navigate:'导航',home:'主页',ai:'AI向导',business:'商业',explore2:'探索',translate:'翻译',compare:'比较',sos:'SOS紧急',sosSub:'点击与紧急服务共享位置',weather:'今日天气',currency:'货币换算器',reviews:'游客评论',writeReview:'写评论',submit:'提交',cancel:'取消',getDir:'获取路线',savePlace:'收藏地点',about:'关于',location:'位置',hours:'营业时间',price:'门票费用',tips:'旅行提示',signIn:'登录',signUp:'注册',logout:'退出',welcome2:'欢迎回来',createAccount:'创建账户',virtualTour:'虚拟游览',orderFood:'点餐',comparePrice:'比较价格',menu:'菜单',addToCart:'添加',cart:'购物车',placeOrder:'下单',tableNum:'桌号',bookNow:'立即预订',checkIn:'入住日期',checkOut:'退房日期',guests:'客人数量',confirmBooking:'确认预订',amenities:'设施',photos:'照片',rooms:'房间',dishes:'菜肴'},
+  ar:{flag:'🇸🇦',name:'Arabic',explore:'استكشف اسواتيني ✦',tagline:'اكتشف الكنوز الخفية لاسواتيني',sub:'نظام السياحة الرقمية الذكية 🇸🇿',offline:'9 لغات متاح بدون انترنت',welcome:'مرحبا بك في القلعة الخفية لافريقيا',welcomeSub:'اكتشف مناظر طبيعية خلابة وثقافة نابضة بالحياة.',attractions:'المعالم',restaurants:'المطاعم',hotels:'الفنادق',topAttractions:'افضل المعالم',hiddenGem:'الجوهرة الخفية',aiTitle:'دليل Incaba الذكي',aiSub:'اسال اي شيء عن اسواتيني',navigate:'التنقل',home:'الرئيسية',ai:'الدليل الذكي',business:'الاعمال',explore2:'استكشف',translate:'ترجم',compare:'قارن',sos:'طوارئ SOS',sosSub:'انقر لمشاركة موقعك',weather:'الطقس اليوم',currency:'محول العملات',reviews:'تقييمات',writeReview:'اكتب تقييما',submit:'ارسال',cancel:'الغاء',getDir:'احصل على الاتجاهات',savePlace:'احفظ المكان',about:'حول',location:'الموقع',hours:'ساعات العمل',price:'رسوم الدخول',tips:'نصائح',signIn:'تسجيل الدخول',signUp:'انشاء حساب',logout:'خروج',welcome2:'مرحبا بعودتك',createAccount:'انشاء حساب',virtualTour:'جولة افتراضية',orderFood:'طلب الطعام',comparePrice:'مقارنة الاسعار',menu:'القائمة',addToCart:'اضف',cart:'السلة',placeOrder:'اطلب',tableNum:'رقم الطاولة',bookNow:'احجز الان',checkIn:'تاريخ الوصول',checkOut:'تاريخ المغادرة',guests:'عدد الضيوف',confirmBooking:'تاكيد الحجز',amenities:'المرافق',photos:'الصور',rooms:'الغرف',dishes:'الاطباق'},
 };
 
 const RATES = {USD:18.5,ZAR:1.0,EUR:20.1,GBP:23.4,BWP:1.37,CNY:2.55,AED:5.04,INR:0.222,AUD:12.1,CAD:13.6,JPY:0.122,CHF:20.8,BRL:3.55,MXN:0.95,NGN:0.012,KES:0.143,GHS:1.21};
@@ -757,7 +758,7 @@ const PHRASES = {
 function Lightbox({src,onClose}) {
   return (
     <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.95)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16}}>
-      <button onClick={onClose} style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,0.15)',border:'none',borderRadius:'50%',width:36,height:36,color:'#fff',fontSize:20,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>✕</button>
+      <button onClick={onClose} style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,0.15)',border:'none',borderRadius:'50%',width:36,height:36,color:'#fff',fontSize:20,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}><I e="✕"/></button>
       <img src={src} alt="" style={{maxWidth:'100%',maxHeight:'90vh',borderRadius:12,objectFit:'contain'}} onClick={e=>e.stopPropagation()}/>
     </div>
   );
@@ -849,7 +850,7 @@ function SignInPrompt({reason,onClose,onChooseAuth}){
   return (
     <div style={{position:'fixed',inset:0,background:'rgba(10,22,40,0.75)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} style={{background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.35)',borderRadius:18,padding:24,maxWidth:340,width:'100%',textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,0.6)'}}>
-        <div style={{fontSize:40,marginBottom:10}}>🔐</div>
+        <div style={{fontSize:40,marginBottom:10}}><I e="🔐"/></div>
         <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginBottom:8}}>Create your Incaba account</div>
         <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:18}}>{reason}</div>
         <button style={{...styles.btnPrimary,marginBottom:10}} onClick={()=>onChooseAuth('signup')}>Create free account</button>
@@ -916,7 +917,7 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
           <>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
               <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>{mode==='signup'?'Create your account':'Welcome back'}</div>
-              <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}>✕</button>
+              <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}><I e="✕"/></button>
             </div>
             <button onClick={signInWithGoogle} style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(255,255,255,0.2)',background:'#fff',color:'#1f1f1f',fontWeight:600,fontSize:13,cursor:'pointer',marginBottom:10,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
               <span style={{fontSize:16}}>🇬</span> Continue with Google
@@ -930,7 +931,7 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
             {mode==='signup' && (
               <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:10}}>
                 {hints.map(h=>(
-                  <span key={h.label} style={{fontSize:10,padding:'3px 8px',borderRadius:20,border:'0.5px solid '+(h.ok?'rgba(93,202,165,0.4)':'rgba(255,255,255,0.15)'),color:h.ok?'#5dcaa5':'#5f7a9a',background:h.ok?'rgba(93,202,165,0.1)':'transparent'}}>{h.ok?'✓ ':'· '}{h.label}</span>
+                  <span key={h.label} style={{fontSize:10,padding:'3px 8px',borderRadius:20,border:'0.5px solid '+(h.ok?'rgba(93,202,165,0.4)':'rgba(255,255,255,0.15)'),color:h.ok?'#5dcaa5':'#5f7a9a',background:h.ok?'rgba(93,202,165,0.1)':'transparent'}}>{h.ok?<><I e="✓"/> </>:'· '}{h.label}</span>
                 ))}
               </div>
             )}
@@ -948,7 +949,7 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
           <>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
               <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Verify your email</div>
-              <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}>✕</button>
+              <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}><I e="✕"/></button>
             </div>
             <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:14}}>We sent a 6-digit code to <b style={{color:'#f0f4ff'}}>{email}</b>. Enter it below to finish creating your account.</div>
             <input value={otp} onChange={e=>setOtp(e.target.value.replace(/\D/g,'').slice(0,6))} placeholder="123456" maxLength={6} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:10,padding:'13px',color:'#f0f4ff',fontSize:22,letterSpacing:6,textAlign:'center',outline:'none',marginBottom:12,boxSizing:'border-box'}}/>
@@ -1009,7 +1010,7 @@ function AppInner() {
   if(screen==='splash') return (
     <div style={styles.splash}>
       <div style={styles.splashGlow}/>
-      <div style={{fontSize:72,marginBottom:12}}>💎</div>
+      <div style={{fontSize:72,marginBottom:12}}><I e="💎"/></div>
       <h1 style={styles.splashTitle}>Inc<span style={styles.gold}>aba</span></h1>
       <div style={{fontSize:14,color:'#c9a227',fontWeight:600,marginBottom:6}}>{t.tagline}</div>
       <p style={{color:'#8fa3c4',fontSize:12,margin:'0 0 16px',lineHeight:1.6}}>{t.sub}</p>
@@ -1053,7 +1054,7 @@ function AppInner() {
     <div style={styles.app}>
       <div style={styles.topbar}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <div style={{fontSize:18,width:30,height:30,borderRadius:8,background:'linear-gradient(135deg,#c9a227,#e8b93a)',display:'flex',alignItems:'center',justifyContent:'center'}}>💎</div>
+          <div style={{fontSize:18,width:30,height:30,borderRadius:8,background:'linear-gradient(135deg,#c9a227,#e8b93a)',display:'flex',alignItems:'center',justifyContent:'center'}}><I e="💎"/></div>
           <span style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Inc<span style={styles.gold}>aba</span></span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8,position:'relative'}}>
@@ -1125,22 +1126,22 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={place.gallery} height={260}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← {t.cancel}</button>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> {t.cancel}</button>
         <div style={{position:'absolute',top:14,right:14,background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#0a1628',zIndex:10}}>{place.category}</div>
         <div style={{position:'absolute',bottom:30,left:14,zIndex:10}}>
           <div style={{fontSize:19,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{place.name}</div>
-          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)',textShadow:'0 1px 4px rgba(0,0,0,0.8)'}}>📍 {place.region}</div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)',textShadow:'0 1px 4px rgba(0,0,0,0.8)'}}><I e="📍"/> {place.region}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap'}}>
-          <div style={styles.badge}>⭐ {place.rating}</div>
+          <div style={styles.badge}><I e="⭐"/> {place.rating}</div>
           <div style={styles.badge}>{place.price}</div>
           <div style={{...styles.badge,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)',background:'rgba(29,158,117,0.1)'}}>{place.hours}</div>
           {(place.tags||[]).map(tag=><div key={tag} style={styles.tag}>{tag}</div>)}
         </div>
 
-        <button style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontWeight:600,fontSize:13,marginBottom:14}} onClick={onVirtualTour}>🥽 {t.virtualTour} — {place.name}</button>
+        <button style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontWeight:600,fontSize:13,marginBottom:14}} onClick={onVirtualTour}><I e="🥽"/> {t.virtualTour} — {place.name}</button>
 
         <div style={{fontSize:13,color:'#c9a227',fontWeight:600,marginBottom:6}}>{t.about}</div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{place.fullDesc}</div>
@@ -1173,7 +1174,7 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
 
         {place.roadConditions&&(
           <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:12,marginBottom:16}}>
-            <div style={{fontSize:12,color:'#c9a227',fontWeight:600,marginBottom:4}}>🚗 Road Conditions & Vehicle Requirements</div>
+            <div style={{fontSize:12,color:'#c9a227',fontWeight:600,marginBottom:4}}><I e="🚗"/> Road Conditions & Vehicle Requirements</div>
             <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6}}>{place.roadConditions}</div>
           </div>
         )}
@@ -1189,13 +1190,13 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
 
         {place.phone&&(
           <div style={{display:'flex',gap:8,marginBottom:16}}>
-            <a href={`tel:${place.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 {place.phone}</a>
+            <a href={`tel:${place.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="📞"/> {place.phone}</a>
           </div>
         )}
 
         {place.safetyRules&&place.safetyRules.length>0&&(
           <div style={{background:'rgba(226,75,74,0.06)',border:'0.5px solid rgba(226,75,74,0.2)',borderRadius:12,padding:12,marginBottom:16}}>
-            <div style={{fontSize:12,color:'#e24b4a',fontWeight:600,marginBottom:6}}>⚠️ Safety Guidelines & Park Rules</div>
+            <div style={{fontSize:12,color:'#e24b4a',fontWeight:600,marginBottom:6}}><I e="⚠"/> Safety Guidelines & Park Rules</div>
             {place.safetyRules.map((r,i)=>(
               <div key={i} style={{display:'flex',gap:8,alignItems:'flex-start',marginBottom:5}}>
                 <div style={{width:5,height:5,borderRadius:'50%',background:'#e24b4a',flexShrink:0,marginTop:5}}/>
@@ -1215,7 +1216,7 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
 
         {nearbyStays.length>0&&(
           <>
-            <div style={{fontSize:13,color:'#c9a227',fontWeight:600,margin:'16px 0 8px'}}>🛏️ Where to Stay Nearby</div>
+            <div style={{fontSize:13,color:'#c9a227',fontWeight:600,margin:'16px 0 8px'}}><I e="🛏"/> Where to Stay Nearby</div>
             {nearbyStays.map(h=>(
               <div key={h.name} onClick={()=>onSelectHotel&&onSelectHotel(h)} style={{display:'flex',gap:10,alignItems:'center',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:10,marginBottom:8,cursor:'pointer'}}>
                 <Img src={h.coverImg} alt={h.name} style={{width:56,height:50,borderRadius:8,flexShrink:0}}/>
@@ -1232,8 +1233,8 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
         <Reviews name={place.name} t={t}/>
 
         <div style={{display:'flex',gap:10,marginTop:8,marginBottom:8}}>
-          <button style={{...styles.btnPrimary,flex:1,padding:'11px',fontSize:13}} onClick={()=>window.open(dirUrl,'_blank')}>🗺️ {t.getDir}</button>
-          <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(29,158,117,0.6)':'0.5px solid rgba(201,162,39,0.4)',background:saved?'rgba(29,158,117,0.15)':'transparent',color:saved?'#5dcaa5':'#c9a227',cursor:'pointer',fontWeight:600}} onClick={toggleSave}>{saved?'✅ Saved':t.savePlace}</button>
+          <button style={{...styles.btnPrimary,flex:1,padding:'11px',fontSize:13}} onClick={()=>window.open(dirUrl,'_blank')}><I e="🗺"/> {t.getDir}</button>
+          <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(29,158,117,0.6)':'0.5px solid rgba(201,162,39,0.4)',background:saved?'rgba(29,158,117,0.15)':'transparent',color:saved?'#5dcaa5':'#c9a227',cursor:'pointer',fontWeight:600}} onClick={toggleSave}>{saved?<><I e="✅"/> Saved</>:t.savePlace}</button>
         </div>
         <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.1)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:16}} onClick={()=>{if(window.confirm('Call Eswatini Emergency Services 999?'))window.location.href='tel:999';}}>🆘 {t.sos}</button>
       </div>
@@ -1263,7 +1264,7 @@ function VirtualTourScreen({place,onBack,t}) {
   return (
     <div style={styles.app}>
       <div style={{background:'linear-gradient(135deg,#0a1628,#1a3a5c)',padding:'12px 16px',display:'flex',alignItems:'center',gap:12,borderBottom:'0.5px solid rgba(201,162,39,0.25)',flexShrink:0}}>
-        <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}>← Back</button>
+        <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}><I e="←"/> Back</button>
         <div><div style={{fontSize:13,fontWeight:700,color:'#c9a227'}}>{t.virtualTour}</div><div style={{fontSize:11,color:'#8fa3c4'}}>{place.name}</div></div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
@@ -1271,19 +1272,19 @@ function VirtualTourScreen({place,onBack,t}) {
           <>
             <Img src={place.gallery[step%place.gallery.length]} alt={place.name} style={{width:'100%',height:200,borderRadius:14,marginBottom:14}}/>
             <div style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.3)',borderRadius:16,padding:18,marginBottom:14,textAlign:'center'}}>
-              <div style={{fontSize:40,marginBottom:10}}>{steps[step].icon}</div>
+              <div style={{fontSize:40,marginBottom:10}}><I e={steps[step].icon}/></div>
               <div style={{fontSize:17,fontWeight:700,color:'#c9a227',marginBottom:10}}>{steps[step].title}</div>
               <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{steps[step].desc}</div>
               <button onClick={()=>speak(steps[step].desc)} style={{padding:'9px 20px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:12}}>
-                {speaking?'🔊 Speaking...':'🔊 Listen'}
+                {speaking?<><I e="🔊"/> Speaking...</>:<><I e="🔊"/> Listen</>}
               </button>
             </div>
             <div style={{display:'flex',gap:6,justifyContent:'center',marginBottom:14}}>
               {steps.map((_,i)=><div key={i} onClick={()=>setStep(i)} style={{width:i===step?22:7,height:7,borderRadius:4,background:i===step?'#c9a227':'rgba(201,162,39,0.3)',cursor:'pointer',transition:'all 0.3s'}}/>)}
             </div>
             <div style={{display:'flex',gap:10,marginBottom:14}}>
-              <button onClick={()=>setStep(p=>Math.max(0,p-1))} disabled={step===0} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:step===0?'#4a5568':'#c9a227',cursor:step===0?'not-allowed':'pointer',fontSize:13}}>← Prev</button>
-              <button onClick={()=>setStep(p=>Math.min(steps.length-1,p+1))} disabled={step===steps.length-1} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:step===steps.length-1?'transparent':'rgba(201,162,39,0.15)',color:step===steps.length-1?'#4a5568':'#c9a227',cursor:step===steps.length-1?'not-allowed':'pointer',fontSize:13}}>Next →</button>
+              <button onClick={()=>setStep(p=>Math.max(0,p-1))} disabled={step===0} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:step===0?'#4a5568':'#c9a227',cursor:step===0?'not-allowed':'pointer',fontSize:13}}><I e="←"/> Prev</button>
+              <button onClick={()=>setStep(p=>Math.min(steps.length-1,p+1))} disabled={step===steps.length-1} style={{flex:1,padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:step===steps.length-1?'transparent':'rgba(201,162,39,0.15)',color:step===steps.length-1?'#4a5568':'#c9a227',cursor:step===steps.length-1?'not-allowed':'pointer',fontSize:13}}>Next <I e="→"/></button>
             </div>
             <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,padding:'12px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
               <div><div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:3}}>{place.videoTitle}</div><div style={{fontSize:11,color:'#8fa3c4'}}>Real YouTube video</div></div>
@@ -1296,7 +1297,7 @@ function VirtualTourScreen({place,onBack,t}) {
           </>
         ):(
           <div>
-            <button onClick={()=>setShowVideo(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer',marginBottom:12}}>← Back</button>
+            <button onClick={()=>setShowVideo(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer',marginBottom:12}}><I e="←"/> Back</button>
             <div style={{borderRadius:14,overflow:'hidden',marginBottom:12}}>
               <iframe width="100%" height="210" src={'https://www.youtube.com/embed/'+place.videoId+'?autoplay=1'} title={place.videoTitle} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{display:'block'}}/>
             </div>
@@ -1334,7 +1335,7 @@ function Slideshow({images,height=260}) {
         </div>
         <button onClick={()=>{setCur(p=>(p-1+images.length)%images.length);setPlay(false);}} style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>‹</button>
         <button onClick={()=>{setCur(p=>(p+1)%images.length);setPlay(false);}} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'rgba(10,22,40,0.65)',border:'none',borderRadius:'50%',width:30,height:30,color:'white',fontSize:15,cursor:'pointer'}}>›</button>
-        <button onClick={()=>setLightbox(images[cur])} style={{position:'absolute',top:10,right:10,background:'rgba(0,0,0,0.5)',border:'none',borderRadius:20,padding:'4px 10px',color:'#fff',fontSize:11,cursor:'pointer'}}>⛶ Zoom</button>
+        <button onClick={()=>setLightbox(images[cur])} style={{position:'absolute',top:10,right:10,background:'rgba(0,0,0,0.5)',border:'none',borderRadius:20,padding:'4px 10px',color:'#fff',fontSize:11,cursor:'pointer'}}><I e="⛶"/> Zoom</button>
       </div>
     </>
   );
@@ -1386,7 +1387,7 @@ function Reviews({name,t}) {
       {show&&(
         <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:14,marginBottom:12}}>
           <div style={{fontSize:11,color:'#8fa3c4',marginBottom:8}}>Posting as <b style={{color:'#c9a227'}}>{reviewerName}</b></div>
-          <div style={{display:'flex',gap:5,marginBottom:10}}>{[1,2,3,4,5].map(s=><span key={s} onClick={()=>setNStars(s)} style={{fontSize:22,cursor:'pointer',opacity:s<=nStars?1:0.3}}>⭐</span>)}</div>
+          <div style={{display:'flex',gap:5,marginBottom:10}}>{[1,2,3,4,5].map(s=><span key={s} onClick={()=>setNStars(s)} style={{fontSize:22,cursor:'pointer',opacity:s<=nStars?1:0.3}}><I e="⭐"/></span>)}</div>
           <textarea value={nText} onChange={e=>setNText(e.target.value)} placeholder="Share your experience..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:8,padding:'9px 12px',color:'#f0f4ff',fontSize:13,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box'}}/>
           <div style={{display:'flex',gap:8,marginTop:8}}>
             <button style={{...styles.btnPrimary,flex:1,padding:'9px',fontSize:13}} onClick={submitReview}>{t.submit}</button>
@@ -1402,7 +1403,7 @@ function Reviews({name,t}) {
             <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.user_name}</span>
             <span style={{fontSize:10,color:'#8fa3c4'}}>{r.created_at?new Date(r.created_at).toLocaleDateString():''}</span>
           </div>
-          <div style={{marginBottom:5}}>{'⭐'.repeat(r.stars)}</div>
+          <div style={{marginBottom:5}}><Stars n={r.stars}/></div>
           <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.6}}>{r.text}</div>
         </div>
       ))}
@@ -1485,18 +1486,18 @@ function RestaurantDetail({item,onBack,t}) {
       <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
         {cancelled ? (
           <>
-            <div style={{fontSize:60,marginBottom:14}}>🚫</div>
+            <div style={{fontSize:60,marginBottom:14}}><I e="🚫"/></div>
             <div style={{fontSize:20,fontWeight:700,color:'#e24b4a',marginBottom:8}}>Order Cancelled</div>
             <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.7,marginBottom:20}}>Your order {orderCode} from {item.name} has been cancelled.<br/>Contact the restaurant if you've already been charged.</div>
           </>
         ) : (
           <>
-            <div style={{fontSize:60,marginBottom:14}}>✅</div>
+            <div style={{fontSize:60,marginBottom:14}}><I e="✅"/></div>
             <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Order Placed!</div>
             <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
               Your order from {item.name} has been received.<br/>
               {diningMode==='dinein' ? <>Table: {tableNum}</> : <>Pickup · Contact: {tableNum}</>} · Est. time: 20-30 min{orderTime?<> (ready by {new Date(orderTime+25*60000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})})</>:null}<br/>
-              🔥 Your food will be prepared fresh and served hot.
+              <I e="🔥"/> Your food will be prepared fresh and served hot.
             </div>
             <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
               <div style={{fontSize:11,color:'#8fa3c4',marginBottom:4,letterSpacing:0.5}}>SHOW THIS CODE AT THE RESTAURANT AS PROOF OF ORDER</div>
@@ -1513,11 +1514,11 @@ function RestaurantDetail({item,onBack,t}) {
               </div>
             </div>
             <div style={{display:'flex',gap:8,width:'100%',marginBottom:10}}>
-              <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-              {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+              <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}><I e="🧭"/> {t.getDir}</a>
+              {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="📞"/> Call</a>}
             </div>
             {item.email && (
-              <a href={`mailto:${item.email}?subject=${emailSubject}&body=${emailBody}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email order to restaurant</a>
+              <a href={`mailto:${item.email}?subject=${emailSubject}&body=${emailBody}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}><I e="✉"/> Email order to restaurant</a>
             )}
             <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelOrder}>Cancel Order</button>
           </>
@@ -1532,22 +1533,22 @@ function RestaurantDetail({item,onBack,t}) {
       <div style={{position:'relative',flexShrink:0}}>
         <Img src={item.coverImg} alt={item.name} style={{width:'100%',height:200}}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,transparent 50%,rgba(10,22,40,0.9) 100%)'}}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
-        {cart.length>0&&<button onClick={()=>setShowCart(!showCart)} style={{position:'absolute',top:14,right:14,background:'rgba(201,162,39,0.9)',border:'none',borderRadius:50,padding:'7px 13px',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer',zIndex:10}}>🛒 {cart.length} · E{total}</button>}
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> Back</button>
+        {cart.length>0&&<button onClick={()=>setShowCart(!showCart)} style={{position:'absolute',top:14,right:14,background:'rgba(201,162,39,0.9)',border:'none',borderRadius:50,padding:'7px 13px',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer',zIndex:10}}><I e="🛒"/> {cart.length} · E{total}</button>}
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
-          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {item.region} · ⭐ {item.rating} · {item.hours}</div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}><I e="📍"/> {item.region} · <I e="⭐"/> {item.rating} · {item.hours}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <div style={{display:'flex',gap:8,marginBottom:14}}>
-          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
-          {item.email && <a href={`mailto:${item.email}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>✉️ Email</a>}
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="🧭"/> {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="📞"/> Call</a>}
+          {item.email && <a href={`mailto:${item.email}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="✉"/> Email</a>}
         </div>
         {showCart&&cart.length>0&&(
           <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:14,padding:14,marginBottom:14}}>
-            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:10}}>🛒 {t.cart}</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:10}}><I e="🛒"/> {t.cart}</div>
             {cart.map(c=>(
               <div key={c.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5,fontSize:13,color:'#f0f4ff'}}>
                 <span>{c.name}</span>
@@ -1565,8 +1566,8 @@ function RestaurantDetail({item,onBack,t}) {
 
             <div style={{fontSize:12,color:'#8fa3c4',marginTop:12,marginBottom:6}}>Are you staying or taking away?</div>
             <div style={{display:'flex',gap:8,marginBottom:10}}>
-              <button onClick={()=>setDiningMode('dinein')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='dinein'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='dinein'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='dinein'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}>🍽️ Dine-in</button>
-              <button onClick={()=>setDiningMode('takeaway')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='takeaway'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='takeaway'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='takeaway'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}>🥡 Takeaway</button>
+              <button onClick={()=>setDiningMode('dinein')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='dinein'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='dinein'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='dinein'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}><I e="🍽"/> Dine-in</button>
+              <button onClick={()=>setDiningMode('takeaway')} style={{flex:1,padding:'9px',borderRadius:10,border:diningMode==='takeaway'?'1.5px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',background:diningMode==='takeaway'?'rgba(201,162,39,0.18)':'transparent',color:diningMode==='takeaway'?'#c9a227':'#8fa3c4',fontSize:12,fontWeight:600,cursor:'pointer'}}><I e="🥡"/> Takeaway</button>
             </div>
 
             {diningMode && (
@@ -1646,21 +1647,21 @@ function HotelDetail({item,onBack,t}) {
   if(confirmed) return (
     <div style={styles.app}>
       <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
-        <div style={{fontSize:60,marginBottom:14}}>✅</div>
+        <div style={{fontSize:60,marginBottom:14}}><I e="✅"/></div>
         <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Booking Confirmed!</div>
         <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:16}}>
           {item.name} · {confirmed.room}<br/>
-          {confirmed.checkIn} → {confirmed.checkOut} · {confirmed.guests} guest(s)
+          {confirmed.checkIn} <I e="→"/> {confirmed.checkOut} · {confirmed.guests} guest(s)
         </div>
         <div style={{background:'rgba(201,162,39,0.12)',border:'1px solid rgba(201,162,39,0.5)',borderRadius:14,padding:'14px 20px',marginBottom:16,width:'100%'}}>
           <div style={{fontSize:11,color:'#8fa3c4',marginBottom:4}}>SHOW THIS CODE AT CHECK-IN AS PROOF OF BOOKING</div>
           <div style={{fontSize:28,fontWeight:800,color:'#c9a227',letterSpacing:2}}>{confirmed.code}</div>
         </div>
         <div style={{display:'flex',gap:8,width:'100%',marginBottom:10}}>
-          <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{...styles.btnPrimary,flex:1,textDecoration:'none',display:'flex',alignItems:'center',justifyContent:'center'}}><I e="🧭"/> {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="📞"/> Call</a>}
         </div>
-        {item.email && <a href={`mailto:${item.email}?subject=${encodeURIComponent('Booking '+confirmed.code+' – '+item.name)}&body=${encodeURIComponent('Booking code: '+confirmed.code+'\nRoom: '+confirmed.room+'\nCheck-in: '+confirmed.checkIn+'\nCheck-out: '+confirmed.checkOut+'\nGuests: '+confirmed.guests)}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}>✉️ Email booking</a>}
+        {item.email && <a href={`mailto:${item.email}?subject=${encodeURIComponent('Booking '+confirmed.code+' – '+item.name)}&body=${encodeURIComponent('Booking code: '+confirmed.code+'\nRoom: '+confirmed.room+'\nCheck-in: '+confirmed.checkIn+'\nCheck-out: '+confirmed.checkOut+'\nGuests: '+confirmed.guests)}`} style={{width:'100%',textDecoration:'none',padding:'11px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#c9a227',fontWeight:600,fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,boxSizing:'border-box'}}><I e="✉"/> Email booking</a>}
         <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:10}} onClick={cancelBooking}>Cancel Booking</button>
         <button style={styles.btnPrimary} onClick={onBack}>Back</button>
       </div>
@@ -1671,24 +1672,24 @@ function HotelDetail({item,onBack,t}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={240}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> Back</button>
         <div style={{position:'absolute',top:14,right:14,display:'flex',gap:6,zIndex:10}}>
           {item.category && <div style={{background:'rgba(131,122,221,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{item.category}</div>}
-          <div style={{background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:11,color:'#0a1628'}}>{item.stars}</div>
+          <div style={{background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:11,color:'#0a1628'}}><Stars s={item.stars}/></div>
         </div>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
-          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {item.region} · ⭐ {item.rating}</div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}><I e="📍"/> {item.region} · <I e="⭐"/> {item.rating}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
         <div style={{display:'flex',gap:8,marginBottom:12}}>
-          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🧭 {t.getDir}</a>
-          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>📞 Call</a>}
-          {item.booking && <a href={item.booking} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}>🔗 Booking site</a>}
+          <a href={dirUrl} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.35)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="🧭"/> {t.getDir}</a>
+          {item.phone && <a href={`tel:${item.phone.replace(/\s/g,'')}`} style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.35)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="📞"/> Call</a>}
+          {item.booking && <a href={item.booking} target="_blank" rel="noreferrer" style={{flex:1,textDecoration:'none',padding:'9px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontWeight:600,fontSize:12,display:'flex',alignItems:'center',justifyContent:'center'}}><I e="🔗"/> Booking site</a>}
         </div>
         <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap'}}>
-          <div style={styles.badge}>⭐ {item.rating}</div>
+          <div style={styles.badge}><I e="⭐"/> {item.rating}</div>
           <div style={{...styles.badge,color:'#5dcaa5',borderColor:'rgba(29,158,117,0.3)',background:'rgba(29,158,117,0.1)'}}>{item.price}</div>
         </div>
         <div style={{fontSize:13,color:'#b0c4de',lineHeight:1.8,marginBottom:14}}>{item.desc}</div>
@@ -1709,7 +1710,7 @@ function HotelDetail({item,onBack,t}) {
         ))}
         {showBooking&&(
           <div style={{background:'rgba(201,162,39,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:16,marginTop:14,marginBottom:14}}>
-            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:14}}>📅 {t.bookNow}{selRoom?' — '+selRoom:''}</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#c9a227',marginBottom:14}}><I e="📅"/> {t.bookNow}{selRoom?' — '+selRoom:''}</div>
             <div style={{marginBottom:12}}>
               <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Name for this booking</div>
               <input type="text" value={guestName} onChange={e=>setGuestName(e.target.value)} placeholder="Sign in to auto-fill your name" style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px 14px',color:'#f0f4ff',fontSize:13,outline:'none',boxSizing:'border-box'}}/>
@@ -1736,10 +1737,10 @@ function StoreDetail({item,onBack,t}) {
     <div style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={220}/>
-        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> Back</button>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{item.name}</div>
-          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {item.region} · ⭐ {item.rating}</div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}><I e="📍"/> {item.region} · <I e="⭐"/> {item.rating}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
@@ -1751,7 +1752,7 @@ function StoreDetail({item,onBack,t}) {
         <div style={styles.sectionTitle}>{t.photos}</div>
         <PhotoGrid images={item.gallery}/>
         <Reviews name={item.name} t={t}/>
-        <button style={{...styles.btnPrimary,marginBottom:20}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(item.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
+        <button style={{...styles.btnPrimary,marginBottom:20}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(item.name)+'+Eswatini','_blank')}><I e="🗺"/> {t.getDir}</button>
       </div>
     </div>
   );
@@ -1803,13 +1804,13 @@ function WeatherMiniCard({t,onClick}) {
   return (
     <div onClick={onClick} style={{background:'linear-gradient(135deg,rgba(24,95,165,0.25),rgba(24,95,165,0.1))',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:'12px 14px',marginBottom:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
       <div>
-        <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600,marginBottom:2}}>🟢 Live Weather · {today}</div>
-        <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{data?`${data.icon} ${data.city} · ${data.temp}°C`:'Loading weather...'}</div>
+        <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600,marginBottom:2}}><I e="🟢"/> Live Weather · {today}</div>
+        <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{data?<><I e={data.icon}/> {data.city} · {data.temp}°C</>:'Loading weather...'}</div>
         <div style={{fontSize:11,color:'#8fa3c4',marginTop:2,textTransform:'capitalize'}}>{data?.desc||''}</div>
       </div>
       <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
-        <div style={{fontSize:28}}>{data?.icon||'⏳'}</div>
-        <div style={{fontSize:9,color:'#c9a227',fontWeight:600}}>Tap for forecast →</div>
+        <div style={{fontSize:28}}><I e={data?.icon||'⏳'}/></div>
+        <div style={{fontSize:9,color:'#c9a227',fontWeight:600}}>Tap for forecast <I e="→"/></div>
       </div>
     </div>
   );
@@ -1932,9 +1933,9 @@ function WeatherWidget({t}) {
     <div style={{marginBottom:16}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:2}}>
         <div style={styles.sectionTitle}>{t.weather}</div>
-        <div style={{fontSize:10,color:'#5dcaa5'}}>🟢 Live</div>
+        <div style={{fontSize:10,color:'#5dcaa5'}}><I e="🟢"/> Live</div>
       </div>
-      <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginBottom:10}}>📅 {today}</div>
+      <div style={{fontSize:11,color:'#c9a227',fontWeight:600,marginBottom:10}}><I e="📅"/> {today}</div>
 
       <div style={{display:'flex',gap:8,marginBottom:10}}>
         <input
@@ -1945,17 +1946,17 @@ function WeatherWidget({t}) {
           style={{flex:1,background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'9px 12px',color:'#f0f4ff',fontSize:12,outline:'none'}}
         />
         <button onClick={handleSearch} disabled={searching} style={{padding:'9px 12px',borderRadius:10,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:13,fontWeight:700,cursor:'pointer'}}>
-          {searching?'…':'🔍'}
+          {searching?'…':<I e="🔍"/>}
         </button>
         <button onClick={getMyLocation} disabled={locating} style={{padding:'9px 12px',borderRadius:10,border:'0.5px solid rgba(29,158,117,0.4)',background:'rgba(29,158,117,0.12)',color:'#5dcaa5',fontSize:13,cursor:'pointer'}}>
-          {locating?'…':'📍'}
+          {locating?'…':<I e="📍"/>}
         </button>
       </div>
 
       <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:6,scrollbarWidth:'none',marginBottom:12}}>
         {cities.map(c=>(
           <div key={c} onClick={()=>setSel(c)} style={{flexShrink:0,minWidth:80,background:sel===c?'rgba(201,162,39,0.18)':'rgba(24,95,165,0.12)',border:sel===c?'1px solid #c9a227':'0.5px solid rgba(24,95,165,0.3)',borderRadius:12,padding:'8px 6px',textAlign:'center',cursor:'pointer',transition:'all 0.2s'}}>
-            <div style={{fontSize:18}}>{liveWeather[c]?.icon||'⏳'}</div>
+            <div style={{fontSize:18}}><I e={liveWeather[c]?.icon||'⏳'}/></div>
             <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginTop:2}}>{liveWeather[c]?liveWeather[c].temp+'°C':'--'}</div>
             <div style={{fontSize:9,color:sel===c?'#c9a227':'#8fa3c4',fontWeight:600,marginTop:1}}>{c}</div>
           </div>
@@ -1966,9 +1967,9 @@ function WeatherWidget({t}) {
         <div style={{background:'rgba(24,95,165,0.15)',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:14,marginBottom:12}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
             <div>
-              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{selectedData.icon} {sel}</div>
+              <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}><I e={selectedData.icon}/> {sel}</div>
               <div style={{fontSize:11,color:'#8fa3c4',marginTop:2,textTransform:'capitalize'}}>{selectedData.desc}</div>
-              <div style={{fontSize:10,color:'#5dcaa5',marginTop:2}}>🟢 Live · {today.split(',')[0]}</div>
+              <div style={{fontSize:10,color:'#5dcaa5',marginTop:2}}><I e="🟢"/> Live · {today.split(',')[0]}</div>
             </div>
             <div style={{textAlign:'right'}}>
               <div style={{fontSize:40,fontWeight:700,color:'#c9a227'}}>{selectedData.temp}°C</div>
@@ -1976,9 +1977,9 @@ function WeatherWidget({t}) {
             </div>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
-            {[['💧 Humidity',selectedData.humidity],['💨 Wind',selectedData.wind]].map(([lbl,val])=>(
+            {[['💧','Humidity',selectedData.humidity],['💨','Wind',selectedData.wind]].map(([ico,lbl,val])=>(
               <div key={lbl} style={{background:'rgba(255,255,255,0.06)',borderRadius:10,padding:'8px',textAlign:'center'}}>
-                <div style={{fontSize:11,color:'#8fa3c4'}}>{lbl}</div>
+                <div style={{fontSize:11,color:'#8fa3c4'}}><I e={ico}/> {lbl}</div>
                 <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:2}}>{val}</div>
               </div>
             ))}
@@ -1994,7 +1995,7 @@ function WeatherWidget({t}) {
               <div key={i} style={{flexShrink:0,minWidth:70,background:f.isToday?'rgba(201,162,39,0.15)':'rgba(255,255,255,0.04)',border:f.isToday?'1px solid rgba(201,162,39,0.5)':'0.5px solid rgba(255,255,255,0.08)',borderRadius:12,padding:'10px 6px',textAlign:'center'}}>
                 <div style={{fontSize:10,fontWeight:700,color:f.isToday?'#c9a227':'#8fa3c4'}}>{f.isToday?'TODAY':f.day.toUpperCase()}</div>
                 <div style={{fontSize:9,color:'#5f7a9a',marginBottom:4}}>{f.date}</div>
-                <div style={{fontSize:20}}>{f.icon}</div>
+                <div style={{fontSize:20}}><I e={f.icon}/></div>
                 <div style={{fontSize:13,fontWeight:700,color:'#f0f4ff',marginTop:4}}>{f.temp}°C</div>
                 <div style={{fontSize:9,color:'#8fa3c4',marginTop:2}}>{f.max}° / {f.min}°</div>
               </div>
@@ -2016,7 +2017,7 @@ function CurrencyWidget({t}) {
   return (
     <div style={{marginBottom:13}}>
       <div onClick={()=>setOpen(o=>!o)} style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.35)',borderRadius:14,padding:'12px 14px',display:'flex',alignItems:'center',gap:10,cursor:'pointer'}}>
-        <div style={{width:44,height:44,borderRadius:12,background:'rgba(201,162,39,0.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>💱</div>
+        <div style={{width:44,height:44,borderRadius:12,background:'rgba(201,162,39,0.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}><I e="💱"/></div>
         <div style={{flex:1}}>
           <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff',marginBottom:2}}>{t.currency}</div>
           <div style={{fontSize:11,color:'#8fa3c4'}}>
@@ -2094,23 +2095,23 @@ function TranslateTab({t,lang}) {
   };
   return (
     <div>
-      <div style={styles.sectionTitle}>{t.translate} 🌐</div>
+      <div style={styles.sectionTitle}>{t.translate} <I e="🌐"/></div>
       <div style={{fontSize:11,color:'#8fa3c4',marginBottom:14}}>Translate words and phrases for your Eswatini journey</div>
       <div style={{display:'flex',gap:10,marginBottom:12,alignItems:'center'}}>
         <div style={{flex:1,padding:'10px 12px',borderRadius:10,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(255,255,255,0.04)',color:'#8fa3c4',fontSize:12}}>{T[lang].flag} {T[lang].name}</div>
-        <span style={{color:'#c9a227',fontSize:18,fontWeight:700}}>→</span>
+        <span style={{color:'#c9a227',fontSize:18,fontWeight:700}}><I e="→"/></span>
         <select value={toLang} onChange={e=>setToLang(e.target.value)} style={{flex:1,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#c9a227',fontSize:12,outline:'none',cursor:'pointer'}}>
           {Object.entries(T).map(([code,data])=><option key={code} value={code}>{data.flag} {data.name}</option>)}
         </select>
       </div>
       <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Type a word or phrase..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box',marginBottom:10}}/>
-      <button style={{...styles.btnPrimary,marginBottom:14}} onClick={translate}>Translate →</button>
+      <button style={{...styles.btnPrimary,marginBottom:14}} onClick={translate}>Translate <I e="→"/></button>
       {result&&(
         <div style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.3)',borderRadius:12,padding:16,marginBottom:16}}>
           <div style={{fontSize:10,color:'#8fa3c4',marginBottom:5}}>{T[toLang].flag} {T[toLang].name}:</div>
           <div style={{fontSize:22,fontWeight:600,color:'#f0f4ff',marginBottom:12}}>{result}</div>
           <button onClick={()=>speak(result)} style={{padding:'7px 16px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>
-            {speaking?'🔊 Speaking...':'🔊 Hear Pronunciation'}
+            {speaking?<><I e="🔊"/> Speaking...</>:<><I e="🔊"/> Hear Pronunciation</>}
           </button>
         </div>
       )}
@@ -2128,7 +2129,7 @@ function TranslateTab({t,lang}) {
         <div key={ss} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 0',borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
           <div style={{fontSize:14,fontWeight:600,color:'#c9a227'}}>{ss}</div>
           <div style={{fontSize:11,color:'#8fa3c4',flex:1,marginLeft:12}}>{en}</div>
-          <button onClick={()=>speak(ss)} style={{padding:'3px 10px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.3)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>🔊</button>
+          <button onClick={()=>speak(ss)} style={{padding:'3px 10px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.3)',background:'rgba(131,122,221,0.1)',color:'#afa9ec',cursor:'pointer',fontSize:11}}><I e="🔊"/></button>
         </div>
       ))}
     </div>
@@ -2188,14 +2189,14 @@ function CompareTab({t,onSelectRestaurant,onSelectHotel,onSelectStore}) {
             <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>{item.type} · {item.best}</div>
             <div style={{display:'flex',gap:10,marginTop:5}}>
               <span style={{fontSize:11,color:'#5dcaa5'}}>{item.price}</span>
-              <span style={{fontSize:11,color:'#c9a227'}}>⭐ {item.rating}</span>
+              <span style={{fontSize:11,color:'#c9a227'}}><I e="⭐"/> {item.rating}</span>
             </div>
           </div>
           {cat!=='attractions'&&<span style={{color:'#c9a227',fontSize:16,flexShrink:0}}>›</span>}
         </div>
       ))}
       <div style={{background:'rgba(29,158,117,0.08)',border:'0.5px solid rgba(29,158,117,0.2)',borderRadius:12,padding:14,marginTop:8}}>
-        <div style={{fontSize:12,fontWeight:600,color:'#5dcaa5',marginBottom:6}}>Best Value in Eswatini 💎</div>
+        <div style={{fontSize:12,fontWeight:600,color:'#5dcaa5',marginBottom:6}}>Best Value in Eswatini <I e="💎"/></div>
         {cat==='attractions'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Best Overall: Hlane — Big 5 for E150{'\n'}Best Free: Swazi Candles{'\n'}Best Hidden: Malolotja — Zipline E120</div>}
         {cat==='hotels'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Best Luxury: Royal Swazi Spa{'\n'}Best Budget: Lidwala from E150{'\n'}Best Experience: Mantengha Cultural Village</div>}
         {cat==='restaurants'&&<div style={{fontSize:11,color:'#8fa3c4',lineHeight:1.8}}>Best Traditional: Malandela's{'\n'}Best Budget: Gables from E40{'\n'}Best Special Occasion: Tum's George</div>}
@@ -2224,14 +2225,14 @@ function ExploreTab({onSelect,onVirtualTour,t}) {
             <div style={{position:'absolute',top:10,right:10,background:'rgba(201,162,39,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#0a1628'}}>{p.category}</div>
             <div style={{position:'absolute',bottom:10,left:12}}>
               <div style={{fontSize:16,fontWeight:700,color:'#f0f4ff'}}>{p.name}</div>
-              <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>📍 {p.region} · ⭐ {p.rating}</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}><I e="📍"/> {p.region} · <I e="⭐"/> {p.rating}</div>
             </div>
           </div>
           <div style={{padding:'12px 14px'}}>
             <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:10}}>{p.desc}</div>
             <div style={{display:'flex',gap:8}}>
               <button style={{flex:1,padding:'10px',borderRadius:50,background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',color:'#0a1628',fontSize:12,fontWeight:700,cursor:'pointer'}} onClick={()=>onSelect(p)}>View Details</button>
-              <button style={{flex:1,padding:'10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,cursor:'pointer'}} onClick={()=>onVirtualTour(p)}>🥽 {t.virtualTour}</button>
+              <button style={{flex:1,padding:'10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,cursor:'pointer'}} onClick={()=>onVirtualTour(p)}><I e="🥽"/> {t.virtualTour}</button>
             </div>
           </div>
         </div>
@@ -2247,7 +2248,7 @@ function AccommodationTab({onSelectHotel,t}) {
   const filtered = filter==='All' ? hotels : hotels.filter(h=>h.category===filter);
   return (
     <div>
-      <div style={styles.sectionTitle}>🛏️ Accommodation</div>
+      <div style={styles.sectionTitle}><I e="🛏"/> Accommodation</div>
       <div style={{fontSize:12,color:'#8fa3c4',marginBottom:12,lineHeight:1.6}}>Hotels, lodges, guesthouses and camping — with prices, photos and direct booking links.</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14,scrollbarWidth:'none'}}>
         {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:filter===c?'rgba(201,162,39,0.15)':'transparent',color:filter===c?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
@@ -2260,7 +2261,7 @@ function AccommodationTab({onSelectHotel,t}) {
             <div style={{position:'absolute',top:10,right:10,background:'rgba(131,122,221,0.9)',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:700,color:'#fff'}}>{h.category}</div>
             <div style={{position:'absolute',bottom:10,left:12}}>
               <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{h.name}</div>
-              <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}>📍 {h.region} · ⭐ {h.rating} · {h.stars}</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.8)'}}><I e="📍"/> {h.region} · <I e="⭐"/> {h.rating} · <Stars s={h.stars}/></div>
             </div>
           </div>
           <div style={{padding:'12px 14px'}}>
@@ -2305,7 +2306,7 @@ function CultureTab({t}) {
   const [open,setOpen] = useState(null);
   return (
     <div>
-      <div style={styles.sectionTitle}>🎭 Culture & Events</div>
+      <div style={styles.sectionTitle}><I e="🎭"/> Culture & Events</div>
       <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Eswatini's living traditions — ceremonies, festivals, villages and crafts.</div>
       {cultureItems.map(c=>(
         <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:14,overflow:'hidden',marginBottom:12}}>
@@ -2315,7 +2316,7 @@ function CultureTab({t}) {
               <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
               <span style={{color:'#c9a227',fontSize:13}}>{open===c.name?'▲':'▼'}</span>
             </div>
-            <div style={{fontSize:11,color:'#c9a227',marginTop:3,fontWeight:600}}>📅 {c.when}</div>
+            <div style={{fontSize:11,color:'#c9a227',marginTop:3,fontWeight:600}}><I e="📅"/> {c.when}</div>
             {open===c.name && <div style={{fontSize:12,color:'rgb(176, 196, 222)',lineHeight:1.7,marginTop:8}}>{c.desc}</div>}
           </div>
         </div>
@@ -2342,7 +2343,7 @@ function GettingAroundTab({t}) {
   const [section,setSection] = useState('car');
   return (
     <div>
-      <div style={styles.sectionTitle}>🚗 Getting Around</div>
+      <div style={styles.sectionTitle}><I e="🚗"/> Getting Around</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14}}>
         {[['car','Car Rental'],['taxi','Taxi/Kombi'],['dist','Distances'],['map','Map Nav']].map(([id,label])=>(
           <button key={id} onClick={()=>setSection(id)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:section===id?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:section===id?'rgba(201,162,39,0.15)':'transparent',color:section===id?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:section===id?600:400}}>{label}</button>
@@ -2352,9 +2353,9 @@ function GettingAroundTab({t}) {
       {section==='car' && carRentals.map(c=>(
         <div key={c.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:14,marginBottom:10}}>
           <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{c.name}</div>
-          <div style={{fontSize:12,color:'#8fa3c4',marginTop:4}}>📍 {c.location}</div>
+          <div style={{fontSize:12,color:'#8fa3c4',marginTop:4}}><I e="📍"/> {c.location}</div>
           <div style={{fontSize:12,color:'#5dcaa5',fontWeight:600,marginTop:4}}>{c.price}</div>
-          <a href={`tel:${c.phone.replace(/\s/g,'')}`} style={{display:'inline-block',marginTop:8,textDecoration:'none',padding:'7px 14px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,fontWeight:600}}>📞 Call to book</a>
+          <a href={`tel:${c.phone.replace(/\s/g,'')}`} style={{display:'inline-block',marginTop:8,textDecoration:'none',padding:'7px 14px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:12,fontWeight:600}}><I e="📞"/> Call to book</a>
         </div>
       ))}
 
@@ -2371,7 +2372,7 @@ function GettingAroundTab({t}) {
         <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:4}}>
           {distances.map((d,i)=>(
             <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',borderBottom:i<distances.length-1?'0.5px solid rgba(255,255,255,0.06)':'none'}}>
-              <div style={{fontSize:12,color:'#f0f4ff'}}>{d.from} → {d.to}</div>
+              <div style={{fontSize:12,color:'#f0f4ff'}}>{d.from} <I e="→"/> {d.to}</div>
               <div style={{textAlign:'right'}}>
                 <div style={{fontSize:12,color:'#c9a227',fontWeight:600}}>{d.dist}</div>
                 <div style={{fontSize:10,color:'#8fa3c4'}}>{d.time}</div>
@@ -2384,7 +2385,7 @@ function GettingAroundTab({t}) {
       {section==='map' && (
         <div style={{textAlign:'center'}}>
           <div style={{fontSize:12,color:'#8fa3c4',marginBottom:14,lineHeight:1.6}}>Open turn-by-turn navigation between any two places in Eswatini using Google Maps.</div>
-          <button style={styles.btnPrimary} onClick={()=>window.open('https://www.google.com/maps/dir/','_blank')}>🗺️ Open Map Navigation</button>
+          <button style={styles.btnPrimary} onClick={()=>window.open('https://www.google.com/maps/dir/','_blank')}><I e="🗺"/> Open Map Navigation</button>
         </div>
       )}
     </div>
@@ -2411,19 +2412,19 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
   };
   return (
     <div>
-      <div style={styles.sectionTitle}>🎟️ Book / Reserve</div>
+      <div style={styles.sectionTitle}><I e="🎟"/> Book / Reserve</div>
       <div style={{fontSize:12,color:'#8fa3c4',marginBottom:16,lineHeight:1.6}}>Everything you need to book your Eswatini trip, in one place.</div>
 
       <div onClick={()=>setTab('stay')} style={{...styles.hstat,display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:10,padding:14}}>
-        <span style={{fontSize:22}}>🛏️</span>
+        <span style={{fontSize:22}}><I e="🛏"/></span>
         <div><div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Book Accommodation</div><div style={{fontSize:11,color:'#8fa3c4'}}>Hotels, lodges, guesthouses & camping</div></div>
       </div>
       <div onClick={()=>setTab('explore')} style={{...styles.hstat,display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:18,padding:14}}>
-        <span style={{fontSize:22}}>🔭</span>
+        <span style={{fontSize:22}}><I e="🔭"/></span>
         <div><div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Book Activities</div><div style={{fontSize:11,color:'#8fa3c4'}}>Attractions, parks & virtual tours</div></div>
       </div>
 
-      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:10}}>📞 Contact a Tour Guide</div>
+      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginBottom:10}}><I e="📞"/> Contact a Tour Guide</div>
       {tourGuides.map(g=>(
         <div key={g.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:12,marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
           <div>
@@ -2431,13 +2432,13 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
             <div style={{fontSize:11,color:'#8fa3c4'}}>{g.specialty}</div>
           </div>
           <div style={{display:'flex',gap:6}}>
-            <a href={`tel:${g.phone.replace(/\s/g,'')}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:14}}>📞</a>
-            <a href={`mailto:${g.email}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontSize:14}}>✉️</a>
+            <a href={`tel:${g.phone.replace(/\s/g,'')}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:'rgba(131,122,221,0.15)',color:'#afa9ec',fontSize:14}}><I e="📞"/></a>
+            <a href={`mailto:${g.email}`} style={{textDecoration:'none',padding:'6px 10px',borderRadius:50,border:'0.5px solid rgba(93,202,165,0.35)',background:'rgba(93,202,165,0.1)',color:'#5dcaa5',fontSize:14}}><I e="✉"/></a>
           </div>
         </div>
       ))}
 
-      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:18,marginBottom:10}}>✨ Buy an Experience</div>
+      <div style={{fontSize:13,fontWeight:700,color:'#c9a227',marginTop:18,marginBottom:10}}><I e="✨"/> Buy an Experience</div>
       {experiences.map(e=>(
         <div key={e.name} style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,overflow:'hidden',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
           {e.img && <Img src={e.img} alt={e.name} style={{width:80,height:70,flexShrink:0}}/>}
@@ -2467,7 +2468,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
       {showWeather&&(
         <div style={{position:'fixed',inset:0,background:'#0a1628',zIndex:200,overflowY:'auto',padding:16,maxWidth:480,margin:'0 auto'}}>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
-            <button onClick={()=>setShowWeather(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}>← Back</button>
+            <button onClick={()=>setShowWeather(false)} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}><I e="←"/> Back</button>
             <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>{t.weather}</div>
           </div>
           <WeatherWidget t={t}/>
@@ -2488,7 +2489,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
 
         {/* WEATHER */}
         <div onClick={()=>setShowWeather(true)} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(24,95,165,0.18)',border:'0.5px solid rgba(24,95,165,0.4)',borderRadius:14,padding:'12px 10px',cursor:'pointer'}}>
-          <span style={{fontSize:24}}>⛅</span>
+          <span style={{fontSize:24}}><I e="⛅"/></span>
           <div>
             <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600}}>Live Weather</div>
             <div style={{fontSize:12,fontWeight:700,color:'#f0f4ff'}}>Mbabane</div>
@@ -2499,7 +2500,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
 
         {/* AI GUIDE */}
         <div onClick={()=>setTab('ai')} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(83,74,183,0.18)',border:'0.5px solid rgba(131,122,221,0.4)',borderRadius:14,padding:'12px 10px',cursor:'pointer'}}>
-          <div style={{width:32,height:32,borderRadius:8,background:'rgba(83,74,183,0.4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>🤖</div>
+          <div style={{width:32,height:32,borderRadius:8,background:'rgba(83,74,183,0.4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}><I e="🤖"/></div>
           <div>
             <div style={{fontSize:11,fontWeight:700,color:'#afa9ec'}}>AI Guide</div>
             <div style={{fontSize:9,color:'#8fa3c4'}}>Ask Incaba</div>
@@ -2514,7 +2515,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(10,22,40,0.15) 0%,rgba(10,22,40,0.88) 100%)'}}/>
         <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'20px 18px'}}>
           <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
-            <span style={{fontSize:14}}>👑</span>
+            <span style={{fontSize:14}}><I e="👑"/></span>
             <span style={{fontSize:10,color:'#F0C94A',fontWeight:600,letterSpacing:0.5}}>Kingdom of Eswatini</span>
           </div>
           <h2 style={{fontSize:22,fontWeight:800,color:'#fff',margin:'0 0 6px',lineHeight:1.2,textShadow:'0 2px 8px rgba(0,0,0,0.5)'}}>{t.welcome}</h2>
@@ -2529,7 +2530,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
               {icon:'🌐',val:'9',label:'Languages',sec:null},
             ].map(item=>(
               <div key={item.label} onClick={()=>item.sec&&setSec(item.sec)} style={{flex:1,background:'rgba(201,162,39,0.15)',border:sec===item.sec?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'8px 6px',cursor:item.sec?'pointer':'default',textAlign:'center',backdropFilter:'blur(4px)'}}>
-                <div style={{fontSize:12}}>{item.icon}</div>
+                <div style={{fontSize:12}}><I e={item.icon}/></div>
                 <div style={{fontSize:14,fontWeight:800,color:'#c9a227'}}>{item.val}</div>
                 <div style={{fontSize:8,color:sec===item.sec?'#c9a227':'rgba(255,255,255,0.7)',lineHeight:1.2}}>{item.label}</div>
               </div>
@@ -2546,7 +2547,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         <>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10,marginTop:4}}>
             <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>Popular Attractions</div>
-            <span onClick={()=>setTab('explore')} style={{fontSize:11,color:'#c9a227',cursor:'pointer',fontWeight:600}}>View all →</span>
+            <span onClick={()=>setTab('explore')} style={{fontSize:11,color:'#c9a227',cursor:'pointer',fontWeight:600}}>View all <I e="→"/></span>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
             {places.slice(0,4).map(p=>(
@@ -2556,7 +2557,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
                 <div style={{position:'absolute',top:8,left:8,background:p.category==='Wildlife'?'#e24b4a':p.category==='Nature'?'#27ae60':p.category==='Culture'?'#8e44ad':'#c9a227',borderRadius:6,padding:'2px 8px',fontSize:9,fontWeight:700,color:'#fff'}}>{p.category}</div>
                 <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'8px 10px'}}>
                   <div style={{fontSize:12,fontWeight:700,color:'#fff',lineHeight:1.2}}>{p.name}</div>
-                  <div style={{fontSize:10,color:'rgba(255,255,255,0.7)',marginTop:2}}>📍 {p.region} · ⭐ {p.rating}</div>
+                  <div style={{fontSize:10,color:'rgba(255,255,255,0.7)',marginTop:2}}><I e="📍"/> {p.region} · <I e="⭐"/> {p.rating}</div>
                 </div>
               </div>
             ))}
@@ -2568,14 +2569,14 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
             <div>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
                 <div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Top Hotels</div>
-                <span onClick={()=>setSec('hotels')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all →</span>
+                <span onClick={()=>setSec('hotels')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all <I e="→"/></span>
               </div>
               <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
                 {hotels.slice(0,3).map(h=>(
                   <div key={h.name} onClick={()=>onSelectHotel(h)} style={{flexShrink:0,width:90,cursor:'pointer'}}>
                     <Img src={h.coverImg} alt={h.name} style={{width:90,height:70,borderRadius:10}}/>
                     <div style={{fontSize:10,fontWeight:600,color:'#f0f4ff',marginTop:4,lineHeight:1.2}}>{h.name}</div>
-                    <div style={{fontSize:9,color:'#c9a227'}}>⭐ {h.rating}</div>
+                    <div style={{fontSize:9,color:'#c9a227'}}><I e="⭐"/> {h.rating}</div>
                     <div style={{fontSize:9,color:'#8fa3c4'}}>{h.region}</div>
                   </div>
                 ))}
@@ -2586,14 +2587,14 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
             <div>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
                 <div style={{fontSize:13,fontWeight:700,color:'#f0f4ff'}}>Top Restaurants</div>
-                <span onClick={()=>setSec('restaurants')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all →</span>
+                <span onClick={()=>setSec('restaurants')} style={{fontSize:10,color:'#c9a227',cursor:'pointer'}}>View all <I e="→"/></span>
               </div>
               <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
                 {restaurants.slice(0,3).map(r=>(
                   <div key={r.name} onClick={()=>onSelectRestaurant(r)} style={{flexShrink:0,width:90,cursor:'pointer'}}>
                     <Img src={r.coverImg} alt={r.name} style={{width:90,height:70,borderRadius:10}}/>
                     <div style={{fontSize:10,fontWeight:600,color:'#f0f4ff',marginTop:4,lineHeight:1.2}}>{r.name}</div>
-                    <div style={{fontSize:9,color:'#c9a227'}}>⭐ {r.rating}</div>
+                    <div style={{fontSize:9,color:'#c9a227'}}><I e="⭐"/> {r.rating}</div>
                     <div style={{fontSize:9,color:'#8fa3c4'}}>{r.region}</div>
                   </div>
                 ))}
@@ -2607,13 +2608,13 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
             <div style={{position:'absolute',inset:0,background:'rgba(10,22,40,0.72)'}}/>
             <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 16px'}}>
               <div style={{display:'flex',alignItems:'center',gap:10}}>
-                <span style={{fontSize:28}}>🗺️</span>
+                <span style={{fontSize:28}}><I e="🗺"/></span>
                 <div>
                   <div style={{fontSize:14,fontWeight:700,color:'#f0f4ff'}}>Plan Your Trip</div>
                   <div style={{fontSize:10,color:'rgba(255,255,255,0.7)'}}>Discover places, create itineraries</div>
                 </div>
               </div>
-              <button style={{background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',borderRadius:50,padding:'8px 14px',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',whiteSpace:'nowrap'}}>Explore Now →</button>
+              <button style={{background:'linear-gradient(135deg,#c9a227,#e8b93a)',border:'none',borderRadius:50,padding:'8px 14px',color:'#0a1628',fontSize:11,fontWeight:700,cursor:'pointer',whiteSpace:'nowrap'}}>Explore Now <I e="→"/></button>
             </div>
           </div>
         </>
@@ -2624,19 +2625,19 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         <>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
             <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{t.restaurants}</div>
-            <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>← Back</span>
+            <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}><I e="←"/> Back</span>
           </div>
           {restaurants.map(r=>(
             <div key={r.name} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>onSelectRestaurant(r)}>
               <Img src={r.coverImg} alt={r.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
-                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {r.region}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}><I e="📍"/> {r.region}</div>
                 <div style={{fontSize:11,color:'#6a85a8',marginTop:2}}>{r.desc}</div>
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>⭐ {r.rating}</div>
-                <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Order →</div>
+                <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}><I e="⭐"/> {r.rating}</div>
+                <div style={{fontSize:10,color:'#5dcaa5',marginTop:4}}>Order <I e="→"/></div>
               </div>
             </div>
           ))}
@@ -2648,19 +2649,19 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
         <>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
             <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{t.hotels}</div>
-            <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}>← Back</span>
+            <span onClick={()=>setSec('attractions')} style={{fontSize:11,color:'#c9a227',cursor:'pointer'}}><I e="←"/> Back</span>
           </div>
           {hotels.map(h=>(
             <div key={h.name} style={{...styles.listCard,cursor:'pointer'}} onClick={()=>onSelectHotel(h)}>
               <Img src={h.coverImg} alt={h.name} style={{width:72,height:65,borderRadius:10,flexShrink:0}}/>
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{h.name}</div>
-                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>📍 {h.region}</div>
-                <div style={{fontSize:11,color:'#c9a227',marginTop:2}}>{h.stars}</div>
+                <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}><I e="📍"/> {h.region}</div>
+                <div style={{fontSize:11,color:'#c9a227',marginTop:2}}><Stars s={h.stars}/></div>
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
                 <div style={{fontSize:11,color:'#5dcaa5'}}>{h.price}</div>
-                <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Book →</div>
+                <div style={{fontSize:10,color:'#8fa3c4',marginTop:4}}>Book <I e="→"/></div>
               </div>
             </div>
           ))}
@@ -2740,16 +2741,16 @@ function MapTab({t}) {
     );
   };
   const routes=[
-    {name:'🌿 Scenic Route',time:'2h 15m',dist:'87 km',type:'Recommended',color:'#5dcaa5',desc:'Ezulwini Valley, Mantenga Falls, Lobamba.',stops:['Mantenga Falls','Lobamba','Swazi Candles'],url:'https://www.google.com/maps/dir/Mbabane/Mantenga+Falls+Eswatini/Lobamba+Eswatini'},
-    {name:'⚡ Fastest Route',time:'1h 20m',dist:'62 km',type:'Quick',color:'#c9a227',desc:'Direct highway via MR3.',stops:['Manzini Highway','Mbabane Bypass'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Eswatini'},
-    {name:'💰 Budget Route',time:'2h 45m',dist:'E45',type:'Affordable',color:'#534ab7',desc:'Kombi taxis — travel like a local.',stops:['Manzini Bus Rank','Mbabane Market'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Bus+Rank+Eswatini'},
+    {ico:'🌿',name:'Scenic Route',time:'2h 15m',dist:'87 km',type:'Recommended',color:'#5dcaa5',desc:'Ezulwini Valley, Mantenga Falls, Lobamba.',stops:['Mantenga Falls','Lobamba','Swazi Candles'],url:'https://www.google.com/maps/dir/Mbabane/Mantenga+Falls+Eswatini/Lobamba+Eswatini'},
+    {ico:'⚡',name:'Fastest Route',time:'1h 20m',dist:'62 km',type:'Quick',color:'#c9a227',desc:'Direct highway via MR3.',stops:['Manzini Highway','Mbabane Bypass'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Eswatini'},
+    {ico:'💰',name:'Budget Route',time:'2h 45m',dist:'E45',type:'Affordable',color:'#534ab7',desc:'Kombi taxis — travel like a local.',stops:['Manzini Bus Rank','Mbabane Market'],url:'https://www.google.com/maps/dir/Mbabane/Manzini+Bus+Rank+Eswatini'},
   ];
   return (
     <div>
       <div style={styles.sectionTitle}>{t.navigate}</div>
       {loc?(
         <div style={{background:'rgba(29,158,117,0.12)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:12,padding:14,marginBottom:14}}>
-          <div style={{fontSize:12,fontWeight:600,color:'#5dcaa5',marginBottom:6}}>📍 Your Live Location</div>
+          <div style={{fontSize:12,fontWeight:600,color:'#5dcaa5',marginBottom:6}}><I e="📍"/> Your Live Location</div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}}>
             <div style={{background:'rgba(255,255,255,0.05)',borderRadius:8,padding:9}}>
               <div style={{fontSize:9,color:'#8fa3c4',marginBottom:2}}>Latitude</div>
@@ -2760,13 +2761,13 @@ function MapTab({t}) {
               <div style={{fontSize:12,fontWeight:600,color:'#f0f4ff'}}>{loc.lng.toFixed(6)}</div>
             </div>
           </div>
-          <div style={{fontSize:11,color:'#5dcaa5',marginBottom:10}}>🟢 Updating live · ±{loc.acc}m accuracy</div>
+          <div style={{fontSize:11,color:'#5dcaa5',marginBottom:10}}><I e="🟢"/> Updating live · ±{loc.acc}m accuracy</div>
           <button style={{...styles.btnPrimary,padding:'9px',fontSize:12}} onClick={()=>window.open('https://www.google.com/maps?q='+loc.lat+','+loc.lng,'_blank')}>Open in Google Maps</button>
         </div>
       ):(
         <>
           {err&&<div style={{background:'rgba(226,75,74,0.1)',border:'0.5px solid rgba(226,75,74,0.3)',borderRadius:10,padding:10,marginBottom:10,fontSize:12,color:'#e24b4a'}}>{err}</div>}
-          <button style={{...styles.btnPrimary,marginBottom:14}} onClick={startTracking}>📍 Show My Live Location</button>
+          <button style={{...styles.btnPrimary,marginBottom:14}} onClick={startTracking}><I e="📍"/> Show My Live Location</button>
         </>
       )}
       <RealMap loc={loc} t={t}/>
@@ -2776,7 +2777,7 @@ function MapTab({t}) {
           <div onClick={()=>setActive(active===r.name?null:r.name)} style={{background:'rgba(255,255,255,0.05)',border:active===r.name?'0.5px solid '+r.color:'0.5px solid rgba(201,162,39,0.2)',borderRadius:active===r.name?'12px 12px 0 0':12,padding:'11px 13px',marginBottom:active===r.name?0:8,cursor:'pointer'}}>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
-                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{r.name}</div>
+                <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}><I e={r.ico}/> {r.name}</div>
                 <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>{r.time} · {r.dist}</div>
               </div>
               <span style={{fontSize:10,padding:'3px 10px',borderRadius:20,border:'0.5px solid '+r.color,color:r.color}}>{r.type}</span>
@@ -2786,7 +2787,7 @@ function MapTab({t}) {
             <div style={{background:'rgba(255,255,255,0.03)',border:'0.5px solid '+r.color,borderTop:'none',borderRadius:'0 0 12px 12px',padding:12,marginBottom:8}}>
               <div style={{fontSize:12,color:'#b0c4de',lineHeight:1.6,marginBottom:8}}>{r.desc}</div>
               {r.stops.map((s,i)=><div key={i} style={{display:'flex',gap:7,alignItems:'center',marginBottom:5}}><div style={{width:5,height:5,borderRadius:'50%',background:r.color,flexShrink:0}}/><div style={{fontSize:11,color:'#8fa3c4'}}>{s}</div></div>)}
-              <button style={{...styles.btnPrimary,marginTop:10,padding:'10px',fontSize:12}} onClick={()=>window.open(r.url,'_blank')}>🗺️ Open in Google Maps</button>
+              <button style={{...styles.btnPrimary,marginTop:10,padding:'10px',fontSize:12}} onClick={()=>window.open(r.url,'_blank')}><I e="🗺"/> Open in Google Maps</button>
             </div>
           )}
         </div>
@@ -2831,10 +2832,10 @@ function AITab({t}) {
   return (
     <div style={{display:'flex',flexDirection:'column',height:'75vh'}}>
       <div style={{textAlign:'center',padding:'10px 0 6px'}}>
-        <div style={{fontSize:36}}>🤖</div>
+        <div style={{fontSize:36}}><I e="🤖"/></div>
         <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff'}}>{t.aiTitle}</div>
         <div style={{fontSize:10,color:'#8fa3c4'}}>{t.aiSub}</div>
-        {lastAI&&<button onClick={()=>speak(lastAI.text)} style={{marginTop:5,padding:'4px 12px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:10}}>{speaking?'🔊 Speaking...':'🔊 Read Aloud'}</button>}
+        {lastAI&&<button onClick={()=>speak(lastAI.text)} style={{marginTop:5,padding:'4px 12px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:10}}>{speaking?<><I e="🔊"/> Speaking...</>:<><I e="🔊"/> Read Aloud</>}</button>}
       </div>
       <div ref={chatRef} style={{flex:1,overflowY:'auto',paddingBottom:10}}>
         {msgs.map((m,i)=><div key={i} style={m.role==='ai'?styles.bubbleAI:styles.bubbleUser}>{m.text}</div>)}
@@ -2847,7 +2848,7 @@ function AITab({t}) {
       </div>
       <div style={{display:'flex',gap:8,paddingTop:5}}>
         <input style={styles.chatInput} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="Ask anything about Eswatini..."/>
-        <button style={styles.sendBtn} onClick={send}>➤</button>
+        <button style={styles.sendBtn} onClick={send}><I e="➤"/></button>
       </div>
     </div>
   );
@@ -2935,16 +2936,16 @@ function BusinessTab({t}) {
       <div style={{position:'relative',flexShrink:0}}>
         <Img src={selBiz.img} alt={selBiz.name} style={{width:'100%',height:200}}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,transparent 40%,rgba(10,22,40,0.9) 100%)'}}/>
-        <button onClick={()=>setSelBiz(null)} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}>← Back</button>
+        <button onClick={()=>setSelBiz(null)} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> Back</button>
         <div style={{position:'absolute',bottom:12,left:14,zIndex:10}}>
           <div style={{fontSize:18,fontWeight:700,color:'#fff',textShadow:'0 2px 8px rgba(0,0,0,0.9)'}}>{selBiz.name}</div>
-          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}>📍 {selBiz.region} · {selBiz.type}</div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.85)'}}><I e="📍"/> {selBiz.region} · {selBiz.type}</div>
         </div>
       </div>
       <div style={{flex:1,overflowY:'auto',padding:16}}>
-        {selBiz.verified&&<div style={{display:'inline-block',fontSize:11,padding:'3px 10px',borderRadius:20,background:'rgba(29,158,117,0.15)',color:'#5dcaa5',border:'0.5px solid rgba(29,158,117,0.3)',marginBottom:14}}>✓ Verified Business</div>}
+        {selBiz.verified&&<div style={{display:'inline-block',fontSize:11,padding:'3px 10px',borderRadius:20,background:'rgba(29,158,117,0.15)',color:'#5dcaa5',border:'0.5px solid rgba(29,158,117,0.3)',marginBottom:14}}><I e="✓"/> Verified Business</div>}
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:16}}>
-          {[['Views',selBiz.views+'/week'],['Revenue',selBiz.revenue],['Rating','4.7 ⭐']].map(([l,v])=>(
+          {[['Views',selBiz.views+'/week'],['Revenue',selBiz.revenue],['Rating',<span><I e="⭐"/> 4.7</span>]].map(([l,v])=>(
             <div key={l} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:10,padding:'11px 8px',textAlign:'center'}}>
               <div style={{fontSize:9,color:'#8fa3c4',marginBottom:3}}>{l}</div>
               <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>{v}</div>
@@ -2957,7 +2958,7 @@ function BusinessTab({t}) {
             {selBiz.gallery&&selBiz.gallery.length>0&&<PhotoGrid images={selBiz.gallery}/>}
           </div>
         )}
-        <button style={{...styles.btnPrimary,marginBottom:16}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(selBiz.name)+'+Eswatini','_blank')}>🗺️ {t.getDir}</button>
+        <button style={{...styles.btnPrimary,marginBottom:16}} onClick={()=>window.open('https://www.google.com/maps/search/'+encodeURIComponent(selBiz.name)+'+Eswatini','_blank')}><I e="🗺"/> {t.getDir}</button>
       </div>
     </div>
   );
@@ -2967,10 +2968,10 @@ function BusinessTab({t}) {
         <>
           <div style={{background:'rgba(29,158,117,0.1)',border:'0.5px solid rgba(29,158,117,0.3)',borderRadius:16,padding:18,marginBottom:14}}>
             <div style={{fontSize:10,color:'#5dcaa5',fontWeight:600,letterSpacing:1,marginBottom:5}}>BUSINESS PORTAL</div>
-            <div style={{fontSize:19,fontWeight:700,color:'#f0f4ff',marginBottom:5}}>Grow With Tourism 🌱</div>
+            <div style={{fontSize:19,fontWeight:700,color:'#f0f4ff',marginBottom:5}}>Grow With Tourism <I e="🌱"/></div>
             <div style={{fontSize:12,color:'#8fa3c4',lineHeight:1.6,marginBottom:10}}>List your business and reach thousands of tourists from around the world.</div>
             <div style={{display:'flex',alignItems:'center',gap:8,background:'rgba(201,162,39,0.08)',borderRadius:10,padding:'9px 12px',marginBottom:12}}>
-              <span>💰</span>
+              <span><I e="💰"/></span>
               <div><div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>E200 per month listing fee</div><div style={{fontSize:10,color:'#8fa3c4'}}>Pay upfront — listing goes live within 24 hours</div></div>
             </div>
             <button style={{...styles.btnPrimary,padding:'11px 24px',fontSize:14}} onClick={()=>setStep('register')}>+ Register Your Business</button>
@@ -2982,12 +2983,12 @@ function BusinessTab({t}) {
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{b.name}</div>
                 <div style={{fontSize:11,color:'#8fa3c4',marginTop:2}}>{b.type} · {b.region}</div>
-                {b.verified&&<span style={{fontSize:9,padding:'2px 7px',borderRadius:6,background:'rgba(29,158,117,0.15)',color:'#5dcaa5',border:'0.5px solid rgba(29,158,117,0.3)',marginTop:4,display:'inline-block'}}>✓ Verified</span>}
+                {b.verified&&<span style={{fontSize:9,padding:'2px 7px',borderRadius:6,background:'rgba(29,158,117,0.15)',color:'#5dcaa5',border:'0.5px solid rgba(29,158,117,0.3)',marginTop:4,display:'inline-block'}}><I e="✓"/> Verified</span>}
               </div>
               <div style={{textAlign:'right',flexShrink:0}}>
                 <div style={{fontSize:12,fontWeight:600,color:'#c9a227'}}>{b.views}</div>
                 <div style={{fontSize:9,color:'#8fa3c4'}}>views/week</div>
-                <div style={{fontSize:9,color:'#c9a227',marginTop:3}}>Tap →</div>
+                <div style={{fontSize:9,color:'#c9a227',marginTop:3}}>Tap <I e="→"/></div>
               </div>
             </div>
           ))}
@@ -2996,7 +2997,7 @@ function BusinessTab({t}) {
       {step==='register'&&(
         <div>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:18}}>
-            <button onClick={()=>setStep('list')} style={{background:'transparent',border:'none',color:'#c9a227',fontSize:20,cursor:'pointer'}}>←</button>
+            <button onClick={()=>setStep('list')} style={{background:'transparent',border:'none',color:'#c9a227',fontSize:20,cursor:'pointer'}}><I e="←"/></button>
             <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Register Business</div>
           </div>
           {[{l:'Business Name *',k:'name',tp:'text',ph:'My Eswatini Lodge'},{l:'Phone *',k:'phone',tp:'tel',ph:'+268 2XXX XXXX'},{l:'Email *',k:'email',tp:'email',ph:'info@mybusiness.com'},{l:'Region',k:'region',tp:'text',ph:'Ezulwini Valley'},{l:'Description',k:'desc',tp:'text',ph:'Tell tourists about your business'}].map(f=>(
@@ -3014,7 +3015,7 @@ function BusinessTab({t}) {
           <div style={{marginBottom:16}}>
             <div style={{fontSize:11,color:'#8fa3c4',marginBottom:5}}>Photos of your business (up to 6)</div>
             <label style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,border:'1px dashed rgba(201,162,39,0.4)',borderRadius:10,padding:'14px',cursor:photos.length>=6?'not-allowed':'pointer',color:'#c9a227',fontSize:12,fontWeight:600,opacity:photos.length>=6?0.5:1}}>
-              📷 {photos.length>=6?'Maximum 6 photos added':'Tap to add photos'}
+              <I e="📷"/> {photos.length>=6?'Maximum 6 photos added':'Tap to add photos'}
               <input type="file" accept="image/*" multiple disabled={photos.length>=6} onChange={handlePhotoUpload} style={{display:'none'}}/>
             </label>
             {photos.length>0&&(
@@ -3022,19 +3023,19 @@ function BusinessTab({t}) {
                 {photos.map((p,i)=>(
                   <div key={i} style={{position:'relative'}}>
                     <Img src={p} alt="" style={{width:'100%',height:70,borderRadius:8}}/>
-                    <button onClick={()=>removePhoto(i)} style={{position:'absolute',top:3,right:3,width:20,height:20,borderRadius:'50%',border:'none',background:'rgba(10,22,40,0.85)',color:'#e24b4a',fontSize:12,cursor:'pointer',lineHeight:1}}>✕</button>
+                    <button onClick={()=>removePhoto(i)} style={{position:'absolute',top:3,right:3,width:20,height:20,borderRadius:'50%',border:'none',background:'rgba(10,22,40,0.85)',color:'#e24b4a',fontSize:12,cursor:'pointer',lineHeight:1}}><I e="✕"/></button>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <button style={styles.btnPrimary} onClick={()=>{if(!form.name||!form.phone||!form.email){alert('Please fill required fields');return;}setStep('payment');}}>Continue to Payment →</button>
+          <button style={styles.btnPrimary} onClick={()=>{if(!form.name||!form.phone||!form.email){alert('Please fill required fields');return;}setStep('payment');}}>Continue to Payment <I e="→"/></button>
         </div>
       )}
       {step==='payment'&&(
         <div>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:18}}>
-            <button onClick={()=>setStep('register')} style={{background:'transparent',border:'none',color:'#c9a227',fontSize:20,cursor:'pointer'}}>←</button>
+            <button onClick={()=>setStep('register')} style={{background:'transparent',border:'none',color:'#c9a227',fontSize:20,cursor:'pointer'}}><I e="←"/></button>
             <div style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Payment</div>
           </div>
           <div style={{background:'rgba(201,162,39,0.08)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:14,padding:14,marginBottom:18}}>
@@ -3057,10 +3058,10 @@ function BusinessTab({t}) {
             </div>
           </div>
           <div style={{background:'rgba(29,158,117,0.08)',border:'0.5px solid rgba(29,158,117,0.2)',borderRadius:10,padding:10,marginBottom:14,display:'flex',gap:7,alignItems:'center'}}>
-            <span>🔒</span><div style={{fontSize:11,color:'#5dcaa5'}}>Secured with 256-bit SSL encryption</div>
+            <span><I e="🔒"/></span><div style={{fontSize:11,color:'#5dcaa5'}}>Secured with 256-bit SSL encryption</div>
           </div>
           <button style={{...styles.btnPrimary,marginBottom:8,opacity:saving?0.6:1}} disabled={saving} onClick={pay}>{saving?'Saving…':'Pay E200 and Submit Listing'}</button>
-          <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}>← Back</button>
+          <button style={{width:'100%',padding:'10px',borderRadius:50,border:'0.5px solid rgba(201,162,39,0.3)',background:'transparent',color:'#8fa3c4',cursor:'pointer',fontSize:13}} onClick={()=>setStep('register')}><I e="←"/> Back</button>
         </div>
       )}
     </div>
@@ -3105,7 +3106,7 @@ function MyOrdersTab({t}){
 
   if(!user) return (
     <div style={{textAlign:'center',padding:'40px 16px'}}>
-      <div style={{fontSize:46,marginBottom:12}}>🔐</div>
+      <div style={{fontSize:46,marginBottom:12}}><I e="🔐"/></div>
       <div style={{fontSize:15,fontWeight:700,color:'#f0f4ff',marginBottom:8}}>This is your space</div>
       <div style={{fontSize:13,color:'#8fa3c4',lineHeight:1.6,marginBottom:18}}>
         Sign in to see your saved favourites, order history with receipts, and manage your bookings — all in one place.
@@ -3120,12 +3121,12 @@ function MyOrdersTab({t}){
 
   return (
     <div>
-      <div style={styles.sectionTitle}>📋 My Account</div>
+      <div style={styles.sectionTitle}><I e="📋"/> My Account</div>
       {loading ? (
         <div style={{textAlign:'center',padding:30,color:'#8fa3c4',fontSize:13}}>Loading…</div>
       ) : (
         <>
-          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'4px 0 10px'}}>❤️ Favourites</div>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'4px 0 10px'}}><I e="❤"/> Favourites</div>
           {favorites.length===0 ? <Empty label="No favourites yet — tap 'Save' on any place you like."/> : favorites.map(f=>(
             <div key={f.id} style={{display:'flex',alignItems:'center',gap:10,background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:10,marginBottom:8}}>
               <Img src={f.img} alt={f.place_name} style={{width:48,height:48,borderRadius:8,flexShrink:0}}/>
@@ -3137,7 +3138,7 @@ function MyOrdersTab({t}){
             </div>
           ))}
 
-          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'18px 0 10px'}}>🍽️ Food Orders</div>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'18px 0 10px'}}><I e="🍽"/> Food Orders</div>
           {orders.length===0 ? <Empty label="No orders yet."/> : orders.map(o=>(
                 <div key={o.id} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:13,marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
@@ -3156,14 +3157,14 @@ function MyOrdersTab({t}){
                 </div>
               ))}
 
-          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'18px 0 10px'}}>🛏️ Accommodation Bookings</div>
+          <div style={{fontSize:13,fontWeight:700,color:'#c9a227',margin:'18px 0 10px'}}><I e="🛏"/> Accommodation Bookings</div>
           {bookings.length===0 ? <Empty label="No bookings yet."/> : bookings.map(b=>(
                 <div key={b.id} style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(201,162,39,0.2)',borderRadius:12,padding:13,marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
                     <span style={{fontSize:13,fontWeight:600,color:'#f0f4ff'}}>{b.property_name}</span>
                     <span style={{fontSize:11,fontWeight:700,color:b.status==='cancelled'?'#e24b4a':'#5dcaa5'}}>{b.status==='cancelled'?'Cancelled':'Confirmed'}</span>
                   </div>
-                  <div style={{fontSize:11,color:'#8fa3c4',marginBottom:6}}>{b.check_in} → {b.check_out} · {b.guests} guest(s)</div>
+                  <div style={{fontSize:11,color:'#8fa3c4',marginBottom:6}}>{b.check_in} <I e="→"/> {b.check_out} · {b.guests} guest(s)</div>
                   <div style={{fontSize:18,fontWeight:800,color:'#c9a227',letterSpacing:1,marginBottom:8}}>{b.booking_code}</div>
                   {b.status!=='cancelled' && <button onClick={()=>cancelBooking(b.booking_code)} style={{padding:'6px 12px',borderRadius:50,border:'0.5px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.08)',color:'#e24b4a',fontSize:11,fontWeight:600,cursor:'pointer'}}>Cancel</button>}
                 </div>
@@ -3201,7 +3202,7 @@ function BottomNav({tab,setTab,t}){
           {more.map(item=>(
             <div key={item.id} onClick={()=>{setTab(item.id);setShowMore(false);}}
               style={{display:'flex',alignItems:'center',gap:10,padding:'11px 14px',cursor:'pointer',background:tab===item.id?'rgba(201,162,39,0.12)':'transparent',color:tab===item.id?'#c9a227':'#f0f4ff',fontSize:13,borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
-              <span style={{fontSize:16}}>{item.icon}</span><span>{item.label}</span>
+              <I e={item.icon} size={18}/><span>{item.label}</span>
             </div>
           ))}
         </div>
@@ -3209,12 +3210,12 @@ function BottomNav({tab,setTab,t}){
       <div style={styles.bottomNav}>
         {primary.map(item=>(
           <div key={item.id} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>{setTab(item.id);setShowMore(false);}}>
-            <span style={{fontSize:16}}>{item.icon}</span>
+            <I e={item.icon} size={18}/>
             <span style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
           </div>
         ))}
         <div style={moreActive?styles.navActive:styles.navItem} onClick={()=>setShowMore(s=>!s)}>
-          <span style={{fontSize:16}}>{showMore?'✕':'⋯'}</span>
+          <I e={showMore?'✕':'⋯'} size={18}/>
           <span style={{fontSize:8,color:moreActive?'#c9a227':'#8fa3c4',fontWeight:500}}>More</span>
         </div>
       </div>
