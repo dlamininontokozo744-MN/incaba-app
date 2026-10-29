@@ -1,175 +1,406 @@
-* {
-  margin: 0;
-  padding: 0;
+
+/* =========================================================
+   INCABA — RESPONSIVE DESIGN SYSTEM
+   Theme: Professional Navy & Gold
+   Mobile: Preserve existing navigation
+   Desktop: Wider layout, better spacing and card grids
+   ========================================================= */
+
+/* 1. DESIGN TOKENS */
+:root {
+  --incaba-bg: #081426;
+  --incaba-bg-soft: #0b192d;
+  --incaba-surface: #10223b;
+  --incaba-surface-hover: #172e4b;
+  --incaba-gold: #d9ad42;
+  --incaba-gold-light: #f0cc72;
+  --incaba-text: #f5f7fc;
+  --incaba-muted: #a8b7cc;
+  --incaba-border: rgba(217, 173, 66, 0.22);
+  --incaba-danger: #ef6464;
+  --incaba-success: #4cc9a0;
+
+  --incaba-radius-sm: 8px;
+  --incaba-radius-md: 14px;
+  --incaba-radius-lg: 20px;
+
+  --incaba-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.20);
+
+  --incaba-content-width: 1440px;
+  --incaba-sidebar-width: 224px;
+  --incaba-header-height: 72px;
+}
+
+/* 2. GLOBAL RESET */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html, body, #root {
+html {
   width: 100%;
-  min-height: 100vh;
-  background: #0a1628;
-  color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
+  min-height: 100%;
   overflow-x: hidden;
-}
-/* Fix bottom nav */
-html, body {
-  height: 100%;
-  overflow: hidden;
+  background: var(--incaba-bg);
+  scroll-behavior: smooth;
 }
 
 body {
-  background: #0a1628 !important;
+  margin: 0;
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: var(--incaba-bg) !important;
+  color: var(--incaba-text);
+
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+
+  -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
 
 #root {
-  background: #0a1628;
-  min-height: 100vh;
   width: 100%;
-}
-
-.app-wrapper {
-  max-width: 480px;
-  margin: 0 auto;
   min-height: 100vh;
-  background: #0a1628;
+  background: var(--incaba-bg);
 }
 
-#root {
-  background: #0a1628;
-  min-height: 100vh;
-  width: 100%;
-}
-
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0a1628;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #c9a84c;
-  border-radius: 4px;
-}
-
-input, button, select, textarea {
-  font-family: 'Segoe UI', sans-serif;
-}
-
-a {
-  color: #c9a84c;
-  text-decoration: none;
-}
-
-/* Responsive layout */
-.app-content {
-  width: 100%;
+img {
+  display: block;
   max-width: 100%;
 }
 
-/* On desktop make cards side by side */
-@media (min-width: 768px) {
-  .places-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+a {
+  color: var(--incaba-gold);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--incaba-gold-light);
+}
+
+::selection {
+  background: rgba(217, 173, 66, 0.35);
+  color: #fff;
+}
+
+/* 3. SCROLLBARS */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--incaba-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #65552f;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--incaba-gold);
+}
+
+/* 4. APP WRAPPER */
+.app-wrapper {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--incaba-bg);
+}
+
+.app-content,
+.content-area {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.content-area {
+  overflow-x: hidden;
+}
+
+/* Allow long text to wrap */
+h1,
+h2,
+h3,
+h4,
+p {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.3;
+}
+
+/* 5. FORM ELEMENTS */
+input,
+select,
+textarea {
+  max-width: 100%;
+  color: var(--incaba-text);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid rgba(217, 173, 66, 0.65);
+  outline-offset: 2px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8497b2;
+  opacity: 1;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--incaba-gold-light);
+  outline-offset: 3px;
+}
+
+/* 6. REUSABLE CARDS */
+.list-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: var(--incaba-radius-md);
+}
+
+.places-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.places-grid > *,
+.list-card img {
+  min-width: 0;
+}
+
+.places-grid img,
+.list-card img {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Do not force every grid in the app to use
+   the same number of columns. */
+
+/* 7. NAVIGATION BASE */
+.bottom-nav-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 8. MOBILE LAYOUT — DEFAULT
+   Keep the original compact mobile experience. */
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow-x: hidden;
   }
-  
+
+  .app-wrapper {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    margin-inline: auto;
+  }
+
+  .app-content,
+  .content-area {
+    padding: 14px;
+  }
+
+  .places-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .list-card {
+    width: 100%;
+  }
+
+  /* Preserve fixed-height image crops where used. */
+  .list-card img {
+    max-width: 100%;
+  }
+}
+
+/* 9. SMALL PHONES */
+@media (max-width: 360px) {
+  body {
+    font-size: 13px;
+  }
+
+  .app-content,
+  .content-area {
+    padding: 10px;
+  }
+
+  .places-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+}
+
+/* 10. TABLETS */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-wrapper {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  .app-content,
+  .content-area {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .places-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
   .list-card {
     max-width: 100%;
   }
+}
 
-  img {
+/* 11. DESKTOP — WINDOWS */
+@media (min-width: 1024px) {
+  html,
+  body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Remove the mobile width restriction. */
+  .app-wrapper {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  /* Give desktop content room to breathe. */
+  .app-content,
+  .content-area {
+    width: 100%;
+    max-width: var(--incaba-content-width);
+    margin-inline: auto;
+    padding: 24px 32px;
+  }
+
+  /* Three-column attraction and hotel grids. */
+  .places-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .list-card {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Consistent image cropping. */
+  .places-grid img,
+  .list-card img {
     object-fit: cover;
     object-position: center;
   }
-}
-/* ── DESKTOP RESPONSIVE LAYOUT ── */
-@media (min-width: 768px) {
 
-  /* Main app fills full screen */
-  .app, [class*="app"] {
-    max-width: 100% !important;
-    width: 100% !important;
+  /* Improve hover feedback on desktop cards. */
+  .list-card {
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
-  /* Content area gets padding */
-  [class*="content"] {
-    padding: 24px 40px !important;
-    max-width: 1200px;
-    margin: 0 auto;
+  .list-card:hover {
+    box-shadow: var(--incaba-shadow);
   }
 
-  /* Cards become 3 columns */
-  [class*="grid"] {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important;
+  /* Keep wide content from breaking the layout. */
+  table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
   }
 
-  /* Images fit properly */
-  img {
-    object-fit: cover;
-    object-position: center;
-  }
-
-  /* Hero banner bigger */
-  [class*="heroBanner"] {
-    padding: 40px !important;
-    font-size: 120% !important;
-  }
-
-  /* Bottom nav becomes side nav on desktop */
-  [class*="bottomNav"] {
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    width: 200px !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    padding: 80px 0 20px !important;
-    border-right: 0.5px solid rgba(201,162,39,0.25) !important;
-    border-top: none !important;
-  }
-
-  /* Push content right of side nav */
-  [class*="content"] {
-    margin-left: 200px !important;
-  }
-
-  /* Top bar also shifts */
-  [class*="topbar"] {
-    left: 200px !important;
-    width: calc(100% - 200px) !important;
+  pre,
+  code {
+    overflow-wrap: anywhere;
   }
 }
 
-/* Fix overlapping and all phone compatibility */
-* {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+/* 12. LARGE DESKTOP MONITORS */
+@media (min-width: 1440px) {
+  .app-content,
+  .content-area {
+    padding-inline: 40px;
+  }
+
+  .places-grid {
+    gap: 24px;
+  }
 }
 
-body {
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
-
-/* Fix bottom nav on all phones */
-.bottom-nav-safe {
-  padding-bottom: env(safe-area-inset-bottom, 16px);
-}
-
-/* Prevent horizontal overflow */
-.content-area {
-  overflow-x: hidden;
-  width: 100%;
-}
-
-/* Fix grid on small phones */
-@media (max-width: 360px) {
-  * {
-    font-size: 90% !important;
+/* 13. ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
