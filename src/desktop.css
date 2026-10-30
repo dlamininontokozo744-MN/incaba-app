@@ -202,3 +202,8 @@
   .ib-content > * { zoom: 1.35; max-width: calc(1440px / 1.35); }
   .ib-content [style*="height: 75vh"] { height: calc(78vh / 1.35) !important; }
 }
+.ib-content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  overscroll-behavior-y: contain;   /* Prevents whole-page rubber banding, keeps it clean */
+}
