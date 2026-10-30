@@ -62,26 +62,19 @@
   /* ---------- Sidebar navigation ---------- */
   .ib-nav {
     grid-area: nav;
-    position: static !important;
+    position: sticky !important;
+    top: 0;
+    height: calc(100vh - 68px);
     border-right: 0.5px solid rgba(201,162,39,0.22);
     background: rgba(10,22,40,0.6);
-    overflow-y: auto;
     display: flex !important;
     flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
   }
-  .ib-nav-bar { flex: 0 0 auto; }
-  .ib-side-footer {
-    display: flex !important;
-    align-items: center; gap: 12px;
-    margin: auto 14px 14px;           /* auto top margin pushes it to the bottom */
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 0.5px solid rgba(201,162,39,0.25);
-    background: linear-gradient(135deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03));
-  }
-  .ib-side-footer-title { font-size: 13px; font-weight: 700; color: #f0f4ff; line-height: 1.2; }
-  .ib-side-footer-sub   { font-size: 11px; color: #8fa3c4; margin-top: 2px; }
-  .ib-nav-bar {
+  .ib-nav-bar { 
+    flex: 1;
+    overflow-y: auto;
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
@@ -91,6 +84,20 @@
     background: transparent !important;
     position: static !important;
   }
+  .ib-side-footer {
+    display: flex !important;
+    align-items: center; 
+    gap: 12px;
+    flex-shrink: 0;
+    margin: 12px 14px 14px !important;           
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(201,162,39,0.25);
+    background: linear-gradient(135deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03));
+  }
+  .ib-side-footer-title { font-size: 13px; font-weight: 700; color: #f0f4ff; line-height: 1.2; }
+  .ib-side-footer-sub   { font-size: 11px; color: #8fa3c4; margin-top: 2px; }
+  
   .ib-nav-item {
     flex-direction: row !important;
     align-items: center !important;
