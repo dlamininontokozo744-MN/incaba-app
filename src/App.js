@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
 import { supabase } from './supabaseClient';
 import './App.css';
-import { I, Stars } from './Icon';
+import './desktop.css';
+import { I, Stars, Flag, stripEmoji } from './Icon';
 
 // A stable anonymous ID per device/browser, so a tourist can see their own
 // order/booking history without needing to create an account.
@@ -219,15 +220,15 @@ function useBackgroundGuard(active, onExpire){
 
 // ── ALL 9 LANGUAGES ───────────────────────────────────────
 const T = {
-  en:{flag:'🇬🇧',name:'English',explore:'Explore Eswatini ✦',tagline:"Unlocking Eswatini's Hidden Treasures",sub:'The Smart Digital Tourism Ecosystem 🇸🇿',offline:'9 Languages · Works Offline',welcome:"Welcome to Africa's Hidden Fortress",welcomeSub:'Discover breathtaking landscapes, vibrant culture, and unforgettable experiences.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Attractions',hiddenGem:'Hidden Gem',aiTitle:'Incaba AI Guide',aiSub:'Ask anything about Eswatini',navigate:'Navigate',home:'Home',ai:'AI Guide',business:'Business',explore2:'Explore',translate:'Translate',compare:'Compare',sos:'SOS Emergency',sosSub:'Tap to share location with emergency services',weather:'Weather Today',currency:'Currency Converter',reviews:'Tourist Reviews',writeReview:'Write Review',submit:'Submit',cancel:'Cancel',getDir:'Get Directions',savePlace:'Save Place',about:'About',location:'Location',hours:'Opening Hours',price:'Entry Fee',tips:'Travel Tips',signIn:'Sign In',signUp:'Sign Up',logout:'Logout',welcome2:'Welcome back',createAccount:'Create Account',virtualTour:'Virtual Tour',orderFood:'Order Food',comparePrice:'Compare Prices',menu:'Menu',addToCart:'Add to Cart',cart:'Cart',placeOrder:'Place Order',tableNum:'Table number or delivery address',bookNow:'Book Now',checkIn:'Check-in Date',checkOut:'Check-out Date',guests:'Number of Guests',confirmBooking:'Confirm Booking',amenities:'Amenities',photos:'Photos',rooms:'Rooms',dishes:'Dishes'},
-  ss:{flag:'🇸🇿',name:'siSwati',explore:'Hlola Eswatini ✦',tagline:'Sivula Tigugu Letifihlekile Tase-Eswatini',sub:'Inhlelo Lehlakaniphile Yekuvakasha 🇸🇿',offline:'Tilimi Letingu-9 · Isebenta Ungaxhunyiwe',welcome:'Siyakemukela e-Africa Incaba Lefihlekile',welcomeSub:'Tola tindzawo letimangalisako, inhlalo-mphilo, netilwimi letingakhohlwakali.',attractions:'Tindzawo',restaurants:'Emadlelo',hotels:'Emahhotela',topAttractions:'Tindzawo Letiphambili',hiddenGem:'Sigugu',aiTitle:'Umcondzi we-Incaba AI',aiSub:'Butseka noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Umcondzi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sehhatsi',sosSub:'Cindzetela wabelane ndzawo yakho nebaphephisi',weather:'Isimo Selizulu',currency:'Shintsha Imali',reviews:'Tibuka',writeReview:'Bhala Tibuka',submit:'Thumela',cancel:'Yekela',getDir:'Tsatsa Indlela',savePlace:'Gcina Indawo',about:'Mayelana',location:'Ndzawo',hours:'Sikhati',price:'Inkokhelo',tips:'Imilayeto',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakemukela',createAccount:'Yenta Akhawunti',virtualTour:'Vaka Nge-Virtual',orderFood:'Odela Kudla',comparePrice:'Qhatanisa Tintengo',menu:'Menyu',addToCart:'Engeta',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Buka Manje',checkIn:'Lusuku Lokungena',checkOut:'Lusuku Lokuphuma',guests:'Tinombolo Tetivakashi',confirmBooking:'Cina Kubuka',amenities:'Tinhlelo',photos:'Tifoto',rooms:'Tigumbi',dishes:'Kudla'},
-  zu:{flag:'🇿🇦',name:'Zulu',explore:'Hlola i-Eswatini ✦',tagline:'Sivula Amagugu Ase-Eswatini',sub:'Uhlelo Lokuhlakanipha Lokuvakasha 🇸🇿',offline:'Izilimi Eziyi-9 · Isebenza Offline',welcome:'Siyakwamukela e-Afrika Insaba Efihliwe',welcomeSub:'Thola izindawo ezimangalisayo, amasiko ashisayo.',attractions:'Izindawo',restaurants:'Ama-Restorenti',hotels:'Amahhotela',topAttractions:'Izindawo Eziphezulu',hiddenGem:'Igugu Elisifihlekile',aiTitle:'Isiqondisi se-Incaba AI',aiSub:'Buza noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Isiqondisi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sezimo',sosSub:'Thepha ukwabelana nendawo yakho',weather:'Isimo Sezulu',currency:'Isiguquli Semali',reviews:'Izibuyekezo',writeReview:'Bhala Ukubuyekeza',submit:'Thumela',cancel:'Khansela',getDir:'Thola Izikhombo',savePlace:'Gcina Indawo',about:'Mayelana',location:'Indawo',hours:'Amahora',price:'Imali Yokungena',tips:'Amacebo',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakwamukela futhi',createAccount:'Dala I-Akhawunti',virtualTour:'Ithiyetha Elikhulu',orderFood:'Odela Ukudla',comparePrice:'Qhatanisa Amanani',menu:'Imenyu',addToCart:'Engeza',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Bhuka Manje',checkIn:'Usuku Lokungena',checkOut:'Usuku Lokuphuma',guests:'Izivakashi',confirmBooking:'Qinisekisa Ukubhuka',amenities:'Izinsiza',photos:'Izithombe',rooms:'Amagumbi',dishes:'Ukudla'},
-  af:{flag:'🇿🇦',name:'Afrikaans',explore:'Verken Eswatini ✦',tagline:"Ontsluit Eswatini se Verborge Skatte",sub:'Die Slim Digitale Toerisme-Ekosisteem 🇸🇿',offline:'9 Tale · Vanlyn Gereed',welcome:"Welkom by Afrika se Verborge Vesting",welcomeSub:'Ontdek asemrowende landseigte, lewendige kultuur.',attractions:'Besienswaardighede',restaurants:'Restaurante',hotels:'Hotelle',topAttractions:'Top Besienswaardighede',hiddenGem:'Verborge Juweel',aiTitle:'Incaba KI-Gids',aiSub:'Vra enigiets oor Eswatini',navigate:'Navigeer',home:'Tuis',ai:'KI-Gids',business:'Besigheid',explore2:'Verken',translate:'Vertaal',compare:'Vergelyk',sos:'SOS Nood',sosSub:'Tik om ligging te deel',weather:'Weer Vandag',currency:'Geldomskakelaar',reviews:'Resensies',writeReview:'Skryf Resensie',submit:'Indien',cancel:'Kanselleer',getDir:'Kry Aanwysings',savePlace:'Stoor Plek',about:'Oor',location:'Ligging',hours:'Openingsure',price:'Toegangsgeld',tips:'Reistips',signIn:'Meld Aan',signUp:'Registreer',logout:'Meld Af',welcome2:'Welkom terug',createAccount:'Skep Rekening',virtualTour:'Virtuele Toer',orderFood:'Bestel Kos',comparePrice:'Vergelyk Pryse',menu:'Spyskaart',addToCart:'Voeg By',cart:'Mandjie',placeOrder:'Plaas Bestelling',tableNum:'Tafelnommer',bookNow:'Bespreek Nou',checkIn:'Inboekdatum',checkOut:'Uitboekdatum',guests:'Gaste',confirmBooking:'Bevestig Besprekings',amenities:'Fasiliteite',photos:'Fotos',rooms:'Kamers',dishes:'Geregte'},
-  pt:{flag:'🇲🇿',name:'Portugues',explore:'Explorar Eswatini ✦',tagline:'Desbloqueando os Tesouros Escondidos',sub:'O Ecossistema de Turismo Digital Inteligente 🇸🇿',offline:'9 Idiomas · Disponivel Offline',welcome:'Bem-vindo a Fortaleza Oculta de Africa',welcomeSub:'Descubra paisagens deslumbrantes, cultura vibrante.',attractions:'Atracoes',restaurants:'Restaurantes',hotels:'Hoteis',topAttractions:'Principais Atracoes',hiddenGem:'Joia Escondida',aiTitle:'Guia IA Incaba',aiSub:'Pergunte qualquer coisa sobre Eswatini',navigate:'Navegar',home:'Inicio',ai:'Guia IA',business:'Negocios',explore2:'Explorar',translate:'Traduzir',compare:'Comparar',sos:'Emergencia SOS',sosSub:'Toque para partilhar localizacao',weather:'Tempo Hoje',currency:'Conversor de Moeda',reviews:'Avaliacoes',writeReview:'Escrever Avaliacao',submit:'Enviar',cancel:'Cancelar',getDir:'Obter Direcoes',savePlace:'Guardar Local',about:'Sobre',location:'Localizacao',hours:'Horario',price:'Taxa de Entrada',tips:'Dicas',signIn:'Entrar',signUp:'Registar',logout:'Sair',welcome2:'Bem-vindo de volta',createAccount:'Criar Conta',virtualTour:'Visita Virtual',orderFood:'Encomendar',comparePrice:'Comparar Precos',menu:'Menu',addToCart:'Adicionar',cart:'Carrinho',placeOrder:'Fazer Pedido',tableNum:'Numero da mesa',bookNow:'Reservar Agora',checkIn:'Data de Entrada',checkOut:'Data de Saida',guests:'Hospedes',confirmBooking:'Confirmar Reserva',amenities:'Comodidades',photos:'Fotos',rooms:'Quartos',dishes:'Pratos'},
-  fr:{flag:'🇫🇷',name:'Francais',explore:'Explorer Eswatini ✦',tagline:"Deverrouiller les Tresors Caches d Eswatini",sub:"L Ecosysteme Touristique Numerique 🇸🇿",offline:'9 Langues · Disponible Hors Ligne',welcome:"Bienvenue dans la Fortresse Cachee d Afrique",welcomeSub:'Decouvrez des paysages a couper le souffle.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Meilleures Attractions',hiddenGem:'Joyau Cache',aiTitle:'Guide IA Incaba',aiSub:"Demandez n importe quoi sur Eswatini",navigate:'Naviguer',home:'Accueil',ai:'Guide IA',business:'Entreprise',explore2:'Explorer',translate:'Traduire',compare:'Comparer',sos:'Urgence SOS',sosSub:"Appuyez pour partager l emplacement",weather:"Meteo Aujourd hui",currency:'Convertisseur',reviews:'Avis',writeReview:'Ecrire un Avis',submit:'Soumettre',cancel:'Annuler',getDir:'Obtenir des Directions',savePlace:'Sauvegarder',about:'A Propos',location:'Emplacement',hours:"Heures d Ouverture",price:"Frais d Entree",tips:'Conseils',signIn:'Se Connecter',signUp:"S inscrire",logout:'Se Deconnecter',welcome2:'Bon Retour',createAccount:'Creer un Compte',virtualTour:'Visite Virtuelle',orderFood:'Commander',comparePrice:'Comparer les Prix',menu:'Menu',addToCart:'Ajouter',cart:'Panier',placeOrder:'Passer la Commande',tableNum:'Numero de table',bookNow:'Reserver Maintenant',checkIn:"Date d Arrivee",checkOut:'Date de Depart',guests:'Invites',confirmBooking:'Confirmer la Reservation',amenities:'Equipements',photos:'Photos',rooms:'Chambres',dishes:'Plats'},
-  de:{flag:'🇩🇪',name:'Deutsch',explore:'Eswatini Erkunden ✦',tagline:'Die Verborgenen Schatze Eswatinis',sub:'Das Intelligente Digitale Tourismus-Okosystem 🇸🇿',offline:'9 Sprachen · Offline Verfugbar',welcome:"Willkommen in Afrikas Verborgener Festung",welcomeSub:'Entdecken Sie atemberaubende Landschaften.',attractions:'Sehenswurdigkeiten',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Sehenswurdigkeiten',hiddenGem:'Verborgenes Juwel',aiTitle:'Incaba KI-Fuhrer',aiSub:'Fragen Sie alles uber Eswatini',navigate:'Navigieren',home:'Startseite',ai:'KI-Fuhrer',business:'Geschaft',explore2:'Erkunden',translate:'Ubersetzen',compare:'Vergleichen',sos:'SOS-Notfall',sosSub:'Tippen Sie um den Standort zu teilen',weather:'Wetter Heute',currency:'Wahrungsrechner',reviews:'Bewertungen',writeReview:'Bewertung Schreiben',submit:'Einreichen',cancel:'Abbrechen',getDir:'Wegbeschreibung',savePlace:'Ort Speichern',about:'Uber',location:'Standort',hours:'Offnungszeiten',price:'Eintrittsgebuh',tips:'Reisetipps',signIn:'Anmelden',signUp:'Registrieren',logout:'Abmelden',welcome2:'Willkommen Zuruck',createAccount:'Konto Erstellen',virtualTour:'Virtuelle Tour',orderFood:'Essen Bestellen',comparePrice:'Preise Vergleichen',menu:'Speisekarte',addToCart:'Hinzufugen',cart:'Warenkorb',placeOrder:'Bestellung Aufgeben',tableNum:'Tischnummer',bookNow:'Jetzt Buchen',checkIn:'Anreisedatum',checkOut:'Abreisedatum',guests:'Gaste',confirmBooking:'Buchung Bestatigen',amenities:'Annehmlichkeiten',photos:'Fotos',rooms:'Zimmer',dishes:'Gerichte'},
-  zh:{flag:'🇨🇳',name:'Chinese',explore:'探索斯威士兰 ✦',tagline:'解锁斯威士兰的隐藏宝藏',sub:'智能数字旅游生态系统 🇸🇿',offline:'9种语言 · 离线可用',welcome:'欢迎来到非洲的隐藏堡垒',welcomeSub:'探索令人叹为观止的风景、充满活力的文化。',attractions:'景点',restaurants:'餐厅',hotels:'酒店',topAttractions:'热门景点',hiddenGem:'隐藏宝石',aiTitle:'Incaba 人工智能向导',aiSub:'询问任何关于斯威士兰的问题',navigate:'导航',home:'主页',ai:'AI向导',business:'商业',explore2:'探索',translate:'翻译',compare:'比较',sos:'SOS紧急',sosSub:'点击与紧急服务共享位置',weather:'今日天气',currency:'货币换算器',reviews:'游客评论',writeReview:'写评论',submit:'提交',cancel:'取消',getDir:'获取路线',savePlace:'收藏地点',about:'关于',location:'位置',hours:'营业时间',price:'门票费用',tips:'旅行提示',signIn:'登录',signUp:'注册',logout:'退出',welcome2:'欢迎回来',createAccount:'创建账户',virtualTour:'虚拟游览',orderFood:'点餐',comparePrice:'比较价格',menu:'菜单',addToCart:'添加',cart:'购物车',placeOrder:'下单',tableNum:'桌号',bookNow:'立即预订',checkIn:'入住日期',checkOut:'退房日期',guests:'客人数量',confirmBooking:'确认预订',amenities:'设施',photos:'照片',rooms:'房间',dishes:'菜肴'},
-  ar:{flag:'🇸🇦',name:'Arabic',explore:'استكشف اسواتيني ✦',tagline:'اكتشف الكنوز الخفية لاسواتيني',sub:'نظام السياحة الرقمية الذكية 🇸🇿',offline:'9 لغات متاح بدون انترنت',welcome:'مرحبا بك في القلعة الخفية لافريقيا',welcomeSub:'اكتشف مناظر طبيعية خلابة وثقافة نابضة بالحياة.',attractions:'المعالم',restaurants:'المطاعم',hotels:'الفنادق',topAttractions:'افضل المعالم',hiddenGem:'الجوهرة الخفية',aiTitle:'دليل Incaba الذكي',aiSub:'اسال اي شيء عن اسواتيني',navigate:'التنقل',home:'الرئيسية',ai:'الدليل الذكي',business:'الاعمال',explore2:'استكشف',translate:'ترجم',compare:'قارن',sos:'طوارئ SOS',sosSub:'انقر لمشاركة موقعك',weather:'الطقس اليوم',currency:'محول العملات',reviews:'تقييمات',writeReview:'اكتب تقييما',submit:'ارسال',cancel:'الغاء',getDir:'احصل على الاتجاهات',savePlace:'احفظ المكان',about:'حول',location:'الموقع',hours:'ساعات العمل',price:'رسوم الدخول',tips:'نصائح',signIn:'تسجيل الدخول',signUp:'انشاء حساب',logout:'خروج',welcome2:'مرحبا بعودتك',createAccount:'انشاء حساب',virtualTour:'جولة افتراضية',orderFood:'طلب الطعام',comparePrice:'مقارنة الاسعار',menu:'القائمة',addToCart:'اضف',cart:'السلة',placeOrder:'اطلب',tableNum:'رقم الطاولة',bookNow:'احجز الان',checkIn:'تاريخ الوصول',checkOut:'تاريخ المغادرة',guests:'عدد الضيوف',confirmBooking:'تاكيد الحجز',amenities:'المرافق',photos:'الصور',rooms:'الغرف',dishes:'الاطباق'},
+  en:{name:'English',explore:'Explore Eswatini ✦',tagline:"Unlocking Eswatini's Hidden Treasures",sub:'The Smart Digital Tourism Ecosystem',offline:'9 Languages · Works Offline',welcome:"Welcome to Africa's Hidden Fortress",welcomeSub:'Discover breathtaking landscapes, vibrant culture, and unforgettable experiences.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Attractions',hiddenGem:'Hidden Gem',aiTitle:'Incaba AI Guide',aiSub:'Ask anything about Eswatini',navigate:'Navigate',home:'Home',ai:'AI Guide',business:'Business',explore2:'Explore',translate:'Translate',compare:'Compare',sos:'SOS Emergency',sosSub:'Tap to share location with emergency services',weather:'Weather Today',currency:'Currency Converter',reviews:'Tourist Reviews',writeReview:'Write Review',submit:'Submit',cancel:'Cancel',getDir:'Get Directions',savePlace:'Save Place',about:'About',location:'Location',hours:'Opening Hours',price:'Entry Fee',tips:'Travel Tips',signIn:'Sign In',signUp:'Sign Up',logout:'Logout',welcome2:'Welcome back',createAccount:'Create Account',virtualTour:'Virtual Tour',orderFood:'Order Food',comparePrice:'Compare Prices',menu:'Menu',addToCart:'Add to Cart',cart:'Cart',placeOrder:'Place Order',tableNum:'Table number or delivery address',bookNow:'Book Now',checkIn:'Check-in Date',checkOut:'Check-out Date',guests:'Number of Guests',confirmBooking:'Confirm Booking',amenities:'Amenities',photos:'Photos',rooms:'Rooms',dishes:'Dishes'},
+  ss:{name:'siSwati',explore:'Hlola Eswatini ✦',tagline:'Sivula Tigugu Letifihlekile Tase-Eswatini',sub:'Inhlelo Lehlakaniphile Yekuvakasha',offline:'Tilimi Letingu-9 · Isebenta Ungaxhunyiwe',welcome:'Siyakemukela e-Africa Incaba Lefihlekile',welcomeSub:'Tola tindzawo letimangalisako, inhlalo-mphilo, netilwimi letingakhohlwakali.',attractions:'Tindzawo',restaurants:'Emadlelo',hotels:'Emahhotela',topAttractions:'Tindzawo Letiphambili',hiddenGem:'Sigugu',aiTitle:'Umcondzi we-Incaba AI',aiSub:'Butseka noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Umcondzi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sehhatsi',sosSub:'Cindzetela wabelane ndzawo yakho nebaphephisi',weather:'Isimo Selizulu',currency:'Shintsha Imali',reviews:'Tibuka',writeReview:'Bhala Tibuka',submit:'Thumela',cancel:'Yekela',getDir:'Tsatsa Indlela',savePlace:'Gcina Indawo',about:'Mayelana',location:'Ndzawo',hours:'Sikhati',price:'Inkokhelo',tips:'Imilayeto',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakemukela',createAccount:'Yenta Akhawunti',virtualTour:'Vaka Nge-Virtual',orderFood:'Odela Kudla',comparePrice:'Qhatanisa Tintengo',menu:'Menyu',addToCart:'Engeta',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Buka Manje',checkIn:'Lusuku Lokungena',checkOut:'Lusuku Lokuphuma',guests:'Tinombolo Tetivakashi',confirmBooking:'Cina Kubuka',amenities:'Tinhlelo',photos:'Tifoto',rooms:'Tigumbi',dishes:'Kudla'},
+  zu:{name:'Zulu',explore:'Hlola i-Eswatini ✦',tagline:'Sivula Amagugu Ase-Eswatini',sub:'Uhlelo Lokuhlakanipha Lokuvakasha',offline:'Izilimi Eziyi-9 · Isebenza Offline',welcome:'Siyakwamukela e-Afrika Insaba Efihliwe',welcomeSub:'Thola izindawo ezimangalisayo, amasiko ashisayo.',attractions:'Izindawo',restaurants:'Ama-Restorenti',hotels:'Amahhotela',topAttractions:'Izindawo Eziphezulu',hiddenGem:'Igugu Elisifihlekile',aiTitle:'Isiqondisi se-Incaba AI',aiSub:'Buza noma yini nge-Eswatini',navigate:'Hamba',home:'Ekhaya',ai:'Isiqondisi',business:'Ibhizinisi',explore2:'Hlola',translate:'Humusha',compare:'Qhatanisa',sos:'Isimo Sezimo',sosSub:'Thepha ukwabelana nendawo yakho',weather:'Isimo Sezulu',currency:'Isiguquli Semali',reviews:'Izibuyekezo',writeReview:'Bhala Ukubuyekeza',submit:'Thumela',cancel:'Khansela',getDir:'Thola Izikhombo',savePlace:'Gcina Indawo',about:'Mayelana',location:'Indawo',hours:'Amahora',price:'Imali Yokungena',tips:'Amacebo',signIn:'Ngena',signUp:'Bhalisa',logout:'Phuma',welcome2:'Siyakwamukela futhi',createAccount:'Dala I-Akhawunti',virtualTour:'Ithiyetha Elikhulu',orderFood:'Odela Ukudla',comparePrice:'Qhatanisa Amanani',menu:'Imenyu',addToCart:'Engeza',cart:'Inqola',placeOrder:'Odela',tableNum:'Inombolo yetafula',bookNow:'Bhuka Manje',checkIn:'Usuku Lokungena',checkOut:'Usuku Lokuphuma',guests:'Izivakashi',confirmBooking:'Qinisekisa Ukubhuka',amenities:'Izinsiza',photos:'Izithombe',rooms:'Amagumbi',dishes:'Ukudla'},
+  af:{name:'Afrikaans',explore:'Verken Eswatini ✦',tagline:"Ontsluit Eswatini se Verborge Skatte",sub:'Die Slim Digitale Toerisme-Ekosisteem',offline:'9 Tale · Vanlyn Gereed',welcome:"Welkom by Afrika se Verborge Vesting",welcomeSub:'Ontdek asemrowende landseigte, lewendige kultuur.',attractions:'Besienswaardighede',restaurants:'Restaurante',hotels:'Hotelle',topAttractions:'Top Besienswaardighede',hiddenGem:'Verborge Juweel',aiTitle:'Incaba KI-Gids',aiSub:'Vra enigiets oor Eswatini',navigate:'Navigeer',home:'Tuis',ai:'KI-Gids',business:'Besigheid',explore2:'Verken',translate:'Vertaal',compare:'Vergelyk',sos:'SOS Nood',sosSub:'Tik om ligging te deel',weather:'Weer Vandag',currency:'Geldomskakelaar',reviews:'Resensies',writeReview:'Skryf Resensie',submit:'Indien',cancel:'Kanselleer',getDir:'Kry Aanwysings',savePlace:'Stoor Plek',about:'Oor',location:'Ligging',hours:'Openingsure',price:'Toegangsgeld',tips:'Reistips',signIn:'Meld Aan',signUp:'Registreer',logout:'Meld Af',welcome2:'Welkom terug',createAccount:'Skep Rekening',virtualTour:'Virtuele Toer',orderFood:'Bestel Kos',comparePrice:'Vergelyk Pryse',menu:'Spyskaart',addToCart:'Voeg By',cart:'Mandjie',placeOrder:'Plaas Bestelling',tableNum:'Tafelnommer',bookNow:'Bespreek Nou',checkIn:'Inboekdatum',checkOut:'Uitboekdatum',guests:'Gaste',confirmBooking:'Bevestig Besprekings',amenities:'Fasiliteite',photos:'Fotos',rooms:'Kamers',dishes:'Geregte'},
+  pt:{name:'Portugues',explore:'Explorar Eswatini ✦',tagline:'Desbloqueando os Tesouros Escondidos',sub:'O Ecossistema de Turismo Digital Inteligente',offline:'9 Idiomas · Disponivel Offline',welcome:'Bem-vindo a Fortaleza Oculta de Africa',welcomeSub:'Descubra paisagens deslumbrantes, cultura vibrante.',attractions:'Atracoes',restaurants:'Restaurantes',hotels:'Hoteis',topAttractions:'Principais Atracoes',hiddenGem:'Joia Escondida',aiTitle:'Guia IA Incaba',aiSub:'Pergunte qualquer coisa sobre Eswatini',navigate:'Navegar',home:'Inicio',ai:'Guia IA',business:'Negocios',explore2:'Explorar',translate:'Traduzir',compare:'Comparar',sos:'Emergencia SOS',sosSub:'Toque para partilhar localizacao',weather:'Tempo Hoje',currency:'Conversor de Moeda',reviews:'Avaliacoes',writeReview:'Escrever Avaliacao',submit:'Enviar',cancel:'Cancelar',getDir:'Obter Direcoes',savePlace:'Guardar Local',about:'Sobre',location:'Localizacao',hours:'Horario',price:'Taxa de Entrada',tips:'Dicas',signIn:'Entrar',signUp:'Registar',logout:'Sair',welcome2:'Bem-vindo de volta',createAccount:'Criar Conta',virtualTour:'Visita Virtual',orderFood:'Encomendar',comparePrice:'Comparar Precos',menu:'Menu',addToCart:'Adicionar',cart:'Carrinho',placeOrder:'Fazer Pedido',tableNum:'Numero da mesa',bookNow:'Reservar Agora',checkIn:'Data de Entrada',checkOut:'Data de Saida',guests:'Hospedes',confirmBooking:'Confirmar Reserva',amenities:'Comodidades',photos:'Fotos',rooms:'Quartos',dishes:'Pratos'},
+  fr:{name:'Francais',explore:'Explorer Eswatini ✦',tagline:"Deverrouiller les Tresors Caches d Eswatini",sub:"L Ecosysteme Touristique Numerique",offline:'9 Langues · Disponible Hors Ligne',welcome:"Bienvenue dans la Fortresse Cachee d Afrique",welcomeSub:'Decouvrez des paysages a couper le souffle.',attractions:'Attractions',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Meilleures Attractions',hiddenGem:'Joyau Cache',aiTitle:'Guide IA Incaba',aiSub:"Demandez n importe quoi sur Eswatini",navigate:'Naviguer',home:'Accueil',ai:'Guide IA',business:'Entreprise',explore2:'Explorer',translate:'Traduire',compare:'Comparer',sos:'Urgence SOS',sosSub:"Appuyez pour partager l emplacement",weather:"Meteo Aujourd hui",currency:'Convertisseur',reviews:'Avis',writeReview:'Ecrire un Avis',submit:'Soumettre',cancel:'Annuler',getDir:'Obtenir des Directions',savePlace:'Sauvegarder',about:'A Propos',location:'Emplacement',hours:"Heures d Ouverture",price:"Frais d Entree",tips:'Conseils',signIn:'Se Connecter',signUp:"S inscrire",logout:'Se Deconnecter',welcome2:'Bon Retour',createAccount:'Creer un Compte',virtualTour:'Visite Virtuelle',orderFood:'Commander',comparePrice:'Comparer les Prix',menu:'Menu',addToCart:'Ajouter',cart:'Panier',placeOrder:'Passer la Commande',tableNum:'Numero de table',bookNow:'Reserver Maintenant',checkIn:"Date d Arrivee",checkOut:'Date de Depart',guests:'Invites',confirmBooking:'Confirmer la Reservation',amenities:'Equipements',photos:'Photos',rooms:'Chambres',dishes:'Plats'},
+  de:{name:'Deutsch',explore:'Eswatini Erkunden ✦',tagline:'Die Verborgenen Schatze Eswatinis',sub:'Das Intelligente Digitale Tourismus-Okosystem',offline:'9 Sprachen · Offline Verfugbar',welcome:"Willkommen in Afrikas Verborgener Festung",welcomeSub:'Entdecken Sie atemberaubende Landschaften.',attractions:'Sehenswurdigkeiten',restaurants:'Restaurants',hotels:'Hotels',topAttractions:'Top Sehenswurdigkeiten',hiddenGem:'Verborgenes Juwel',aiTitle:'Incaba KI-Fuhrer',aiSub:'Fragen Sie alles uber Eswatini',navigate:'Navigieren',home:'Startseite',ai:'KI-Fuhrer',business:'Geschaft',explore2:'Erkunden',translate:'Ubersetzen',compare:'Vergleichen',sos:'SOS-Notfall',sosSub:'Tippen Sie um den Standort zu teilen',weather:'Wetter Heute',currency:'Wahrungsrechner',reviews:'Bewertungen',writeReview:'Bewertung Schreiben',submit:'Einreichen',cancel:'Abbrechen',getDir:'Wegbeschreibung',savePlace:'Ort Speichern',about:'Uber',location:'Standort',hours:'Offnungszeiten',price:'Eintrittsgebuh',tips:'Reisetipps',signIn:'Anmelden',signUp:'Registrieren',logout:'Abmelden',welcome2:'Willkommen Zuruck',createAccount:'Konto Erstellen',virtualTour:'Virtuelle Tour',orderFood:'Essen Bestellen',comparePrice:'Preise Vergleichen',menu:'Speisekarte',addToCart:'Hinzufugen',cart:'Warenkorb',placeOrder:'Bestellung Aufgeben',tableNum:'Tischnummer',bookNow:'Jetzt Buchen',checkIn:'Anreisedatum',checkOut:'Abreisedatum',guests:'Gaste',confirmBooking:'Buchung Bestatigen',amenities:'Annehmlichkeiten',photos:'Fotos',rooms:'Zimmer',dishes:'Gerichte'},
+  zh:{name:'Chinese',explore:'探索斯威士兰 ✦',tagline:'解锁斯威士兰的隐藏宝藏',sub:'智能数字旅游生态系统',offline:'9种语言 · 离线可用',welcome:'欢迎来到非洲的隐藏堡垒',welcomeSub:'探索令人叹为观止的风景、充满活力的文化。',attractions:'景点',restaurants:'餐厅',hotels:'酒店',topAttractions:'热门景点',hiddenGem:'隐藏宝石',aiTitle:'Incaba 人工智能向导',aiSub:'询问任何关于斯威士兰的问题',navigate:'导航',home:'主页',ai:'AI向导',business:'商业',explore2:'探索',translate:'翻译',compare:'比较',sos:'SOS紧急',sosSub:'点击与紧急服务共享位置',weather:'今日天气',currency:'货币换算器',reviews:'游客评论',writeReview:'写评论',submit:'提交',cancel:'取消',getDir:'获取路线',savePlace:'收藏地点',about:'关于',location:'位置',hours:'营业时间',price:'门票费用',tips:'旅行提示',signIn:'登录',signUp:'注册',logout:'退出',welcome2:'欢迎回来',createAccount:'创建账户',virtualTour:'虚拟游览',orderFood:'点餐',comparePrice:'比较价格',menu:'菜单',addToCart:'添加',cart:'购物车',placeOrder:'下单',tableNum:'桌号',bookNow:'立即预订',checkIn:'入住日期',checkOut:'退房日期',guests:'客人数量',confirmBooking:'确认预订',amenities:'设施',photos:'照片',rooms:'房间',dishes:'菜肴'},
+  ar:{name:'Arabic',explore:'استكشف اسواتيني ✦',tagline:'اكتشف الكنوز الخفية لاسواتيني',sub:'نظام السياحة الرقمية الذكية',offline:'9 لغات متاح بدون انترنت',welcome:'مرحبا بك في القلعة الخفية لافريقيا',welcomeSub:'اكتشف مناظر طبيعية خلابة وثقافة نابضة بالحياة.',attractions:'المعالم',restaurants:'المطاعم',hotels:'الفنادق',topAttractions:'افضل المعالم',hiddenGem:'الجوهرة الخفية',aiTitle:'دليل Incaba الذكي',aiSub:'اسال اي شيء عن اسواتيني',navigate:'التنقل',home:'الرئيسية',ai:'الدليل الذكي',business:'الاعمال',explore2:'استكشف',translate:'ترجم',compare:'قارن',sos:'طوارئ SOS',sosSub:'انقر لمشاركة موقعك',weather:'الطقس اليوم',currency:'محول العملات',reviews:'تقييمات',writeReview:'اكتب تقييما',submit:'ارسال',cancel:'الغاء',getDir:'احصل على الاتجاهات',savePlace:'احفظ المكان',about:'حول',location:'الموقع',hours:'ساعات العمل',price:'رسوم الدخول',tips:'نصائح',signIn:'تسجيل الدخول',signUp:'انشاء حساب',logout:'خروج',welcome2:'مرحبا بعودتك',createAccount:'انشاء حساب',virtualTour:'جولة افتراضية',orderFood:'طلب الطعام',comparePrice:'مقارنة الاسعار',menu:'القائمة',addToCart:'اضف',cart:'السلة',placeOrder:'اطلب',tableNum:'رقم الطاولة',bookNow:'احجز الان',checkIn:'تاريخ الوصول',checkOut:'تاريخ المغادرة',guests:'عدد الضيوف',confirmBooking:'تاكيد الحجز',amenities:'المرافق',photos:'الصور',rooms:'الغرف',dishes:'الاطباق'},
 };
 
 const RATES = {USD:18.5,ZAR:1.0,EUR:20.1,GBP:23.4,BWP:1.37,CNY:2.55,AED:5.04,INR:0.222,AUD:12.1,CAD:13.6,JPY:0.122,CHF:20.8,BRL:3.55,MXN:0.95,NGN:0.012,KES:0.143,GHS:1.21};
@@ -998,6 +999,7 @@ function App(){
 function AppInner() {
   const [screen,setScreen]   = useState('splash');
   const [tab,setTab]         = useState('home');
+  useEffect(()=>{ const el=document.querySelector('.ib-content'); if(el) el.scrollTo(0,0); },[tab]);
   const [lang,setLang]       = useState('en');
   const [showLangPicker,setShowLangPicker] = useState(false);
   const [selectedPlace,setSelectedPlace]           = useState(null);
@@ -1016,13 +1018,13 @@ function AppInner() {
       <p style={{color:'#8fa3c4',fontSize:12,margin:'0 0 16px',lineHeight:1.6}}>{t.sub}</p>
       <div style={{position:'relative',marginBottom:16,width:'100%',maxWidth:280}}>
         <button onClick={()=>setShowLangPicker(s=>!s)} style={{width:'100%',padding:'11px 16px',borderRadius:50,border:'1px solid rgba(201,162,39,0.4)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontSize:13,fontWeight:600,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
-          {T[lang].flag} {T[lang].name} ▾
+          <Flag l={lang}/> {T[lang].name} <I e="▾"/>
         </button>
         {showLangPicker&&(
           <div style={{position:'absolute',top:48,left:0,right:0,background:'#0d1f3c',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:14,padding:8,zIndex:300,boxShadow:'0 8px 32px rgba(0,0,0,0.6)',maxHeight:260,overflowY:'auto'}}>
             {Object.entries(T).map(([code,data])=>(
               <div key={code} onClick={()=>{setLang(code);setShowLangPicker(false);}} style={{padding:'10px 12px',borderRadius:8,cursor:'pointer',color:lang===code?'#c9a227':'#f0f4ff',background:lang===code?'rgba(201,162,39,0.12)':'transparent',fontSize:13,display:'flex',alignItems:'center',gap:8}}>
-                {data.flag} {data.name}
+                <Flag l={code}/> {data.name}
               </div>
             ))}
           </div>
@@ -1051,29 +1053,29 @@ function AppInner() {
   if(selectedStore) return <StoreDetail item={selectedStore} onBack={()=>setSelectedStore(null)} t={t}/>;
 
   return (
-    <div style={styles.app}>
-      <div style={styles.topbar}>
+    <div className="ib-shell" style={styles.app}>
+      <div className="ib-topbar" style={styles.topbar}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{fontSize:18,width:30,height:30,borderRadius:8,background:'linear-gradient(135deg,#c9a227,#e8b93a)',display:'flex',alignItems:'center',justifyContent:'center'}}><I e="💎"/></div>
           <span style={{fontSize:17,fontWeight:700,color:'#f0f4ff'}}>Inc<span style={styles.gold}>aba</span></span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8,position:'relative'}}>
-          <button onClick={()=>setShowLangPicker(!showLangPicker)} style={{padding:'4px 10px',borderRadius:20,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontSize:11,cursor:'pointer'}}>{T[lang].flag} {lang.toUpperCase()} ▾</button>
+          <button onClick={()=>setShowLangPicker(!showLangPicker)} style={{padding:'4px 10px',borderRadius:20,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(201,162,39,0.08)',color:'#c9a227',fontSize:11,cursor:'pointer'}}><Flag l={lang}/> {lang.toUpperCase()} <I e="▾"/></button>
           {showLangPicker&&(
             <div style={{position:'absolute',top:34,right:0,background:'#0d1f3c',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,padding:8,zIndex:300,minWidth:160,boxShadow:'0 8px 32px rgba(0,0,0,0.5)',maxHeight:300,overflowY:'auto'}}>
               {Object.entries(T).map(([code,data])=>(
                 <div key={code} onClick={()=>{setLang(code);setShowLangPicker(false);}} style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',color:lang===code?'#c9a227':'#f0f4ff',background:lang===code?'rgba(201,162,39,0.12)':'transparent',fontSize:13,display:'flex',alignItems:'center',gap:8}}>
-                  {data.flag} {data.name}
+                  <Flag l={code}/> {data.name}
                 </div>
               ))}
             </div>
           )}
-          <span style={{fontSize:20}}>🇸🇿</span>
+          <Flag l="ss" size="20px"/>
           <ProfileButton/>
         </div>
       </div>
 
-      <div style={styles.content}>
+      <div className="ib-content" style={styles.content}>
         {tab==='home'      && <HomeTab setTab={setTab} onSelect={setSelectedPlace} onSelectRestaurant={setSelectedRestaurant} onSelectHotel={setSelectedHotel} onSelectStore={setSelectedStore} t={t}/>}
         {tab==='explore'   && <ExploreTab onSelect={setSelectedPlace} onVirtualTour={setShowVirtualTour} t={t}/>}
         {tab==='stay'      && <AccommodationTab onSelectHotel={setSelectedHotel} t={t}/>}
@@ -1123,7 +1125,7 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
   const nearbyStays = (allHotels||[]).filter(h=>(place.nearbyStayNames||[]).includes(h.name));
 
   return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={place.gallery} height={260}/>
         <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> {t.cancel}</button>
@@ -1236,7 +1238,7 @@ function DetailScreen({place,onBack,t,onVirtualTour,onSelectHotel,allHotels}) {
           <button style={{...styles.btnPrimary,flex:1,padding:'11px',fontSize:13}} onClick={()=>window.open(dirUrl,'_blank')}><I e="🗺"/> {t.getDir}</button>
           <button style={{flex:1,padding:'11px',fontSize:13,borderRadius:50,border:saved?'0.5px solid rgba(29,158,117,0.6)':'0.5px solid rgba(201,162,39,0.4)',background:saved?'rgba(29,158,117,0.15)':'transparent',color:saved?'#5dcaa5':'#c9a227',cursor:'pointer',fontWeight:600}} onClick={toggleSave}>{saved?<><I e="✅"/> Saved</>:t.savePlace}</button>
         </div>
-        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.1)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:16}} onClick={()=>{if(window.confirm('Call Eswatini Emergency Services 999?'))window.location.href='tel:999';}}>🆘 {t.sos}</button>
+        <button style={{width:'100%',padding:'11px',fontSize:13,borderRadius:50,border:'1px solid rgba(226,75,74,0.4)',background:'rgba(226,75,74,0.1)',color:'#e24b4a',cursor:'pointer',fontWeight:600,marginBottom:16}} onClick={()=>{if(window.confirm('Call Eswatini Emergency Services 999?'))window.location.href='tel:999';}}><I e="🆘"/> {t.sos}</button>
       </div>
     </div>
   );
@@ -1262,7 +1264,7 @@ function VirtualTourScreen({place,onBack,t}) {
     }
   };
   return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{background:'linear-gradient(135deg,#0a1628,#1a3a5c)',padding:'12px 16px',display:'flex',alignItems:'center',gap:12,borderBottom:'0.5px solid rgba(201,162,39,0.25)',flexShrink:0}}>
         <button onClick={onBack} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:50,padding:'7px 14px',color:'#f0f4ff',fontSize:12,cursor:'pointer'}}><I e="←"/> Back</button>
         <div><div style={{fontSize:13,fontWeight:700,color:'#c9a227'}}>{t.virtualTour}</div><div style={{fontSize:11,color:'#8fa3c4'}}>{place.name}</div></div>
@@ -1482,7 +1484,7 @@ function RestaurantDetail({item,onBack,t}) {
   );
 
   if(ordered) return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
         {cancelled ? (
           <>
@@ -1529,7 +1531,7 @@ function RestaurantDetail({item,onBack,t}) {
   );
 
   return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Img src={item.coverImg} alt={item.name} style={{width:'100%',height:200}}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,transparent 50%,rgba(10,22,40,0.9) 100%)'}}/>
@@ -1645,7 +1647,7 @@ function HotelDetail({item,onBack,t}) {
   };
 
   if(confirmed) return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',alignItems:'center',padding:28,textAlign:'center'}}>
         <div style={{fontSize:60,marginBottom:14}}><I e="✅"/></div>
         <div style={{fontSize:20,fontWeight:700,color:'#5dcaa5',marginBottom:6}}>Booking Confirmed!</div>
@@ -1669,7 +1671,7 @@ function HotelDetail({item,onBack,t}) {
   );
 
   return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={240}/>
         <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> Back</button>
@@ -1734,7 +1736,7 @@ function HotelDetail({item,onBack,t}) {
 // ── STORE DETAIL ──────────────────────────────────────────
 function StoreDetail({item,onBack,t}) {
   return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Slideshow images={item.gallery} height={220}/>
         <button onClick={onBack} style={{position:'absolute',top:14,left:14,background:'rgba(10,22,40,0.75)',border:'none',borderRadius:50,padding:'7px 13px',color:'#f0f4ff',fontSize:12,cursor:'pointer',zIndex:10}}><I e="←"/> Back</button>
@@ -2098,17 +2100,17 @@ function TranslateTab({t,lang}) {
       <div style={styles.sectionTitle}>{t.translate} <I e="🌐"/></div>
       <div style={{fontSize:11,color:'#8fa3c4',marginBottom:14}}>Translate words and phrases for your Eswatini journey</div>
       <div style={{display:'flex',gap:10,marginBottom:12,alignItems:'center'}}>
-        <div style={{flex:1,padding:'10px 12px',borderRadius:10,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(255,255,255,0.04)',color:'#8fa3c4',fontSize:12}}>{T[lang].flag} {T[lang].name}</div>
+        <div style={{flex:1,padding:'10px 12px',borderRadius:10,border:'0.5px solid rgba(201,162,39,0.3)',background:'rgba(255,255,255,0.04)',color:'#8fa3c4',fontSize:12}}><Flag l={lang}/> {T[lang].name}</div>
         <span style={{color:'#c9a227',fontSize:18,fontWeight:700}}><I e="→"/></span>
         <select value={toLang} onChange={e=>setToLang(e.target.value)} style={{flex:1,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'10px',color:'#c9a227',fontSize:12,outline:'none',cursor:'pointer'}}>
-          {Object.entries(T).map(([code,data])=><option key={code} value={code}>{data.flag} {data.name}</option>)}
+          {Object.entries(T).map(([code,data])=><option key={code} value={code}>{data.name}</option>)}
         </select>
       </div>
       <textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Type a word or phrase..." rows={3} style={{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.25)',borderRadius:12,padding:'12px 14px',color:'#f0f4ff',fontSize:14,outline:'none',resize:'none',fontFamily:'inherit',boxSizing:'border-box',marginBottom:10}}/>
       <button style={{...styles.btnPrimary,marginBottom:14}} onClick={translate}>Translate <I e="→"/></button>
       {result&&(
         <div style={{background:'rgba(83,74,183,0.15)',border:'0.5px solid rgba(131,122,221,0.3)',borderRadius:12,padding:16,marginBottom:16}}>
-          <div style={{fontSize:10,color:'#8fa3c4',marginBottom:5}}>{T[toLang].flag} {T[toLang].name}:</div>
+          <div style={{fontSize:10,color:'#8fa3c4',marginBottom:5}}><Flag l={toLang}/> {T[toLang].name}:</div>
           <div style={{fontSize:22,fontWeight:600,color:'#f0f4ff',marginBottom:12}}>{result}</div>
           <button onClick={()=>speak(result)} style={{padding:'7px 16px',borderRadius:50,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:11}}>
             {speaking?<><I e="🔊"/> Speaking...</>:<><I e="🔊"/> Hear Pronunciation</>}
@@ -2124,7 +2126,7 @@ function TranslateTab({t,lang}) {
           </div>
         ))}
       </div>
-      <div style={styles.sectionTitle}>siSwati Essentials 🇸🇿</div>
+      <div style={styles.sectionTitle}>siSwati Essentials</div>
       {[['Sawubona','Hello / I see you'],['Ngiyabonga','Thank you'],['Yebo','Yes'],['Cha','No'],['Sala kahle','Goodbye — stay well'],['Hamba kahle','Go well'],['Siyabonga','We thank you'],['Ngiyakuthanda','I love you'],['Incaba','Fortress / Hidden treasure'],['Eswatini','The Kingdom of Eswatini']].map(([ss,en])=>(
         <div key={ss} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 0',borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
           <div style={{fontSize:14,fontWeight:600,color:'#c9a227'}}>{ss}</div>
@@ -2212,8 +2214,8 @@ function ExploreTab({onSelect,onVirtualTour,t}) {
   const cats = ['All','Wildlife','Nature','Culture','Adventure'];
   const filtered = filter==='All'?places:places.filter(p=>p.category===filter);
   return (
-    <div>
-      <div style={styles.sectionTitle}>{t.explore2} Eswatini 🇸🇿</div>
+    <div className="ib-cards">
+      <div style={styles.sectionTitle}>{t.explore2} Eswatini</div>
       <div style={{display:'flex',gap:7,overflowX:'auto',paddingBottom:8,marginBottom:14,scrollbarWidth:'none'}}>
         {cats.map(c=><button key={c} onClick={()=>setFilter(c)} style={{flexShrink:0,padding:'7px 15px',borderRadius:20,border:filter===c?'1px solid #c9a227':'0.5px solid rgba(201,162,39,0.2)',background:filter===c?'rgba(201,162,39,0.15)':'transparent',color:filter===c?'#c9a227':'#8fa3c4',fontSize:12,cursor:'pointer',fontWeight:filter===c?600:400}}>{c}</button>)}
       </div>
@@ -2453,6 +2455,15 @@ function BookTab({t,setTab,onSelectHotel,onSelect}) {
   );
 }
 // ── HOME TAB — matches the design mockups exactly ─────────
+// Hero photo: put your own picture at  public/hero-eswatini.jpg  and it is used automatically.
+// If that file is missing, the app falls back to the original Hlane photo.
+function HeroImg(){
+  const [src,setSrc] = useState((process.env.PUBLIC_URL||'')+'/hero-eswatini.jpg');
+  return <img src={src} alt="Eswatini mountains" onError={()=>setSrc(places[0].img)}
+    style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center 40%'}}/>;
+}
+
+// ── HOME TAB
 function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore,t}) {
   const [sec,setSec] = useState('attractions');
   const [showWeather,setShowWeather] = useState(false);
@@ -2476,10 +2487,10 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
       )}
 
       {/* ── UTILITY BAR: SOS + WEATHER + AI ── */}
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1.6fr 1fr',gap:8,marginBottom:14}}>
+      <div className="ib-utility" style={{display:'grid',gridTemplateColumns:'1fr 1.6fr 1fr',gap:8,marginBottom:14}}>
         {/* SOS */}
         <div onClick={handleSOS} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(226,75,74,0.15)',border:'0.5px solid rgba(226,75,74,0.4)',borderRadius:14,padding:'12px 10px',cursor:'pointer'}}>
-          <div style={{width:32,height:32,borderRadius:8,background:'#e24b4a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,flexShrink:0}}>🆘</div>
+          <div style={{width:32,height:32,borderRadius:8,background:'#e24b4a',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,flexShrink:0}}><I e="🆘"/></div>
           <div>
             <div style={{fontSize:11,fontWeight:700,color:'#e24b4a'}}>SOS</div>
             <div style={{fontSize:9,color:'#8fa3c4'}}>Emergency</div>
@@ -2510,8 +2521,8 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
       </div>
 
       {/* ── HERO BANNER WITH REAL ESWATINI IMAGE ── */}
-      <div style={{position:'relative',borderRadius:18,overflow:'hidden',marginBottom:14,height:isDesktop?280:240}}>
-        <img src={places[0].img} alt="Eswatini" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+      <div className="ib-hero" style={{position:'relative',borderRadius:18,overflow:'hidden',marginBottom:14,height:isDesktop?280:240}}>
+        <HeroImg/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(10,22,40,0.15) 0%,rgba(10,22,40,0.88) 100%)'}}/>
         <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'20px 18px'}}>
           <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
@@ -2564,7 +2575,7 @@ function HomeTab({setTab,onSelect,onSelectRestaurant,onSelectHotel,onSelectStore
           </div>
 
           {/* ── TOP HOTELS + TOP RESTAURANTS SIDE BY SIDE ── */}
-          <div style={{display:'flex',flexDirection:'column',gap:16,marginBottom:16}}>
+          <div className="ib-two" style={{display:'flex',flexDirection:'column',gap:16,marginBottom:16}}>
             {/* Hotels */}
             <div>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
@@ -2798,7 +2809,7 @@ function MapTab({t}) {
 
 // ── AI TAB ────────────────────────────────────────────────
 function AITab({t}) {
-  const [msgs,setMsgs] = useState([{role:'ai',text:"Sawubona! 👋 I'm Vaka, your Incaba AI Guide for the Kingdom of Eswatini.\n\nI speak 9 languages and can help with:\n• Trip planning and itineraries\n• Wildlife and nature parks\n• Food, restaurants and local cuisine\n• Culture, festivals and ceremonies\n• Hotels and accommodation\n• Currency and weather\n• Transport and getting around\n• Emergency help\n• Any question about Eswatini\n\nWhat would you like to know? 💎"}]);
+  const [msgs,setMsgs] = useState([{role:'ai',text:"Sawubona! I'm Vaka, your Incaba AI Guide for the Kingdom of Eswatini.\n\nI speak 9 languages and can help with:\n• Trip planning and itineraries\n• Wildlife and nature parks\n• Food, restaurants and local cuisine\n• Culture, festivals and ceremonies\n• Hotels and accommodation\n• Currency and weather\n• Transport and getting around\n• Emergency help\n• Any question about Eswatini\n\nWhat would you like to know?"}]);
   const [input,setInput]   = useState('');
   const [typing,setTyping] = useState(false);
   const [speaking,setSpeaking] = useState(false);
@@ -2807,7 +2818,7 @@ function AITab({t}) {
   const speak = txt=>{
     if('speechSynthesis' in window){
       window.speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(txt.replace(/[💎🇸🇿🤖🦁🍽🎭🏨💱🚌🆘🗓📍⭐🌍👋•]/g,''));
+      const u=new SpeechSynthesisUtterance(stripEmoji(txt).replace(/•/g,''));
       u.rate=0.9; u.onstart=()=>setSpeaking(true); u.onend=()=>setSpeaking(false);
       window.speechSynthesis.speak(u);
     }
@@ -2838,7 +2849,7 @@ function AITab({t}) {
         {lastAI&&<button onClick={()=>speak(lastAI.text)} style={{marginTop:5,padding:'4px 12px',borderRadius:20,border:'0.5px solid rgba(131,122,221,0.4)',background:speaking?'rgba(131,122,221,0.3)':'rgba(131,122,221,0.15)',color:'#afa9ec',cursor:'pointer',fontSize:10}}>{speaking?<><I e="🔊"/> Speaking...</>:<><I e="🔊"/> Read Aloud</>}</button>}
       </div>
       <div ref={chatRef} style={{flex:1,overflowY:'auto',paddingBottom:10}}>
-        {msgs.map((m,i)=><div key={i} style={m.role==='ai'?styles.bubbleAI:styles.bubbleUser}>{m.text}</div>)}
+        {msgs.map((m,i)=><div key={i} style={m.role==='ai'?styles.bubbleAI:styles.bubbleUser}>{m.role==='ai'?stripEmoji(m.text):m.text}</div>)}
         {typing&&<div style={{...styles.bubbleAI,display:'flex',gap:5,alignItems:'center',padding:'14px'}}><div style={{width:7,height:7,borderRadius:'50%',background:'#8fa3c4'}}/><div style={{width:7,height:7,borderRadius:'50%',background:'#8fa3c4'}}/><div style={{width:7,height:7,borderRadius:'50%',background:'#8fa3c4'}}/></div>}
       </div>
       <div style={{display:'flex',flexWrap:'wrap',gap:5,marginBottom:8}}>
@@ -2932,7 +2943,7 @@ function BusinessTab({t}) {
     setStep('list'); setForm({name:'',type:'Hotel',region:'',phone:'',email:'',desc:''}); setCard(''); setExp(''); setCvv(''); setPhotos([]);
   };
   if(selBiz) return (
-    <div style={styles.app}>
+    <div className="ib-detail" style={styles.app}>
       <div style={{position:'relative',flexShrink:0}}>
         <Img src={selBiz.img} alt={selBiz.name} style={{width:'100%',height:200}}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,transparent 40%,rgba(10,22,40,0.9) 100%)'}}/>
@@ -3196,9 +3207,9 @@ function BottomNav({tab,setTab,t}){
   ];
   const moreActive = more.some(m=>m.id===tab);
   return (
-    <div style={{position:'relative'}}>
+    <div className="ib-nav" style={{position:'relative'}}>
       {showMore&&(
-        <div style={{position:'absolute',bottom:'100%',right:8,marginBottom:6,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,boxShadow:'0 8px 24px rgba(0,0,0,0.5)',overflow:'hidden',zIndex:50,minWidth:170}}>
+        <div className="ib-more-pop" style={{position:'absolute',bottom:'100%',right:8,marginBottom:6,background:'#0f2040',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:12,boxShadow:'0 8px 24px rgba(0,0,0,0.5)',overflow:'hidden',zIndex:50,minWidth:170}}>
           {more.map(item=>(
             <div key={item.id} onClick={()=>{setTab(item.id);setShowMore(false);}}
               style={{display:'flex',alignItems:'center',gap:10,padding:'11px 14px',cursor:'pointer',background:tab===item.id?'rgba(201,162,39,0.12)':'transparent',color:tab===item.id?'#c9a227':'#f0f4ff',fontSize:13,borderBottom:'0.5px solid rgba(255,255,255,0.05)'}}>
@@ -3207,17 +3218,24 @@ function BottomNav({tab,setTab,t}){
           ))}
         </div>
       )}
-      <div style={styles.bottomNav}>
+      <div className="ib-nav-bar" style={styles.bottomNav}>
         {primary.map(item=>(
-          <div key={item.id} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>{setTab(item.id);setShowMore(false);}}>
+          <div key={item.id} className={'ib-nav-item'+(tab===item.id?' is-active':'')} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>{setTab(item.id);setShowMore(false);}}>
             <I e={item.icon} size={18}/>
-            <span style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
+            <span className="ib-nav-label" style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
           </div>
         ))}
-        <div style={moreActive?styles.navActive:styles.navItem} onClick={()=>setShowMore(s=>!s)}>
+        <div className={'ib-nav-item ib-more-btn'+(moreActive?' is-active':'')} style={moreActive?styles.navActive:styles.navItem} onClick={()=>setShowMore(s=>!s)}>
           <I e={showMore?'✕':'⋯'} size={18}/>
-          <span style={{fontSize:8,color:moreActive?'#c9a227':'#8fa3c4',fontWeight:500}}>More</span>
+          <span className="ib-nav-label" style={{fontSize:8,color:moreActive?'#c9a227':'#8fa3c4',fontWeight:500}}>More</span>
         </div>
+        <div className="ib-side-heading">Tools &amp; more</div>
+        {more.map(item=>(
+          <div key={item.id} className={'ib-nav-item ib-side-extra'+(tab===item.id?' is-active':'')} style={tab===item.id?styles.navActive:styles.navItem} onClick={()=>{setTab(item.id);setShowMore(false);}}>
+            <I e={item.icon} size={18}/>
+            <span className="ib-nav-label" style={{fontSize:8,color:tab===item.id?'#c9a227':'#8fa3c4',fontWeight:500}}>{item.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

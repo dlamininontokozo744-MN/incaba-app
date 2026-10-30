@@ -1,0 +1,165 @@
+/* =====================================================================
+   Desktop / laptop layout  (phones are untouched – everything below only
+   applies on wider screens).  The app's styles are inline, so these rules
+   use !important and attribute selectors to override them.
+   ===================================================================== */
+
+/* ---- Tablets: keep the phone layout but centre it in a readable column ---- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .ib-content > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+  .ib-side-extra, .ib-side-heading { display: none !important; }
+}
+
+/* ---- Phones: the desktop-only sidebar extras stay hidden ---- */
+.ib-side-extra, .ib-side-heading { display: none !important; }
+
+@media (min-width: 1024px) {
+  /* scrollbars that match the theme */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,162,39,0.55); border-radius: 10px; border: 2px solid #0a1628; }
+  ::-webkit-scrollbar-thumb:hover { background: #c9a227; }
+
+  /* ---------- App shell: top bar + left sidebar + content ---------- */
+  .ib-shell {
+    display: grid !important;
+    grid-template-columns: 248px 1fr;
+    grid-template-rows: 68px 1fr;
+    grid-template-areas: "top top" "nav main";
+    height: 100vh;
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(201,162,39,0.07), transparent 60%),
+      radial-gradient(700px 500px at 0% 100%, rgba(83,74,183,0.08), transparent 60%),
+      #0a1628 !important;
+  }
+
+  .ib-topbar {
+    grid-area: top;
+    padding: 0 40px !important;
+    backdrop-filter: blur(10px);
+  }
+  .ib-topbar > div:first-child span:last-child { font-size: 22px !important; letter-spacing: -0.3px; }
+  .ib-topbar > div:first-child > div { width: 38px !important; height: 38px !important; border-radius: 10px !important; font-size: 22px !important; }
+  .ib-topbar button { font-size: 13px !important; padding: 7px 16px !important; }
+
+  .ib-content {
+    grid-area: main;
+    padding: 28px 48px 48px !important;
+    min-width: 0;
+  }
+  /* centred column + larger type/spacing for desktop reading distance */
+  .ib-content > * {
+    zoom: 1.22;
+    max-width: calc(1240px / 1.22);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---------- Sidebar navigation ---------- */
+  .ib-nav {
+    grid-area: nav;
+    position: static !important;
+    border-right: 0.5px solid rgba(201,162,39,0.22);
+    background: rgba(10,22,40,0.6);
+    overflow-y: auto;
+  }
+  .ib-nav-bar {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 4px;
+    padding: 22px 14px !important;
+    border-top: none !important;
+    background: transparent !important;
+    position: static !important;
+  }
+  .ib-nav-item {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    transition: background .15s ease, transform .15s ease;
+    position: relative;
+  }
+  .ib-nav-item:hover { background: rgba(255,255,255,0.06) !important; }
+  .ib-nav-item.is-active { background: rgba(201,162,39,0.14) !important; }
+  .ib-nav-item.is-active::before {
+    content: ""; position: absolute; left: -14px; top: 10px; bottom: 10px;
+    width: 4px; border-radius: 0 4px 4px 0; background: #c9a227;
+  }
+  .ib-nav-item svg { width: 20px !important; height: 20px !important; }
+  .ib-nav-label { font-size: 14px !important; font-weight: 600 !important; }
+  /* every section lives in the sidebar, so the phone-style "More" button/popup goes away */
+  .ib-more-btn, .ib-more-pop { display: none !important; }
+  .ib-side-extra { display: flex !important; }
+  .ib-side-heading {
+    display: block !important;
+    margin: 18px 16px 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: #5f7391;
+  }
+
+  /* ---------- Home ---------- */
+  .ib-hero { height: 400px !important; border-radius: 22px !important; }
+  .ib-hero > div:last-child { padding: 34px 40px !important; }
+  .ib-hero h2 { font-size: 40px !important; letter-spacing: -0.5px; }
+  .ib-hero p  { font-size: 15px !important; max-width: 620px; }
+  .ib-hero [style*="display: flex"][style*="gap: 8px"] { max-width: 760px; }
+  .ib-utility { grid-template-columns: 1fr 1.6fr 1fr !important; gap: 14px !important; }
+  .ib-two { flex-direction: row !important; gap: 28px !important; }
+  .ib-two > div { flex: 1; min-width: 0; }
+
+  /* responsive card grids: as many columns as fit */
+  .ib-content [style*="grid-template-columns: 1fr 1fr;"] {
+    grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)) !important;
+    gap: 16px !important;
+  }
+  .ib-content [style*="grid-template-columns: 1fr 1fr 1fr;"] {
+    gap: 14px !important;
+  }
+
+  /* Top Hotels / Top Restaurants thumbnails: bigger on desktop */
+  .ib-two [style*="width: 90px"]  { width: 108px !important; }
+  .ib-two [style*="height: 70px"] { height: 80px !important; }
+  .ib-two [style*="width: 108px"] > div { font-size: 11px !important; }
+
+  /* Explore: place cards in two columns (title + filter chips span the full width) */
+  .ib-cards { display: grid !important; grid-template-columns: repeat(2, 1fr); gap: 18px; align-items: start; }
+  .ib-cards > :nth-child(-n+2) { grid-column: 1 / -1; }
+  .ib-cards > div { margin-bottom: 0 !important; }
+
+  /* ---------- Interaction polish ---------- */
+  .ib-content [style*="cursor: pointer"] {
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease, background .18s ease;
+  }
+  .ib-content [style*="cursor: pointer"]:hover { filter: brightness(1.12); }
+  .ib-content [style*="overflow: hidden"][style*="cursor: pointer"]:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.45) !important;
+  }
+  .ib-content input:focus, .ib-content select:focus, .ib-content textarea:focus {
+    border-color: #c9a227 !important; box-shadow: 0 0 0 3px rgba(201,162,39,0.18);
+  }
+
+  /* AI chat fills the available height (it uses 75vh on phones) */
+  .ib-content [style*="height: 75vh"] { height: calc(78vh / 1.22) !important; }
+
+  /* ---------- Detail pages (place / hotel / restaurant …) as a centred panel ---------- */
+  .ib-detail {
+    max-width: 1040px;
+    margin: 0 auto;
+    zoom: 1.15;
+    height: calc(100vh / 1.15) !important;
+    border-left: 0.5px solid rgba(201,162,39,0.22);
+    border-right: 0.5px solid rgba(201,162,39,0.22);
+    box-shadow: 0 0 80px rgba(0,0,0,0.5);
+  }
+}
+
+/* very large monitors */
+@media (min-width: 1700px) {
+  .ib-shell { grid-template-columns: 272px 1fr; }
+  .ib-content > * { zoom: 1.35; max-width: calc(1440px / 1.35); }
+  .ib-content [style*="height: 75vh"] { height: calc(78vh / 1.35) !important; }
+}

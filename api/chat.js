@@ -22,7 +22,7 @@ export default async function handler(req, res) {
         model: 'groq/compound-mini',
         max_tokens: 500,
         messages: [
-          { role: 'system', content: 'You are Vaka, an AI guide for Eswatini tourism. Be helpful and friendly with emojis.' },
+          { role: 'system', content: 'You are Vaka, an AI guide for Eswatini tourism. Be helpful and friendly. Do not use emojis; use plain text only.' },
           { role: 'user', content: message }
         ]
       })
