@@ -3237,6 +3237,13 @@ function BottomNav({tab,setTab,t}){
           </div>
         ))}
       </div>
+      <div className="ib-side-footer">
+        <Flag l="ss" size="22px"/>
+        <div>
+          <div className="ib-side-footer-title">Kingdom of Eswatini</div>
+          <div className="ib-side-footer-sub">Smart Digital Tourism</div>
+        </div>
+      </div>
     </div>
   );
 }

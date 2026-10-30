@@ -7,17 +7,22 @@
 /* ---- Tablets: keep the phone layout but centre it in a readable column ---- */
 @media (min-width: 640px) and (max-width: 1023px) {
   .ib-content > * { max-width: 720px; margin-left: auto; margin-right: auto; }
-  .ib-side-extra, .ib-side-heading { display: none !important; }
+  .ib-side-extra, .ib-side-heading, .ib-side-footer { display: none !important; }
 }
 
 /* ---- Phones: the desktop-only sidebar extras stay hidden ---- */
-.ib-side-extra, .ib-side-heading { display: none !important; }
+.ib-side-extra, .ib-side-heading, .ib-side-footer { display: none !important; }
 
 @media (min-width: 1024px) {
-  /* scrollbars that match the theme */
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-thumb { background: rgba(201,162,39,0.55); border-radius: 10px; border: 2px solid #0a1628; }
-  ::-webkit-scrollbar-thumb:hover { background: #c9a227; }
+  /* scrollbars: thin and subtle */
+  * { scrollbar-width: thin; scrollbar-color: rgba(201,162,39,0.35) transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,162,39,0.30); border-radius: 6px; border: none; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(201,162,39,0.65); }
+  /* the sidebar fits on screen, so it needs no visible scrollbar at all */
+  .ib-nav { scrollbar-width: none; }
+  .ib-nav::-webkit-scrollbar { display: none; }
 
   /* ---------- App shell: top bar + left sidebar + content ---------- */
   .ib-shell {
@@ -61,13 +66,27 @@
     border-right: 0.5px solid rgba(201,162,39,0.22);
     background: rgba(10,22,40,0.6);
     overflow-y: auto;
+    display: flex !important;
+    flex-direction: column;
   }
+  .ib-nav-bar { flex: 0 0 auto; }
+  .ib-side-footer {
+    display: flex !important;
+    align-items: center; gap: 12px;
+    margin: auto 14px 14px;           /* auto top margin pushes it to the bottom */
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(201,162,39,0.25);
+    background: linear-gradient(135deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03));
+  }
+  .ib-side-footer-title { font-size: 13px; font-weight: 700; color: #f0f4ff; line-height: 1.2; }
+  .ib-side-footer-sub   { font-size: 11px; color: #8fa3c4; margin-top: 2px; }
   .ib-nav-bar {
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
-    gap: 4px;
-    padding: 22px 14px !important;
+    gap: 2px;
+    padding: 12px 14px !important;
     border-top: none !important;
     background: transparent !important;
     position: static !important;
@@ -77,15 +96,15 @@
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 14px !important;
-    padding: 12px 16px !important;
-    border-radius: 12px !important;
+    padding: 8px 16px !important;
+    border-radius: 10px !important;
     transition: background .15s ease, transform .15s ease;
     position: relative;
   }
   .ib-nav-item:hover { background: rgba(255,255,255,0.06) !important; }
   .ib-nav-item.is-active { background: rgba(201,162,39,0.14) !important; }
   .ib-nav-item.is-active::before {
-    content: ""; position: absolute; left: -14px; top: 10px; bottom: 10px;
+    content: ""; position: absolute; left: -14px; top: 8px; bottom: 8px;
     width: 4px; border-radius: 0 4px 4px 0; background: #c9a227;
   }
   .ib-nav-item svg { width: 20px !important; height: 20px !important; }
@@ -95,13 +114,26 @@
   .ib-side-extra { display: flex !important; }
   .ib-side-heading {
     display: block !important;
-    margin: 18px 16px 6px;
+    margin: 12px 16px 4px;
     font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
     text-transform: uppercase; color: #5f7391;
   }
 
   /* ---------- Home ---------- */
   .ib-hero { height: 400px !important; border-radius: 22px !important; }
+  /* extra dark fade from the bottom so the headline and stats always stand out */
+  .ib-hero::after {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top,
+      rgba(10,22,40,0.94) 0%, rgba(10,22,40,0.82) 28%,
+      rgba(10,22,40,0.35) 55%, rgba(10,22,40,0) 78%);
+  }
+  .ib-hero > div:last-child { z-index: 2; }
+  .ib-hero p { text-shadow: 0 1px 6px rgba(0,0,0,0.6); }
+  .ib-hero [style*="border-radius: 10px"] {
+    background: rgba(10,22,40,0.55) !important;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
   .ib-hero > div:last-child { padding: 34px 40px !important; }
   .ib-hero h2 { font-size: 40px !important; letter-spacing: -0.5px; }
   .ib-hero p  { font-size: 15px !important; max-width: 620px; }
