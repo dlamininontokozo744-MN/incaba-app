@@ -1034,7 +1034,6 @@ function AppInner() {
         )}
       </div>
       <button style={styles.btnPrimary} onClick={()=>setScreen('main')}>{t.explore}</button>
-      <p style={{color:'#5f7a9a',fontSize:10,marginTop:12}}>{t.offline.split(' · ')[0]}</p>
     </div>
   );
 
