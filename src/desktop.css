@@ -205,5 +205,5 @@
 .ib-content {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  overscroll-behavior-y: contain;   /* Prevents whole-page rubber banding, keeps it clean */
+  overscroll-behavior-y: auto;       /* Allows native pull-to-refresh at the top boundary */
 }
