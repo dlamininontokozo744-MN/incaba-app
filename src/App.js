@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext, createContext } from 'r
 import { supabase } from './supabaseClient';
 import './App.css';
 import './desktop.css';
-import { I, Stars, Flag, stripEmoji } from './Icon';
+import { I, Stars, Flag, GoogleG, stripEmoji } from './Icon';
 
 // A stable anonymous ID per device/browser, so a tourist can see their own
 // order/booking history without needing to create an account.
@@ -873,7 +873,10 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
   const [resending,setResending] = useState(false);
 
   const signInWithGoogle = async()=>{
-    await supabase.auth.signInWithOAuth({ provider: 'google' });
+    setError('');
+    // come back to whichever address the app is running on (localhost or the live site)
+    const {error:gErr} = await supabase.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin } });
+    if(gErr) setError(gErr.message);
   };
 
   const submit = async()=>{
@@ -921,7 +924,7 @@ function AuthScreen({mode,onClose,onSwitch,onSuccess}){
               <button onClick={onClose} style={{background:'transparent',border:'none',color:'#8fa3c4',fontSize:18,cursor:'pointer'}}><I e="✕"/></button>
             </div>
             <button onClick={signInWithGoogle} style={{width:'100%',padding:'11px',borderRadius:50,border:'0.5px solid rgba(255,255,255,0.2)',background:'#fff',color:'#1f1f1f',fontWeight:600,fontSize:13,cursor:'pointer',marginBottom:10,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
-              <span style={{fontSize:16}}>🇬</span> Continue with Google
+              <GoogleG/> Continue with Google
             </button>
             <div style={{textAlign:'center',color:'#5f7a9a',fontSize:11,marginBottom:14}}>— or use email —</div>
             {mode==='signup'&&(
@@ -1031,7 +1034,7 @@ function AppInner() {
         )}
       </div>
       <button style={styles.btnPrimary} onClick={()=>setScreen('main')}>{t.explore}</button>
-      <p style={{color:'#5f7a9a',fontSize:10,marginTop:12}}>{t.offline}</p>
+      <p style={{color:'#5f7a9a',fontSize:10,marginTop:12}}>{t.offline.split(' · ')[0]}</p>
     </div>
   );
 

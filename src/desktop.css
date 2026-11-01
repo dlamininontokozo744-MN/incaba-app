@@ -21,8 +21,9 @@
   ::-webkit-scrollbar-thumb { background: rgba(201,162,39,0.30); border-radius: 6px; border: none; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(201,162,39,0.65); }
   /* the sidebar fits on screen, so it needs no visible scrollbar at all */
-  .ib-nav { scrollbar-width: none; }
-  .ib-nav::-webkit-scrollbar { display: none; }
+  .ib-nav, .ib-nav-bar { scrollbar-width: none !important; -ms-overflow-style: none; }
+  .ib-nav::-webkit-scrollbar, .ib-nav-bar::-webkit-scrollbar { display: none !important; width: 0; height: 0; }
+  .ib-nav-bar { overflow: visible !important; flex-shrink: 0 !important; }
 
   /* ---------- App shell: top bar + left sidebar + content ---------- */
   .ib-shell {
@@ -62,19 +63,27 @@
   /* ---------- Sidebar navigation ---------- */
   .ib-nav {
     grid-area: nav;
-    position: sticky !important;
-    top: 0;
-    height: calc(100vh - 68px);
+    position: static !important;
     border-right: 0.5px solid rgba(201,162,39,0.22);
     background: rgba(10,22,40,0.6);
+    overflow-y: auto;
     display: flex !important;
     flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
   }
-  .ib-nav-bar { 
-    flex: 1;
-    overflow-y: auto;
+  .ib-nav-bar { flex: 0 0 auto; }
+  .ib-side-footer {
+    display: flex !important;
+    align-items: center; gap: 12px;
+    margin: auto 14px 14px;           /* auto top margin pushes it to the bottom */
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(201,162,39,0.25);
+    background: linear-gradient(135deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03));
+  }
+  .ib-side-footer > div { min-width: 0; }
+  .ib-side-footer-title { font-size: 12.5px; font-weight: 700; color: #f0f4ff; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ib-side-footer-sub   { font-size: 11px; color: #8fa3c4; margin-top: 2px; }
+  .ib-nav-bar {
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
@@ -84,20 +93,6 @@
     background: transparent !important;
     position: static !important;
   }
-  .ib-side-footer {
-    display: flex !important;
-    align-items: center; 
-    gap: 12px;
-    flex-shrink: 0;
-    margin: 12px 14px 14px !important;           
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 0.5px solid rgba(201,162,39,0.25);
-    background: linear-gradient(135deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03));
-  }
-  .ib-side-footer-title { font-size: 13px; font-weight: 700; color: #f0f4ff; line-height: 1.2; }
-  .ib-side-footer-sub   { font-size: 11px; color: #8fa3c4; margin-top: 2px; }
-  
   .ib-nav-item {
     flex-direction: row !important;
     align-items: center !important;
@@ -202,8 +197,18 @@
   .ib-content > * { zoom: 1.35; max-width: calc(1440px / 1.35); }
   .ib-content [style*="height: 75vh"] { height: calc(78vh / 1.35) !important; }
 }
-.ib-content {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  overscroll-behavior-y: auto;       /* Allows native pull-to-refresh at the top boundary */
+
+/* ---- Shorter laptop windows: tighten the sidebar so everything still fits ---- */
+@media (min-width: 1024px) and (max-height: 720px) {
+  .ib-nav-bar { padding: 8px 14px !important; gap: 0 !important; }
+  .ib-nav-item { padding: 6px 16px !important; }
+  .ib-side-heading { margin: 8px 16px 2px !important; }
+  .ib-side-footer { margin: auto 14px 8px !important; padding: 8px 12px !important; }
+}
+@media (min-width: 1024px) and (max-height: 600px) {
+  .ib-nav-item { padding: 4px 16px !important; }
+  .ib-side-footer-sub { display: none; }
+}
+@media (min-width: 1024px) and (max-height: 520px) {
+  .ib-side-footer { display: none !important; }
 }
