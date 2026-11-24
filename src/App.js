@@ -3,6 +3,8 @@ import { supabase } from './supabaseClient';
 import './App.css';
 import './desktop.css';
 import { I, Stars, Flag, GoogleG, stripEmoji } from './Icon';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 // A stable anonymous ID per device/browser, so a tourist can see their own
 // order/booking history without needing to create an account.
@@ -2692,8 +2694,7 @@ function RealMap({loc,t}){
   const markerRef = useRef(null);
 
   useEffect(()=>{
-    if(!window.L || !elRef.current || mapRef.current) return;
-    const L = window.L;
+    if(!elRef.current || mapRef.current) return;
     const start = loc ? [loc.lat,loc.lng] : [-26.5, 31.4];
     const map = L.map(elRef.current,{zoomControl:true,attributionControl:true}).setView(start, loc?13:9);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
@@ -2714,11 +2715,11 @@ function RealMap({loc,t}){
 
     mapRef.current = map;
     setTimeout(()=>map.invalidateSize(), 200);
+    return ()=>{ map.remove(); mapRef.current = null; markerRef.current = null; };
   },[]);
 
   useEffect(()=>{
-    if(!window.L || !mapRef.current || !loc) return;
-    const L = window.L;
+    if(!mapRef.current || !loc) return;
     const map = mapRef.current;
     if(markerRef.current) markerRef.current.remove();
     markerRef.current = L.marker([loc.lat,loc.lng],{
@@ -2728,8 +2729,8 @@ function RealMap({loc,t}){
   },[loc]);
 
   return (
-    <div style={{borderRadius:16,overflow:'hidden',marginBottom:14,border:'0.5px solid rgba(201,162,39,0.2)'}}>
-      <div ref={elRef} style={{height:220,width:'100%',background:'#0d2540'}}/>
+    <div className="ib-map-wrap" style={{borderRadius:16,overflow:'hidden',marginBottom:14,border:'0.5px solid rgba(201,162,39,0.2)'}}>
+      <div ref={elRef} className="ib-map" style={{height:220,width:'100%',background:'#0d2540'}}/>
     </div>
   );
 }
