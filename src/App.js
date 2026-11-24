@@ -182,6 +182,7 @@ const photo = (keywords) =>
 
 // ── AUTH CONSTANTS ────────────────────────────────────────
 const GRACE_PERIOD_MS = 5 * 60 * 1000;
+// eslint-disable-next-line no-unused-vars
 const SESSION_MIN_MS  = 5 * 60 * 1000;
 
 function isStrongPassword(pw){
@@ -734,6 +735,7 @@ const localStores = [
   },
 ];
 
+// eslint-disable-next-line no-unused-vars
 const weatherData = {
   'Today':    [{name:'Mbabane',temp:22,icon:'⛅',desc:'Partly Cloudy',humidity:'65%',wind:'12 km/h',uv:'Moderate'},{name:'Manzini',temp:26,icon:'☀️',desc:'Sunny',humidity:'45%',wind:'8 km/h',uv:'High'},{name:'Lubombo',temp:29,icon:'🌤️',desc:'Clear',humidity:'38%',wind:'15 km/h',uv:'Very High'}],
   'Tomorrow': [{name:'Mbabane',temp:19,icon:'🌧️',desc:'Light Rain',humidity:'80%',wind:'20 km/h',uv:'Low'},{name:'Manzini',temp:23,icon:'⛅',desc:'Cloudy',humidity:'60%',wind:'12 km/h',uv:'Moderate'},{name:'Lubombo',temp:27,icon:'☀️',desc:'Sunny',humidity:'35%',wind:'10 km/h',uv:'High'}],
@@ -1369,6 +1371,7 @@ function Reviews({name,t}) {
         setList([...(data||[]), ...seedList]);
         setLoading(false);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[name]);
 
   const openReviewForm = ()=>{
@@ -1765,6 +1768,7 @@ function StoreDetail({item,onBack,t}) {
 }
 
 // ── WEATHER MINI CARD ─────────────────────────────────────
+// eslint-disable-next-line no-unused-vars
 function WeatherMiniCard({t,onClick}) {
   const [data,setData] = useState(null);
   const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
@@ -1915,6 +1919,7 @@ function WeatherWidget({t}) {
       );
     }
     ['Mbabane','Manzini','Siteki'].forEach(c=>fetchWeather(c));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const getMyLocation = ()=>{
@@ -2716,6 +2721,7 @@ function RealMap({loc,t}){
     mapRef.current = map;
     setTimeout(()=>map.invalidateSize(), 200);
     return ()=>{ map.remove(); mapRef.current = null; markerRef.current = null; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   useEffect(()=>{
@@ -3261,7 +3267,6 @@ const styles = {
   authInput:{width:'100%',background:'rgba(255,255,255,0.06)',border:'0.5px solid rgba(201,162,39,0.3)',borderRadius:10,padding:'11px 13px',color:'#f0f4ff',fontSize:14,outline:'none',marginBottom:11,boxSizing:'border-box',fontFamily:'inherit'},
   app:{height:'100vh',background:'#0a1628',display:'flex',flexDirection:'column',width:'100%',overflow:'hidden'},
   topbar:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'calc(11px + env(safe-area-inset-top)) 15px 11px',borderBottom:'0.5px solid rgba(201,162,39,0.25)',background:'rgba(10,22,40,0.98)',position:'sticky',top:0,zIndex:100,flexShrink:0},
-  bottomNav:{display:'flex',justifyContent:'space-around',padding:'7px 0 calc(11px + env(safe-area-inset-bottom))',borderTop:'0.5px solid rgba(201,162,39,0.25)',background:'rgba(10,22,40,0.98)',position:'sticky',bottom:0,flexShrink:0},
   content:{flex:1,overflowY:'auto',padding:14,WebkitOverflowScrolling:'touch'},
  bottomNav:{
   display:'flex',
